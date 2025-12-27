@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh's Negative Space</title>
+    <title>Danh's Dark Room</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
     <style>
         * {
@@ -22,10 +22,7 @@
         header {
             text-align: center;
             padding: 2rem 0 3rem;
-            position: sticky;
-            top: 0;
             background: #0a0a0a;
-            z-index: 10;
         }
 
         h1 {
@@ -37,33 +34,28 @@
         }
 
         .gallery {
-            padding: 0 2rem 4rem;
-            columns: 3;
-            column-gap: 1.5rem;
-        }
-
-        @media (max-width: 1200px) {
-            .gallery { columns: 2; }
-        }
-
-        @media (max-width: 768px) {
-            .gallery { columns: 1; }
+            padding: 0 2rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 1.5rem;
         }
 
         .photo-item {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
             position: relative;
             cursor: pointer;
             overflow: hidden;
             border-radius: 8px;
+            flex-shrink: 0;
         }
 
         .photo-item img {
             width: 100%;
+            height: 100%;
             display: block;
             border-radius: 8px;
             transition: transform 0.3s ease;
+            object-fit: cover;
         }
 
         .photo-item:hover img {
@@ -75,21 +67,29 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 1.5rem 1rem 0.8rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+            padding: 2rem 1.2rem 1rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
             font-size: 0.7rem;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .photo-item:hover .photo-info {
             opacity: 1;
         }
 
+        .photo-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.02em;
+        }
+
         .info-line {
-            color: #ccc;
-            font-weight: 300;
+            color: #ddd;
+            font-weight: 500;
         }
 
         .lightbox {
@@ -118,17 +118,25 @@
             align-items: center;
         }
 
+        .lightbox-img-container {
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow: hidden;
+            cursor: move;
+            position: relative;
+        }
+
         .lightbox img {
             max-width: 100%;
             max-height: 80vh;
             object-fit: contain;
             border-radius: 4px;
-            transition: transform 0.3s ease;
+            transition: transform 0.1s ease-out;
+            cursor: zoom-in;
         }
 
         .lightbox img.zoomed {
-            transform: scale(2);
-            cursor: zoom-out;
+            cursor: move;
         }
 
         .lightbox-info {
@@ -137,6 +145,11 @@
             font-size: 0.75rem;
             color: #999;
             line-height: 1.6;
+        }
+
+        .lightbox-info .photo-title {
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
         }
 
         .lightbox-controls {
@@ -193,7 +206,7 @@
 </head>
 <body>
     <header>
-        <h1>Danh's Negative Space</h1>
+        <h1>Danh's Dark Room</h1>
     </header>
 
     <div class="gallery" id="gallery"></div>
@@ -201,13 +214,14 @@
 
     <div class="lightbox" id="lightbox">
         <div class="lightbox-content">
-            <img id="lightbox-img" src="" alt="">
+            <div class="lightbox-img-container" id="img-container">
+                <img id="lightbox-img" src="" alt="">
+            </div>
             <div class="lightbox-info" id="lightbox-info"></div>
         </div>
         <button class="lightbox-nav nav-prev" onclick="navigatePhoto(-1)">‹</button>
         <button class="lightbox-nav nav-next" onclick="navigatePhoto(1)">›</button>
         <div class="lightbox-controls">
-            <button class="control-btn" onclick="toggleZoom()">Zoom</button>
             <button class="control-btn" onclick="closeLightbox()">Close</button>
         </div>
     </div>
@@ -215,13 +229,17 @@
     <script>
         let photos = [];
         let currentPhotoIndex = 0;
+        let scale = 1;
+        let panning = false;
+        let pointX = 0;
+        let pointY = 0;
+        let start = { x: 0, y: 0 };
 
         async function loadPhotos() {
             const gallery = document.getElementById('gallery');
             const loading = document.getElementById('loading');
 
             try {
-                // Fetch the list of photos from the JSON file
                 const response = await fetch('photos.json');
                 const photoFiles = await response.json();
 
@@ -230,11 +248,17 @@
                     return;
                 }
 
-                // Load each photo
+                // Random widths for more organic layout
+                const widths = [280, 320, 360, 300, 340, 380, 310, 350];
+
                 for (let i = 0; i < photoFiles.length; i++) {
                     const filename = photoFiles[i];
                     const photoItem = document.createElement('div');
                     photoItem.className = 'photo-item';
+                    
+                    // Random width from array
+                    const randomWidth = widths[Math.floor(Math.random() * widths.length)];
+                    photoItem.style.width = `${randomWidth}px`;
                     
                     const img = document.createElement('img');
                     img.src = `Photos/${filename}`;
@@ -245,6 +269,11 @@
                     photoInfo.className = 'photo-info';
                     
                     img.onload = function() {
+                        // Set random height based on aspect ratio
+                        const aspectRatio = this.naturalHeight / this.naturalWidth;
+                        const randomHeight = randomWidth * aspectRatio * (0.8 + Math.random() * 0.4);
+                        photoItem.style.height = `${randomHeight}px`;
+                        
                         EXIF.getData(img, function() {
                             const exifData = EXIF.getAllTags(this);
                             const info = extractExifInfo(exifData);
@@ -271,16 +300,17 @@
         }
 
         function extractExifInfo(exif) {
-            const parts = [];
+            let html = '';
             
-            // First line: Title, Camera, Lens
-            const line1 = [];
-            if (exif.ImageDescription) line1.push(exif.ImageDescription);
-            if (exif.Model) line1.push(exif.Model);
-            if (exif.LensModel) line1.push(exif.LensModel);
+            // Title on first line (bigger, bolder)
+            if (exif.ImageDescription) {
+                html += `<div class="photo-title">${exif.ImageDescription}</div>`;
+            }
             
-            // Second line: Shutter, Aperture, ISO
+            // Everything else on second line
             const line2 = [];
+            if (exif.Model) line2.push(exif.Model);
+            if (exif.LensModel) line2.push(exif.LensModel);
             if (exif.ExposureTime) {
                 const shutter = exif.ExposureTime;
                 line2.push(shutter < 1 ? `1/${Math.round(1/shutter)}s` : `${shutter}s`);
@@ -288,8 +318,6 @@
             if (exif.FNumber) line2.push(`f/${exif.FNumber}`);
             if (exif.ISOSpeedRatings) line2.push(`ISO ${exif.ISOSpeedRatings}`);
 
-            let html = '';
-            if (line1.length > 0) html += `<div class="info-line">${line1.join(' · ')}</div>`;
             if (line2.length > 0) html += `<div class="info-line">${line2.join(' · ')}</div>`;
             
             return html || '<div class="info-line">No EXIF data</div>';
@@ -305,15 +333,15 @@
             img.src = photoItems[index].src;
             info.innerHTML = photos[index]?.info || '';
             
+            resetZoom();
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
             const lightbox = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
             lightbox.classList.remove('active');
-            img.classList.remove('zoomed');
+            resetZoom();
             document.body.style.overflow = 'auto';
         }
 
@@ -323,15 +351,79 @@
             
             const img = document.getElementById('lightbox-img');
             const info = document.getElementById('lightbox-info');
-            img.classList.remove('zoomed');
+            resetZoom();
             img.src = photoItems[currentPhotoIndex].src;
             info.innerHTML = photos[currentPhotoIndex]?.info || '';
         }
 
-        function toggleZoom() {
+        function resetZoom() {
             const img = document.getElementById('lightbox-img');
-            img.classList.toggle('zoomed');
+            scale = 1;
+            pointX = 0;
+            pointY = 0;
+            img.style.transform = 'translate(0, 0) scale(1)';
+            img.classList.remove('zoomed');
+            img.style.cursor = 'zoom-in';
         }
+
+        // Zoom and pan functionality
+        const imgContainer = document.getElementById('img-container');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        lightboxImg.addEventListener('wheel', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            e.preventDefault();
+            
+            const xs = (e.clientX - pointX) / scale;
+            const ys = (e.clientY - pointY) / scale;
+            const delta = e.wheelDelta ? e.wheelDelta : -e.deltaY;
+            
+            if (delta > 0) {
+                scale *= 1.2;
+            } else {
+                scale /= 1.2;
+            }
+            
+            scale = Math.min(Math.max(1, scale), 4);
+            
+            pointX = e.clientX - xs * scale;
+            pointY = e.clientY - ys * scale;
+            
+            if (scale > 1) {
+                lightboxImg.classList.add('zoomed');
+                lightboxImg.style.cursor = 'move';
+            } else {
+                lightboxImg.classList.remove('zoomed');
+                lightboxImg.style.cursor = 'zoom-in';
+                pointX = 0;
+                pointY = 0;
+            }
+            
+            lightboxImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+        });
+
+        lightboxImg.addEventListener('mousedown', (e) => {
+            if (scale === 1) return;
+            e.preventDefault();
+            start = { x: e.clientX - pointX, y: e.clientY - pointY };
+            panning = true;
+        });
+
+        lightboxImg.addEventListener('mousemove', (e) => {
+            if (!panning) return;
+            e.preventDefault();
+            pointX = e.clientX - start.x;
+            pointY = e.clientY - start.y;
+            lightboxImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+        });
+
+        lightboxImg.addEventListener('mouseup', () => {
+            panning = false;
+        });
+
+        lightboxImg.addEventListener('mouseleave', () => {
+            panning = false;
+        });
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
@@ -341,7 +433,6 @@
             if (e.key === 'Escape') closeLightbox();
             if (e.key === 'ArrowLeft') navigatePhoto(-1);
             if (e.key === 'ArrowRight') navigatePhoto(1);
-            if (e.key === 'z' || e.key === 'Z') toggleZoom();
         });
 
         // Close lightbox when clicking outside image
