@@ -20,17 +20,18 @@
         }
 
         header {
-            text-align: center;
-            padding: 2rem 0 3rem;
+            text-align: right;
+            padding: 2rem 2rem 3rem;
             background: #0a0a0a;
         }
 
         h1 {
-            font-size: 1rem;
-            font-weight: 300;
-            letter-spacing: 0.3em;
+            font-size: 1.4rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
             color: #666;
             text-transform: uppercase;
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
         }
 
         .gallery {
@@ -38,7 +39,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
-            grid-auto-flow: dense;
+            grid-auto-rows: 250px;
         }
 
         @media (max-width: 1200px) {
@@ -62,7 +63,8 @@
             display: block;
             border-radius: 8px;
             transition: transform 0.3s ease;
-            object-fit: cover;
+            object-fit: contain;
+            background: #0a0a0a;
         }
 
         .photo-item:hover img {
@@ -271,30 +273,24 @@
                     img.onload = function() {
                         const aspectRatio = this.naturalHeight / this.naturalWidth;
                         
-                        // Random grid spans for varied layout
-                        const spanChoices = [
-                            { row: 1, col: 1 }, // Regular
-                            { row: 2, col: 1 }, // Tall
-                            { row: 1, col: 2 }, // Wide
-                            { row: 2, col: 2 }, // Large square
-                        ];
+                        // Determine grid size based on aspect ratio
+                        let rowSpan = 1;
+                        let colSpan = 1;
                         
-                        // Weight towards single cells, occasionally larger
-                        const weights = [0.6, 0.2, 0.15, 0.05];
-                        const random = Math.random();
-                        let span = spanChoices[0];
-                        
-                        let cumulative = 0;
-                        for (let j = 0; j < weights.length; j++) {
-                            cumulative += weights[j];
-                            if (random < cumulative) {
-                                span = spanChoices[j];
-                                break;
-                            }
+                        if (aspectRatio > 1.5) {
+                            // Tall portrait
+                            rowSpan = 2;
+                        } else if (aspectRatio < 0.7) {
+                            // Wide landscape
+                            colSpan = 2;
+                        } else if (Math.random() < 0.1 && aspectRatio > 0.9 && aspectRatio < 1.1) {
+                            // Occasionally make square photos larger
+                            rowSpan = 2;
+                            colSpan = 2;
                         }
                         
-                        photoItem.style.gridRowEnd = `span ${span.row}`;
-                        photoItem.style.gridColumnEnd = `span ${span.col}`;
+                        photoItem.style.gridRowEnd = `span ${rowSpan}`;
+                        photoItem.style.gridColumnEnd = `span ${colSpan}`;
                         
                         EXIF.getData(img, function() {
                             const exifData = EXIF.getAllTags(this);
@@ -396,25 +392,28 @@
             if (!document.getElementById('lightbox').classList.contains('active')) return;
             e.preventDefault();
             
-            const xs = (e.clientX - pointX) / scale;
-            const ys = (e.clientY - pointY) / scale;
+            const rect = lightboxImg.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const xs = (x - pointX) / scale;
+            const ys = (y - pointY) / scale;
             const delta = e.wheelDelta ? e.wheelDelta : -e.deltaY;
             
             if (delta > 0) {
-                scale *= 1.2;
+                scale = Math.min(scale * 1.2, 4);
             } else {
-                scale /= 1.2;
+                scale = Math.max(scale / 1.2, 1);
             }
             
-            scale = Math.min(Math.max(1, scale), 4);
+            pointX = x - xs * scale;
+            pointY = y - ys * scale;
             
-            pointX = e.clientX - xs * scale;
-            pointY = e.clientY - ys * scale;
-            
-            if (scale > 1) {
+            if (scale > 1.01) {
                 lightboxImg.classList.add('zoomed');
                 lightboxImg.style.cursor = 'move';
             } else {
+                scale = 1;
                 lightboxImg.classList.remove('zoomed');
                 lightboxImg.style.cursor = 'zoom-in';
                 pointX = 0;
