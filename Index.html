@@ -317,10 +317,13 @@
         }
 
         /* Sidebar Navigation */
+        /* Sidebar Navigation */
         #sidebar-nav {
             position: fixed;
             top: 50%;
-            left: 20px;
+            right: 20px;
+            /* Moved to right */
+            left: auto;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
@@ -331,9 +334,7 @@
         .nav-item {
             writing-mode: vertical-rl;
             text-orientation: mixed;
-            /* Keeps CJK vertical, English rotated 90deg */
             transform: rotate(180deg);
-            /* Flips it so it reads Bottom to Top */
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
@@ -346,6 +347,32 @@
         .nav-item:hover,
         .nav-item.active {
             color: #fff;
+        }
+
+        /* Mobile Navigation */
+        @media (max-width: 600px) {
+            #sidebar-nav {
+                position: relative;
+                top: auto;
+                right: auto;
+                left: auto;
+                transform: none;
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0 1rem 1.5rem;
+                align-items: center;
+                width: 100%;
+                background: #000;
+                /* Ensure visibility over gallery */
+            }
+
+            .nav-item {
+                writing-mode: horizontal-tb;
+                transform: none;
+                font-size: 0.8rem;
+                letter-spacing: 0.15em;
+                padding: 0.5rem 0;
+            }
         }
     </style>
 </head>
