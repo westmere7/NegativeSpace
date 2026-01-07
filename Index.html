@@ -584,8 +584,11 @@
 
             infoBox.innerHTML = `
                 ${title ? `<div class="lightbox-title">${title}</div>` : ''}
-                ${date ? `<div class="photo-date" style="color: #aaa; margin-bottom: 0.5rem; font-size: 0.9rem;">${date}</div>` : ''}
-                <div class="lightbox-meta">${details}</div>
+                <div class="lightbox-meta">
+                    ${date ? `<span>${date}</span>` : ''}
+                    ${date && details ? ' · ' : ''}
+                    ${details}
+                </div>
             `;
 
             resetZoom();
