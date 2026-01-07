@@ -347,7 +347,7 @@
         const state = {
             allPhotos: [],
             loadedCount: 0,
-            batchSize: 12,
+            batchSize: 24,
             currentIndex: 0,
             isLoading: false
         };
@@ -470,19 +470,16 @@
 
             if (!hasWidth) {
                 const rand = Math.random();
-                element.classList.remove('h-1', 'h-2'); // clear previous h classes if any (unused now)
+                element.classList.remove('h-1', 'h-2'); // clear previous
 
-                if (ratio > 1.2) {
-                    // Landscape
-                    if (rand > 0.8) { element.classList.add('w-2'); } // Wide (reduced freq from 0.6)
+                if (ratio > 1.5) {
+                    // Panoramic / Wide Landscape
+                    if (rand > 0.85) { element.classList.add('w-2'); } // Wide (Very rare: 15% chance only for very wide shots)
                     else { element.classList.add('w-1'); } // Regular
-                } else if (ratio < 0.8) {
-                    // Portrait
-                    element.classList.add('w-1'); // Always regular width for portraits to avoid creating 2-col tall blocks that are hard to pack
                 } else {
-                    // Square-ish
-                    if (rand > 0.9) { element.classList.add('w-2'); } // Big Square (very rare)
-                    else { element.classList.add('w-1'); } // Regular
+                    // Everyone else (Standard Landscape, Square, Portrait)
+                    // Strict w-1 to ensure grid holes are always fillable
+                    element.classList.add('w-1');
                 }
             }
 
