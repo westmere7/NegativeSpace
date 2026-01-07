@@ -316,32 +316,85 @@
             }
         }
 
-        /* Sidebar Navigation */
-        /* Sidebar Navigation */
-        #sidebar-nav {
-            position: fixed;
-            top: 50%;
-            right: 20px;
-            /* Moved to right */
-            left: auto;
-            transform: translateY(-50%);
+        /* Header & Nav */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             display: flex;
-            flex-direction: column;
-            gap: 40px;
-            z-index: 100;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        header.sticky {
+            padding: 0.8rem 2rem;
+            /* Reduced height (approx 40% of original visually) */
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        header.sticky .logo {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            margin: 0;
+        }
+
+        .logo {
+            height: 28px;
+            width: auto;
+            transition: all 0.4s ease;
+            order: 2;
+            /* Logo on Right */
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            order: 1;
+            /* Nav on Left */
+            overflow: hidden;
+            /* For masking scroll */
+            position: relative;
+        }
+
+        #main-nav {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE */
+            scroll-behavior: smooth;
+            align-items: center;
+        }
+
+        #main-nav::-webkit-scrollbar {
+            display: none;
         }
 
         .nav-item {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            transform: rotate(180deg);
             font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: #666;
+            letter-spacing: 0.1em;
+            color: #888;
             cursor: pointer;
             transition: color 0.3s ease;
             white-space: nowrap;
+            padding: 0.5rem 0;
+            user-select: none;
+
+            /* Reset vertical/rotation properties */
+            writing-mode: horizontal-tb;
+            text-orientation: initial;
+            transform: none;
         }
 
         .nav-item:hover,
@@ -349,40 +402,78 @@
             color: #fff;
         }
 
+        .nav-arrow {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 0.5rem;
+            display: none;
+            /* Hidden on desktop */
+            z-index: 2;
+        }
+
         /* Mobile Navigation */
         @media (max-width: 600px) {
-            #sidebar-nav {
-                position: relative;
-                top: auto;
-                right: auto;
-                left: auto;
-                transform: none;
+            header {
                 flex-direction: column;
+                padding: 1rem;
                 gap: 1rem;
-                padding: 0 1rem 1.5rem;
-                align-items: center;
-                width: 100%;
-                background: #000;
-                /* Ensure visibility over gallery */
+                position: relative;
+                /* Reset sticky logic if desired, or keep sticky. User asked for sticky low profile, but with logo hiding. */
+                position: sticky;
             }
 
-            .nav-item {
-                writing-mode: horizontal-tb;
-                transform: none;
-                font-size: 0.8rem;
-                letter-spacing: 0.15em;
-                padding: 0.5rem 0;
+            .logo {
+                order: 1;
+                /* Logo Top */
+                height: 24px;
+                margin-bottom: 0.5rem;
+                width: auto !important;
+                /* Force width reset */
+                opacity: 1 !important;
+                /* Force opacity reset */
+                pointer-events: auto !important;
+            }
+
+            /* Disable logo hiding on mobile sticky if user prefers, currently logic hides it globally. 
+               User said "no logo when sticky". So keep global logic. 
+               But on mobile, sticky nav at top without logo is very efficient. 
+            */
+
+            .nav-wrapper {
+                order: 2;
+                /* Nav Bottom */
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            #main-nav {
+                width: 100%;
+                gap: 20px;
+                padding: 0 10px;
+                justify-content: flex-start;
+                /* items start from left */
+            }
+
+            /* Show arrows on mobile */
+            .nav-arrow {
+                display: block;
             }
         }
     </style>
 </head>
 
 <body>
-    <header>
+    <header id="main-header">
+        <div class="nav-wrapper">
+            <button class="nav-arrow nav-arrow-left" onclick="scrollNav(-1)">‹</button>
+            <nav id="main-nav"></nav>
+            <button class="nav-arrow nav-arrow-right" onclick="scrollNav(1)">›</button>
+        </div>
         <img src="Website assets/exposr_name.svg" alt="exposr" class="logo">
     </header>
-
-    <nav id="sidebar-nav"></nav>
 
     <div class="gallery" id="gallery"></div>
     <div class="loading-sentinel" id="sentinel">
@@ -457,8 +548,8 @@
                 // Default to Home
                 switchCollection('Home');
 
-                // Render Sidebar
-                renderSidebar();
+                // Render Sidebar (renamed)
+                renderNav();
 
                 // Setup Infinite Scroll
                 const observer = new IntersectionObserver((entries) => {
@@ -849,17 +940,33 @@
             if (e.key === 'ArrowRight') navigate(1);
         });
 
-        // Init
+        // Initialize
         init();
 
+        /* New Logic */
 
-        function renderSidebar() {
-            const sidebar = document.getElementById('sidebar-nav');
-            if (!sidebar) return;
+        // Sticky Header Logic
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
+        });
 
-            // Add Home
-            // Note: We'll generate HTML here or just append items
-            sidebar.innerHTML = '';
+        // Mobile Nav Scroll Logic
+        function scrollNav(direction) {
+            const nav = document.getElementById('main-nav');
+            const scrollAmount = 150; // Approx width of items
+            nav.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        function renderNav() {
+            const nav = document.getElementById('main-nav');
+            if (!nav) return;
+
+            nav.innerHTML = '';
 
             const createItem = (label, isActive = false) => {
                 const item = document.createElement('div');
@@ -867,7 +974,6 @@
                 if (isActive) item.classList.add('active');
                 item.innerText = label;
                 item.onclick = () => {
-                    // Update active class
                     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     switchCollection(label);
@@ -875,15 +981,10 @@
                 return item;
             };
 
-            sidebar.appendChild(createItem('Home', true));
+            nav.appendChild(createItem('Home', true));
 
-            // Add Collections
             Object.keys(state.collections).forEach(name => {
-                sidebar.appendChild(createItem(name));
+                nav.appendChild(createItem(name));
             });
         }
-
     </script>
-</body>
-
-</html>
