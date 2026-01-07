@@ -9,7 +9,6 @@
     "A7X02615.jpg",
     "A7X02247.jpg",
     "A7X02241.jpg",
-    "A7X01750.jpg",
     "A7X01509.jpg",
     "A7X01012.jpg",
     "A7X00780.jpg",
@@ -56,7 +55,6 @@
     "DSC03988.jpg",
     "DSC02145.jpg",
     "DSC03524.jpg",
-    "DSC01414.jpg",
     "DSC04143.jpg",
     "DSC04126.jpg",
     "DSC03771.jpg",
@@ -108,6 +106,10 @@
       "Mono/A7X05474.jpg",
       "Mono/Pipes.jpg",
       "Mono/IMG_0534.jpg"
+    ],
+    "RMIT": [
+      "RMIT/A7X01750.jpg",
+      "RMIT/DSC01414.jpg"
     ]
   }
 }

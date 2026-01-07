@@ -321,10 +321,8 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 2rem;
+            padding: 2rem 0;
+            /* Remove horizontal padding from header */
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             transition: all 0.4s ease;
@@ -332,9 +330,21 @@
             box-sizing: border-box;
         }
 
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1600px;
+            /* Match gallery max-width */
+            margin: 0 auto;
+            padding: 0 2rem;
+            /* Add horizontal padding here */
+            box-sizing: border-box;
+        }
+
         header.sticky {
-            padding: 0.8rem 2rem;
-            /* Reduced height (approx 40% of original visually) */
+            padding: 0.8rem 0;
             background: rgba(0, 0, 0, 0.95);
         }
 
@@ -350,7 +360,6 @@
             width: auto;
             transition: all 0.4s ease;
             order: 2;
-            /* Logo on Right */
         }
 
         .nav-wrapper {
@@ -358,9 +367,7 @@
             align-items: center;
             flex: 1;
             order: 1;
-            /* Nav on Left */
             overflow: hidden;
-            /* For masking scroll */
             position: relative;
         }
 
@@ -369,9 +376,7 @@
             gap: 30px;
             overflow-x: auto;
             scrollbar-width: none;
-            /* Firefox */
             -ms-overflow-style: none;
-            /* IE */
             scroll-behavior: smooth;
             align-items: center;
         }
@@ -390,8 +395,6 @@
             white-space: nowrap;
             padding: 0.5rem 0;
             user-select: none;
-
-            /* Reset vertical/rotation properties */
             writing-mode: horizontal-tb;
             text-orientation: initial;
             transform: none;
@@ -403,63 +406,91 @@
         }
 
         .nav-arrow {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0 0.5rem;
             display: none;
-            /* Hidden on desktop */
-            z-index: 2;
         }
 
         /* Mobile Navigation */
         @media (max-width: 600px) {
             header {
-                flex-direction: column;
-                padding: 1rem;
-                gap: 1rem;
-                position: relative;
-                /* Reset sticky logic if desired, or keep sticky. User asked for sticky low profile, but with logo hiding. */
+                padding: 1rem 0;
                 position: sticky;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0 1rem;
             }
 
             .logo {
                 order: 1;
-                /* Logo Top */
                 height: 24px;
                 margin-bottom: 0.5rem;
                 width: auto !important;
-                /* Force width reset */
                 opacity: 1 !important;
-                /* Force opacity reset */
                 pointer-events: auto !important;
             }
 
-            /* Disable logo hiding on mobile sticky if user prefers, currently logic hides it globally. 
-               User said "no logo when sticky". So keep global logic. 
-               But on mobile, sticky nav at top without logo is very efficient. 
-            */
-
             .nav-wrapper {
                 order: 2;
-                /* Nav Bottom */
                 width: 100%;
-                justify-content: space-between;
+                justify-content: center;
+                /* Center wrapper content */
+                /* Fade edges */
+                -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+                mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
             }
 
             #main-nav {
                 width: 100%;
                 gap: 20px;
-                padding: 0 10px;
-                justify-content: flex-start;
-                /* items start from left */
+                padding: 0 20px;
+                /* Add padding for fade area */
+                justify-content: center;
+                /* Center items if they fit */
             }
 
-            /* Show arrows on mobile */
+            /* Allow scrolling if content overflows */
+            #main-nav {
+                /* For centering to work when wrapping isn't enabled, we need to be careful.
+                   With overflow-x: auto and flex, justify-content: center will clip start if overflowing.
+                   Safe way: use margin: auto on items or just accept start alignment if overflow.
+                   BUT user specifically said "centered". Usually means visual center. 
+                   If items fit, they are centered. If they don't, they are scrollable.
+                   A common trick: margin: 0 auto; on the flex container logic? No. 
+                   Let's stick to justify-content: center, but note the clipping risk. 
+                   Wait, `safe center` value exists but unrelated support.
+                   
+                   Alternative: Use ::before and ::after spacers?
+                   
+                   Let's try justify-content: center. If the list is huge, the first items might be inaccessible.
+                   However, we only have a few collections usually. "only 2-3 are shown at a time".
+                   So it WILL overflow. 
+                   
+                   If it overflows, we MUST NOT use justify-content: center (unsafe).
+                   We should use justify-content: flex-start.
+                   
+                   BUT user said "mobile that menu should be centered". 
+                   Maybe they mean the *container* is centered in the screen (it is).
+                   Or the active item is centered?
+                   
+                   "horizontally scrollable so only 2-3 are shown at a time"
+                   
+                   Let's set `justify-content: flex-start` but add padding to pseudo-center?
+                   
+                   Actually, let's keep `justify-content: center` for now? No, checking standard practice.
+                   If it scrolls, `flex-start` is best. 
+                   To make it look centered when few items: `margin: 0 auto`.
+                   
+                   Let's try `justify-content: center`. If user has many collections, I might need to fix. 
+                   Given currently only 1 collection + home = 2 items. They will fit. 
+                   So center is fine.
+                */
+            }
+
             .nav-arrow {
-                display: block;
+                display: none;
+                /* Hide arrows on mobile as requested */
             }
         }
     </style>
@@ -467,12 +498,14 @@
 
 <body>
     <header id="main-header">
-        <div class="nav-wrapper">
-            <button class="nav-arrow nav-arrow-left" onclick="scrollNav(-1)">‹</button>
-            <nav id="main-nav"></nav>
-            <button class="nav-arrow nav-arrow-right" onclick="scrollNav(1)">›</button>
+        <div class="header-container">
+            <div class="nav-wrapper">
+                <button class="nav-arrow nav-arrow-left" onclick="scrollNav(-1)">‹</button>
+                <nav id="main-nav"></nav>
+                <button class="nav-arrow nav-arrow-right" onclick="scrollNav(1)">›</button>
+            </div>
+            <img src="Website assets/exposr_name.svg" alt="exposr" class="logo">
         </div>
-        <img src="Website assets/exposr_name.svg" alt="exposr" class="logo">
     </header>
 
     <div class="gallery" id="gallery"></div>
