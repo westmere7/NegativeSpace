@@ -120,11 +120,12 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 2rem 1rem 1rem;
+            padding: 2rem 1.5rem 1.5rem;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
-            font-size: 0.75rem;
+            font-size: 0.9rem;
+            /* Increased from 0.75rem */
             pointer-events: none;
         }
 
@@ -445,26 +446,24 @@
 
         function assignGridSpan(element, ratio) {
             // Random variation logic
-            // 6-column grid
+            // 4-column grid
             // Ratios: > 1.2 (Landscape), < 0.8 (Portrait), else Square
 
-            let wString = 'w-1';
-            let hString = 'h-1';
             const rand = Math.random();
 
             if (ratio > 1.2) {
                 // Landscape
-                if (rand > 0.8) { element.classList.add('w-3', 'h-2'); } // Large Feature
-                else if (rand > 0.5) { element.classList.add('w-2', 'h-1'); } // Wide
-                else { element.classList.add('w-2', 'h-2'); } // Big Square (crop)
+                if (rand > 0.85) { element.classList.add('w-2', 'h-2'); } // Big Square (rare)
+                else if (rand > 0.5) { element.classList.add('w-2', 'h-1'); } // Wide (common)
+                else { element.classList.add('w-1', 'h-1'); } // Regular (fallback)
             } else if (ratio < 0.8) {
                 // Portrait
-                if (rand > 0.7) { element.classList.add('w-2', 'h-3'); } // Tall Feature
-                else { element.classList.add('w-1', 'h-2'); } // Tall
+                if (rand > 0.7) { element.classList.add('w-1', 'h-2'); } // Tall
+                else { element.classList.add('w-1', 'h-1'); } // Regular
             } else {
                 // Square-ish
-                if (rand > 0.8) { element.classList.add('w-2', 'h-2'); } // Big Square
-                else { element.classList.add('w-1', 'h-1'); } // Small
+                if (rand > 0.9) { element.classList.add('w-2', 'h-2'); } // Big Square (very rare)
+                else { element.classList.add('w-1', 'h-1'); } // Regular
             }
         }
 
@@ -473,6 +472,7 @@
             const details = [];
 
             if (exif.Model) details.push(exif.Model);
+            if (exif.LensModel) details.push(exif.LensModel); // Added Lens
             if (exif.FNumber) details.push(`f/${exif.FNumber}`);
             if (exif.ExposureTime) {
                 const t = exif.ExposureTime;
