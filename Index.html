@@ -445,14 +445,11 @@
                     state.allPhotos[index] = {
                         src: `Photos/${filename}`,
                         meta: meta,
-                        ...state.allPhotos[index] // preserve object if already object (string -> object in array if needed, but here we just used filename strings initially. Let's fix that structure.)
-                        // Actually state.allPhotos was [ "file1.jpg", "file2.jpg" ]. 
-                        // We should store the metadata somewhere or just re-extract. 
-                        // Better to attach to the DOM element or a separate cache.
-                        // Let's attach to the img element for simplicity.
+                        ...state.allPhotos[index]
                     };
                     img.dataset.metaTitle = meta.title;
                     img.dataset.metaDetails = meta.details;
+                    img.dataset.metaDate = meta.date;
                 });
             };
 
@@ -489,38 +486,58 @@
             const title = exif.ImageDescription || '';
             const details = [];
 
+            // Camera Model
             if (exif.Model) details.push(exif.Model);
+
+            // Lens (check LensModel and Lens)
             if (exif.LensModel) details.push(exif.LensModel);
-            if (exif.FocalLength) details.push(`${Math.round(exif.FocalLength)}mm`);
+            else if (exif.Lens) details.push(exif.Lens);
+
+            // Focal Length (standard or 35mm equiv)
+            if (exif.FocalLength) {
+                details.push(`${Math.round(Number(exif.FocalLength))}mm`);
+            } else if (exif.FocalLengthIn35mmFilm) {
+                details.push(`${exif.FocalLengthIn35mmFilm}mm`);
+            }
+
+            // Aperture
             if (exif.FNumber) details.push(`f/${exif.FNumber}`);
+
+            // Shutter Speed
             if (exif.ExposureTime) {
                 const t = exif.ExposureTime;
                 details.push(t < 1 ? `1/${Math.round(1 / t)}s` : `${t}s`);
             }
+
+            // ISO
             if (exif.ISOSpeedRatings) details.push(`ISO ${exif.ISOSpeedRatings}`);
-            if (exif.ExposureBiasValue !== undefined) {
-                const ev = exif.ExposureBiasValue;
-                const sign = ev > 0 ? '+' : '';
-                details.push(`${sign}${parseFloat(ev).toFixed(1)} EV`);
+
+            // EV (Robust check)
+            if (exif.ExposureBiasValue !== undefined && exif.ExposureBiasValue !== null) {
+                const ev = Number(exif.ExposureBiasValue);
+                if (!isNaN(ev)) {
+                    const sign = ev > 0 ? '+' : '';
+                    details.push(`${sign}${ev.toFixed(1)} EV`);
+                }
             }
 
             const detailsStr = details.join(' · ');
 
-            // Parsing Date Time Original (Format: "YYYY:MM:DD HH:MM:SS")
+            // Parsing Date Time Original
             let dateStr = '';
             if (exif.DateTimeOriginal) {
                 const match = exif.DateTimeOriginal.match(/^(\d{4}):(\d{2}):(\d{2})\s(\d{2}):(\d{2})/);
                 if (match) {
-                    // match[1]=YYYY, match[2]=MM, match[3]=DD, match[4]=HH, match[5]=MM
                     dateStr = `${match[1]}-${match[2]}-${match[3]} ${match[4]}:${match[5]}`;
                 } else {
-                    dateStr = exif.DateTimeOriginal; // Fallback
+                    dateStr = exif.DateTimeOriginal;
                 }
             }
 
             return {
                 title: title,
                 details: detailsStr,
+                date: dateStr,
                 html: `
                     ${title ? `<div class="photo-title">${title}</div>` : ''}
                     ${dateStr ? `<div class="photo-date">${dateStr}</div>` : ''}
@@ -563,9 +580,11 @@
             const infoBox = document.getElementById('lightbox-info');
             const title = targetImg.dataset.metaTitle || '';
             const details = targetImg.dataset.metaDetails || '';
+            const date = targetImg.dataset.metaDate || '';
 
             infoBox.innerHTML = `
                 ${title ? `<div class="lightbox-title">${title}</div>` : ''}
+                ${date ? `<div class="photo-date" style="color: #aaa; margin-bottom: 0.5rem; font-size: 0.9rem;">${date}</div>` : ''}
                 <div class="lightbox-meta">${details}</div>
             `;
 
