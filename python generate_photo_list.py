@@ -25,8 +25,11 @@ def get_photo_list():
         photo_dir.mkdir(exist_ok=True)
         return []
     
-    # Get all image files with their modification times recursively
-    photos = []
+    # Data structure for output
+    data = {
+        'home': [],
+        'collections': {}
+    }
     
     # helper to check extension safely
     def is_image(path):
@@ -37,16 +40,39 @@ def get_photo_list():
             # Get path relative to PHOTO_DIR and convert to forward slashes
             rel_path = file_path.relative_to(photo_dir).as_posix()
             
-            photos.append({
+            # Determine if it's a root photo or in a collection
+            parent = file_path.parent
+            
+            photo_data = {
                 'filename': rel_path,
                 'mtime': file_path.stat().st_mtime
-            })
+            }
+            
+            if parent == photo_dir:
+                # Root photo -> Home
+                data['home'].append(photo_data)
+            else:
+                # Subfolder -> Collection
+                # Use the name of the immediate subdirectory inside Photos
+                # This handles nested folders by grouping them under the top-level subfolder
+                relative_parent = parent.relative_to(photo_dir)
+                collection_name = relative_parent.parts[0]
+                
+                if collection_name not in data['collections']:
+                    data['collections'][collection_name] = []
+                data['collections'][collection_name].append(photo_data)
     
-    # Sort by modification time (newest first)
-    photos.sort(key=lambda x: x['mtime'], reverse=True)
+    # Sort everything by modification time
+    data['home'].sort(key=lambda x: x['mtime'], reverse=True)
+    # Convert to just filenames
+    data['home'] = [p['filename'] for p in data['home']]
     
-    # Return just the relative paths
-    return [photo['filename'] for photo in photos]
+    for name in data['collections']:
+        data['collections'][name].sort(key=lambda x: x['mtime'], reverse=True)
+        # Convert to just filenames
+        data['collections'][name] = [p['filename'] for p in data['collections'][name]]
+    
+    return data
 
 def main():
     """Generate the photos.json file."""
@@ -57,20 +83,22 @@ def main():
     if not photo_list:
         print(f"No photos found in {PHOTO_DIR}/")
     else:
-        print(f"Found {len(photo_list)} photos")
-    
-    # Write to JSON file
-    with open(OUTPUT_FILE, 'w') as f:
-        json.dump(photo_list, f, indent=2)
-    
-    print(f"DONE: Generated {OUTPUT_FILE}")
-    
-    if photo_list:
-        print("\nPhotos (newest first):")
-        for i, photo in enumerate(photo_list[:5], 1):
-            print(f"  {i}. {photo}")
-        if len(photo_list) > 5:
-            print(f"  ... and {len(photo_list) - 5} more")
+        # Write to JSON file
+        with open(OUTPUT_FILE, 'w') as f:
+            json.dump(photo_list, f, indent=2)
+            
+        print(f"DONE: Generated {OUTPUT_FILE}")
+        
+        home_count = len(photo_list.get('home', []))
+        coll_count = len(photo_list.get('collections', {}))
+        
+        print(f"\nStats:")
+        print(f"  Home Photos: {home_count}")
+        print(f"  Collections: {coll_count}")
+        
+        if coll_count > 0:
+            for name, photos in photo_list['collections'].items():
+                print(f"    - {name}: {len(photos)} photos")
 
 if __name__ == '__main__':
     main()

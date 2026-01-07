@@ -315,6 +315,38 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* Sidebar Navigation */
+        #sidebar-nav {
+            position: fixed;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            /* Keeps CJK vertical, English rotated 90deg */
+            transform: rotate(180deg);
+            /* Flips it so it reads Bottom to Top */
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -322,6 +354,8 @@
     <header>
         <img src="Website assets/exposr_name.svg" alt="exposr" class="logo">
     </header>
+
+    <nav id="sidebar-nav"></nav>
 
     <div class="gallery" id="gallery"></div>
     <div class="loading-sentinel" id="sentinel">
@@ -345,10 +379,11 @@
     <script>
         // State
         const state = {
-            allPhotos: [],
+            homePhotos: [],
+            collections: {},
+            currentPhotos: [], // The array currently being displayed
             loadedCount: 0,
             batchSize: 24,
-            currentIndex: 0,
             isLoading: false
         };
 
@@ -380,18 +415,23 @@
         async function init() {
             try {
                 const response = await fetch('photos.json');
-                state.allPhotos = await response.json();
+                const data = await response.json();
 
-                if (state.allPhotos.length === 0) {
-                    sentinel.innerHTML = 'No photos found.';
-                    return;
+                // Handle new data structure
+                state.homePhotos = data.home || [];
+                state.collections = data.collections || {};
+
+                // Shuffle everything
+                shuffleArray(state.homePhotos);
+                for (const key in state.collections) {
+                    shuffleArray(state.collections[key]);
                 }
 
-                // Randomize photos on each session
-                shuffleArray(state.allPhotos);
+                // Default to Home
+                switchCollection('Home');
 
-                // Initial load
-                loadMorePhotos();
+                // Render Sidebar
+                renderSidebar();
 
                 // Setup Infinite Scroll
                 const observer = new IntersectionObserver((entries) => {
@@ -408,14 +448,43 @@
             }
         }
 
+        function switchCollection(name) {
+            // Update State
+            if (name === 'Home') {
+                state.currentPhotos = state.homePhotos;
+            } else {
+                state.currentPhotos = state.collections[name];
+            }
+
+            state.loadedCount = 0;
+            state.isLoading = false;
+
+            // Allow re-triggering sentinel
+            sentinel.style.display = 'flex';
+            sentinel.innerHTML = '<div class="spinner"></div>';
+
+            // Clear Grid
+            gallery.innerHTML = '';
+
+            // Load initial batch
+            if (state.currentPhotos.length === 0) {
+                sentinel.innerHTML = 'No photos found.';
+            } else {
+                loadMorePhotos();
+
+                // Re-observe sentinel if it was disconnected or hidden
+                // (Observer usually stays active on element, but we ensure display is flex)
+            }
+        }
+
         function loadMorePhotos() {
-            if (state.loadedCount >= state.allPhotos.length) {
+            if (state.loadedCount >= state.currentPhotos.length) {
                 sentinel.style.display = 'none';
                 return;
             }
 
             state.isLoading = true;
-            const batch = state.allPhotos.slice(state.loadedCount, state.loadedCount + state.batchSize);
+            const batch = state.currentPhotos.slice(state.loadedCount, state.loadedCount + state.batchSize);
 
             batch.forEach((filename, i) => {
                 const globalIndex = state.loadedCount + i;
@@ -755,6 +824,37 @@
 
         // Init
         init();
+
+
+        function renderSidebar() {
+            const sidebar = document.getElementById('sidebar-nav');
+            if (!sidebar) return;
+
+            // Add Home
+            // Note: We'll generate HTML here or just append items
+            sidebar.innerHTML = '';
+
+            const createItem = (label, isActive = false) => {
+                const item = document.createElement('div');
+                item.className = 'nav-item';
+                if (isActive) item.classList.add('active');
+                item.innerText = label;
+                item.onclick = () => {
+                    // Update active class
+                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    switchCollection(label);
+                };
+                return item;
+            };
+
+            sidebar.appendChild(createItem('Home', true));
+
+            // Add Collections
+            Object.keys(state.collections).forEach(name => {
+                sidebar.appendChild(createItem(name));
+            });
+        }
 
     </script>
 </body>
