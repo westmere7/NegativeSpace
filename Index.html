@@ -22,8 +22,8 @@
         }
 
         header {
-            text-align: right;
-            padding: 4rem 2rem 2rem;
+            text-align: center;
+            padding: 2rem;
             background: #0a0a0a;
             position: relative;
         }
@@ -38,16 +38,22 @@
         }
 
         .gallery {
-            padding: 0;
+            padding: 0 1rem;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
             grid-auto-flow: dense;
             width: 100%;
             margin: 0;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
+            .gallery {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
             .gallery {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -94,7 +100,7 @@
             transform: scale(1.03);
         }
 
-        /* Generated grid classes */
+        /* Grid Spans */
         .w-1 {
             grid-column: span 1;
         }
@@ -107,17 +113,7 @@
             grid-column: span 3;
         }
 
-        .h-1 {
-            grid-row: span 1;
-        }
 
-        .h-2 {
-            grid-row: span 2;
-        }
-
-        .h-3 {
-            grid-row: span 3;
-        }
 
         .photo-info {
             position: absolute;
