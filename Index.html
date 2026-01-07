@@ -81,9 +81,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.6s ease, transform 0.6s ease;
-
-            content-visibility: auto;
-            contain-intrinsic-size: 1px 600px;
+            /* Removed content-visibility to prevent layout gaps with dense grid */
         }
 
         .photo-item.visible {
@@ -476,15 +474,14 @@
 
                 if (ratio > 1.2) {
                     // Landscape
-                    if (rand > 0.6) { element.classList.add('w-2'); } // Wide
+                    if (rand > 0.8) { element.classList.add('w-2'); } // Wide (reduced freq from 0.6)
                     else { element.classList.add('w-1'); } // Regular
                 } else if (ratio < 0.8) {
                     // Portrait
-                    if (rand > 0.8) { element.classList.add('w-2'); } // Big Portrait (rare)
-                    else { element.classList.add('w-1'); } // Regular
+                    element.classList.add('w-1'); // Always regular width for portraits to avoid creating 2-col tall blocks that are hard to pack
                 } else {
                     // Square-ish
-                    if (rand > 0.85) { element.classList.add('w-2'); } // Big Square
+                    if (rand > 0.9) { element.classList.add('w-2'); } // Big Square (very rare)
                     else { element.classList.add('w-1'); } // Regular
                 }
             }
