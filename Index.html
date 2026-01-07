@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Stop</title>
+    <title>exposr</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
     <style>
         * {
@@ -23,18 +24,17 @@
 
         header {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
             background: #0a0a0a;
             position: relative;
         }
 
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            color: #888;
-            text-transform: uppercase;
-            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+        .logo {
+            height: 40px;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            opacity: 0.9;
         }
 
         .gallery {
@@ -305,7 +305,7 @@
 
 <body>
     <header>
-        <h1>Full Stop</h1>
+        <img src="Website assets/exposr_name.svg" alt="exposr" class="logo">
     </header>
 
     <div class="gallery" id="gallery"></div>
