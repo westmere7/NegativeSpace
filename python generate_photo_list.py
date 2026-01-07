@@ -25,19 +25,27 @@ def get_photo_list():
         photo_dir.mkdir(exist_ok=True)
         return []
     
-    # Get all image files with their modification times
+    # Get all image files with their modification times recursively
     photos = []
-    for file_path in photo_dir.iterdir():
-        if file_path.is_file() and file_path.suffix in ALLOWED_EXTENSIONS:
+    
+    # helper to check extension safely
+    def is_image(path):
+        return path.suffix in ALLOWED_EXTENSIONS
+        
+    for file_path in photo_dir.rglob('*'):
+        if file_path.is_file() and is_image(file_path):
+            # Get path relative to PHOTO_DIR and convert to forward slashes
+            rel_path = file_path.relative_to(photo_dir).as_posix()
+            
             photos.append({
-                'filename': file_path.name,
+                'filename': rel_path,
                 'mtime': file_path.stat().st_mtime
             })
     
     # Sort by modification time (newest first)
     photos.sort(key=lambda x: x['mtime'], reverse=True)
     
-    # Return just the filenames
+    # Return just the relative paths
     return [photo['filename'] for photo in photos]
 
 def main():
@@ -55,7 +63,7 @@ def main():
     with open(OUTPUT_FILE, 'w') as f:
         json.dump(photo_list, f, indent=2)
     
-    print(f"✓ Generated {OUTPUT_FILE}")
+    print(f"DONE: Generated {OUTPUT_FILE}")
     
     if photo_list:
         print("\nPhotos (newest first):")
