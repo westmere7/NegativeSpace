@@ -44,6 +44,8 @@
             grid-template-columns: repeat(3, 1fr);
             /* 3 Columns like reference */
             gap: 24px;
+            grid-auto-rows: 20px;
+            /* Base row height for masonry calculations */
             grid-auto-flow: dense;
             width: 100%;
             max-width: 1600px;
@@ -459,27 +461,56 @@
         }
 
         function assignGridSpan(element, ratio) {
-            // Random variation logic
-            // 4-column grid
-            // Ratios: > 1.2 (Landscape), < 0.8 (Portrait), else Square
+            // Store ratio for potential resize recalculations
+            element.dataset.ratio = ratio;
 
-            const rand = Math.random();
+            // 1. Assign Width randomly (keep variety) if not already assigned
+            // We check if it has a width class? No, just overwrite or set.
+            // But we should only set w-class once to avoid jumping on resize.
+            // Check if w-1 or w-2 is present?
+            let hasWidth = element.classList.contains('w-1') || element.classList.contains('w-2');
 
-            if (ratio > 1.2) {
-                // Landscape
-                if (rand > 0.85) { element.classList.add('w-2', 'h-2'); } // Big Square (rare)
-                else if (rand > 0.5) { element.classList.add('w-2', 'h-1'); } // Wide (common)
-                else { element.classList.add('w-1', 'h-1'); } // Regular (fallback)
-            } else if (ratio < 0.8) {
-                // Portrait
-                if (rand > 0.7) { element.classList.add('w-1', 'h-2'); } // Tall
-                else { element.classList.add('w-1', 'h-1'); } // Regular
-            } else {
-                // Square-ish
-                if (rand > 0.9) { element.classList.add('w-2', 'h-2'); } // Big Square (very rare)
-                else { element.classList.add('w-1', 'h-1'); } // Regular
+            if (!hasWidth) {
+                const rand = Math.random();
+                element.classList.remove('h-1', 'h-2'); // clear previous h classes if any (unused now)
+
+                if (ratio > 1.2) {
+                    // Landscape
+                    if (rand > 0.6) { element.classList.add('w-2'); } // Wide
+                    else { element.classList.add('w-1'); } // Regular
+                } else if (ratio < 0.8) {
+                    // Portrait
+                    if (rand > 0.8) { element.classList.add('w-2'); } // Big Portrait (rare)
+                    else { element.classList.add('w-1'); } // Regular
+                } else {
+                    // Square-ish
+                    if (rand > 0.85) { element.classList.add('w-2'); } // Big Square
+                    else { element.classList.add('w-1'); } // Regular
+                }
+            }
+
+            // 2. Calculate Row Span
+            const width = element.offsetWidth;
+            if (width > 0) {
+                const targetHeight = width / ratio;
+                const rowHeight = 20; // Matches CSS grid-auto-rows
+                const gap = 24;       // Matches CSS gap
+
+                // span = (height + gap) / (rowHeight + gap)
+                const rowSpan = Math.ceil((targetHeight + gap) / (rowHeight + gap));
+                element.style.gridRowEnd = `span ${rowSpan}`;
             }
         }
+
+        // recalculate on resize
+        window.addEventListener('resize', () => {
+            const items = document.querySelectorAll('.photo-item');
+            items.forEach(item => {
+                if (item.dataset.ratio) {
+                    assignGridSpan(item, parseFloat(item.dataset.ratio));
+                }
+            });
+        });
 
         function extractExifInfo(exif) {
             const title = exif.ImageDescription || '';
