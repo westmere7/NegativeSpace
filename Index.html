@@ -149,8 +149,16 @@
             letter-spacing: 0.02em;
         }
 
+        .photo-date {
+            font-size: 0.85rem;
+            color: #ccc;
+            margin-bottom: 0.2rem;
+            font-weight: 500;
+        }
+
         .info-line {
-            color: #bbb;
+            line-height: 1.4;
+            color: #aaa;
             font-weight: 400;
         }
 
@@ -482,21 +490,40 @@
             const details = [];
 
             if (exif.Model) details.push(exif.Model);
-            if (exif.LensModel) details.push(exif.LensModel); // Added Lens
+            if (exif.LensModel) details.push(exif.LensModel);
+            if (exif.FocalLength) details.push(`${Math.round(exif.FocalLength)}mm`);
             if (exif.FNumber) details.push(`f/${exif.FNumber}`);
             if (exif.ExposureTime) {
                 const t = exif.ExposureTime;
                 details.push(t < 1 ? `1/${Math.round(1 / t)}s` : `${t}s`);
             }
             if (exif.ISOSpeedRatings) details.push(`ISO ${exif.ISOSpeedRatings}`);
+            if (exif.ExposureBiasValue !== undefined) {
+                const ev = exif.ExposureBiasValue;
+                const sign = ev > 0 ? '+' : '';
+                details.push(`${sign}${parseFloat(ev).toFixed(1)} EV`);
+            }
 
             const detailsStr = details.join(' · ');
+
+            // Parsing Date Time Original (Format: "YYYY:MM:DD HH:MM:SS")
+            let dateStr = '';
+            if (exif.DateTimeOriginal) {
+                const match = exif.DateTimeOriginal.match(/^(\d{4}):(\d{2}):(\d{2})\s(\d{2}):(\d{2})/);
+                if (match) {
+                    // match[1]=YYYY, match[2]=MM, match[3]=DD, match[4]=HH, match[5]=MM
+                    dateStr = `${match[1]}-${match[2]}-${match[3]} ${match[4]}:${match[5]}`;
+                } else {
+                    dateStr = exif.DateTimeOriginal; // Fallback
+                }
+            }
 
             return {
                 title: title,
                 details: detailsStr,
                 html: `
                     ${title ? `<div class="photo-title">${title}</div>` : ''}
+                    ${dateStr ? `<div class="photo-date">${dateStr}</div>` : ''}
                     <div class="info-line">${detailsStr}</div>
                 `
             };
