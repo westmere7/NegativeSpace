@@ -361,6 +361,14 @@
             startY: 0
         };
 
+        // Utility: Fisher-Yates Shuffle
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         // DOM Elements
         const gallery = document.getElementById('gallery');
         const sentinel = document.getElementById('sentinel');
@@ -378,6 +386,9 @@
                     sentinel.innerHTML = 'No photos found.';
                     return;
                 }
+
+                // Randomize photos on each session
+                shuffleArray(state.allPhotos);
 
                 // Initial load
                 loadMorePhotos();
