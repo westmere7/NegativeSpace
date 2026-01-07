@@ -23,48 +23,37 @@
 
         header {
             text-align: right;
-            padding: 2rem 2rem 1rem;
+            padding: 4rem 2rem 2rem;
             background: #0a0a0a;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            mix-blend-mode: difference;
-            backdrop-filter: blur(10px);
-            background: rgba(10, 10, 10, 0.85);
+            position: relative;
         }
 
         h1 {
-            font-size: 1.4rem;
-            font-weight: 400;
-            letter-spacing: 0.25em;
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
             color: #888;
             text-transform: uppercase;
             font-family: 'Helvetica Neue', 'Arial', sans-serif;
         }
 
         .gallery {
-            padding: 0 1rem 4rem;
+            padding: 0;
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
             grid-auto-flow: dense;
-            max-width: 1800px;
-            margin: 0 auto;
+            width: 100%;
+            margin: 0;
         }
 
-        @media (max-width: 1400px) {
-            .gallery {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        @media (max-width: 900px) {
+        @media (max-width: 1200px) {
             .gallery {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
             .gallery {
                 grid-template-columns: 1fr;
             }
@@ -74,11 +63,13 @@
             position: relative;
             cursor: pointer;
             overflow: hidden;
-            border-radius: 4px;
             background: #111;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.6s ease, transform 0.6s ease;
+
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 600px;
         }
 
         .photo-item.visible {
@@ -90,7 +81,6 @@
             width: 100%;
             height: 100%;
             display: block;
-            border-radius: 4px;
             transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
             object-fit: cover;
             opacity: 0;
