@@ -64,6 +64,13 @@
             .gallery {
                 grid-template-columns: 1fr;
             }
+
+            /* Force single column spans on mobile to prevent overflow/misalignment */
+            .w-1,
+            .w-2,
+            .w-3 {
+                grid-column: span 1 !important;
+            }
         }
 
         .photo-item {
