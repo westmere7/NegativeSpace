@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh's Dark Room</title>
+    <title>Full Stop</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
     <style>
         * {
@@ -43,11 +44,15 @@
         }
 
         @media (max-width: 1200px) {
-            .gallery { grid-template-columns: repeat(2, 1fr); }
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            .gallery { grid-template-columns: 1fr; }
+            .gallery {
+                grid-template-columns: 1fr;
+            }
         }
 
         .photo-item {
@@ -76,7 +81,7 @@
             left: 0;
             right: 0;
             padding: 2rem 1.2rem 1rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
             font-size: 0.7rem;
@@ -107,7 +112,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -174,7 +179,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border: none;
             color: #fff;
             font-size: 1.5rem;
@@ -185,14 +190,19 @@
         }
 
         .lightbox-nav:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .nav-prev { left: 1rem; }
-        .nav-next { right: 1rem; }
+        .nav-prev {
+            left: 1rem;
+        }
+
+        .nav-next {
+            right: 1rem;
+        }
 
         .control-btn {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border: none;
             color: #fff;
             padding: 0.5rem 0.8rem;
@@ -203,7 +213,7 @@
         }
 
         .control-btn:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .loading {
@@ -214,9 +224,10 @@
         }
     </style>
 </head>
+
 <body>
     <header>
-        <h1>Danh's Dark Room</h1>
+        <h1>Full Stop</h1>
     </header>
 
     <div class="gallery" id="gallery"></div>
@@ -262,18 +273,18 @@
                     const filename = photoFiles[i];
                     const photoItem = document.createElement('div');
                     photoItem.className = 'photo-item';
-                    
+
                     const img = document.createElement('img');
                     img.src = `Photos/${filename}`;
                     img.alt = 'Photography';
                     img.dataset.index = i;
-                    
+
                     const photoInfo = document.createElement('div');
                     photoInfo.className = 'photo-info';
-                    
-                    img.onload = function() {
+
+                    img.onload = function () {
                         const aspectRatio = this.naturalHeight / this.naturalWidth;
-                        
+
                         // Random grid spans for varied layout
                         const spanChoices = [
                             { row: 1, col: 1 }, // Regular
@@ -281,12 +292,12 @@
                             { row: 1, col: 2 }, // Wide
                             { row: 2, col: 2 }, // Large square
                         ];
-                        
+
                         // Weight towards single cells, occasionally larger
                         const weights = [0.6, 0.2, 0.15, 0.05];
                         const random = Math.random();
                         let span = spanChoices[0];
-                        
+
                         let cumulative = 0;
                         for (let j = 0; j < weights.length; j++) {
                             cumulative += weights[j];
@@ -295,11 +306,11 @@
                                 break;
                             }
                         }
-                        
+
                         photoItem.style.gridRowEnd = `span ${span.row}`;
                         photoItem.style.gridColumnEnd = `span ${span.col}`;
-                        
-                        EXIF.getData(img, function() {
+
+                        EXIF.getData(img, function () {
                             const exifData = EXIF.getAllTags(this);
                             const info = extractExifInfo(exifData);
                             photoInfo.innerHTML = info;
@@ -307,7 +318,7 @@
                         });
                     };
 
-                    img.onerror = function() {
+                    img.onerror = function () {
                         photoItem.remove();
                     };
 
@@ -326,25 +337,25 @@
 
         function extractExifInfo(exif) {
             let html = '';
-            
+
             // Title on first line (bigger, bolder)
             if (exif.ImageDescription) {
                 html += `<div class="photo-title">${exif.ImageDescription}</div>`;
             }
-            
+
             // Everything else on second line
             const line2 = [];
             if (exif.Model) line2.push(exif.Model);
             if (exif.LensModel) line2.push(exif.LensModel);
             if (exif.ExposureTime) {
                 const shutter = exif.ExposureTime;
-                line2.push(shutter < 1 ? `1/${Math.round(1/shutter)}s` : `${shutter}s`);
+                line2.push(shutter < 1 ? `1/${Math.round(1 / shutter)}s` : `${shutter}s`);
             }
             if (exif.FNumber) line2.push(`f/${exif.FNumber}`);
             if (exif.ISOSpeedRatings) line2.push(`ISO ${exif.ISOSpeedRatings}`);
 
             if (line2.length > 0) html += `<div class="info-line">${line2.join(' · ')}</div>`;
-            
+
             return html || '<div class="info-line">No EXIF data</div>';
         }
 
@@ -353,11 +364,11 @@
             const lightbox = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
             const info = document.getElementById('lightbox-info');
-            
+
             const photoItems = document.querySelectorAll('.photo-item img');
             img.src = photoItems[index].src;
             info.innerHTML = photos[index]?.info || '';
-            
+
             resetZoom();
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -373,7 +384,7 @@
         function navigatePhoto(direction) {
             const photoItems = document.querySelectorAll('.photo-item img');
             currentPhotoIndex = (currentPhotoIndex + direction + photoItems.length) % photoItems.length;
-            
+
             const img = document.getElementById('lightbox-img');
             const info = document.getElementById('lightbox-info');
             resetZoom();
@@ -397,15 +408,15 @@
         lightboxImg.addEventListener('wheel', (e) => {
             if (!document.getElementById('lightbox').classList.contains('active')) return;
             e.preventDefault();
-            
+
             const delta = e.deltaY || e.wheelDelta;
-            
+
             if (delta < 0) {
                 scale = Math.min(scale * 1.2, 4);
             } else {
                 scale = Math.max(scale / 1.2, 1);
             }
-            
+
             if (scale > 1.01) {
                 lightboxImg.classList.add('zoomed');
             } else {
@@ -414,7 +425,7 @@
                 pointY = 0;
                 lightboxImg.classList.remove('zoomed');
             }
-            
+
             lightboxImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
         });
 
@@ -445,7 +456,7 @@
         document.addEventListener('keydown', (e) => {
             const lightbox = document.getElementById('lightbox');
             if (!lightbox.classList.contains('active')) return;
-            
+
             if (e.key === 'Escape') closeLightbox();
             if (e.key === 'ArrowLeft') navigatePhoto(-1);
             if (e.key === 'ArrowRight') navigatePhoto(1);
@@ -460,4 +471,5 @@
         loadPhotos();
     </script>
 </body>
+
 </html>
