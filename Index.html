@@ -409,10 +409,12 @@
         }
 
         .nav-separator {
-            color: rgba(255, 255, 255, 0.4);
-            margin: 0 10px;
+            width: 1px;
+            height: 14px;
+            background-color: rgba(255, 255, 255, 0.4);
+            margin: 0 15px;
             display: inline-block;
-            font-weight: 300;
+            vertical-align: middle;
         }
 
         .nav-item:hover,
@@ -1040,7 +1042,6 @@
             // Add Separator and About
             const separator = document.createElement('div');
             separator.className = 'nav-separator';
-            separator.innerHTML = '&middot;';
             nav.appendChild(separator);
 
             const aboutItem = document.createElement('div');
