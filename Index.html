@@ -678,11 +678,7 @@
                     info.innerHTML = meta.html;
 
                     // Store metadata for lightbox
-                    state.allPhotos[index] = {
-                        src: `Photos/${filename}`,
-                        meta: meta,
-                        ...state.allPhotos[index]
-                    };
+                    // (We use dataset on the image element instead)
                     img.dataset.metaTitle = meta.title;
                     img.dataset.metaDetails = meta.details;
                     img.dataset.metaDate = meta.date;
