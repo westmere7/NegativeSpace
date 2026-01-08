@@ -194,12 +194,12 @@
             right: 2rem;
             background: none;
             border: none;
-            color: #fff;
+            color: var(--lightbox-text);
             font-size: 2rem;
             cursor: pointer;
             z-index: 1010;
             opacity: 0.7;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s, color 0.3s;
             padding: 10px;
         }
 
@@ -213,7 +213,7 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--lightbox-arrow);
             font-size: 3rem;
             cursor: pointer;
             padding: 2rem;
@@ -222,7 +222,7 @@
         }
 
         .lightbox-arrow:hover {
-            color: #fff;
+            color: var(--lightbox-arrow-hover);
         }
 
         .arrow-prev {
@@ -233,41 +233,7 @@
             right: 0;
         }
 
-        .lightbox-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            overflow: hidden;
-            padding-bottom: 2rem;
-        }
-
-        .lightbox-img-wrapper {
-            position: relative;
-            width: 100%;
-            flex: 1;
-            min-height: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: grab;
-            overflow: hidden;
-        }
-
-        .lightbox-img-wrapper:active {
-            cursor: grabbing;
-        }
-
-        .lightbox img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transform-origin: 0 0;
-            will-change: transform;
-            user-select: none;
-        }
+        /* ... skipped ... */
 
         .lightbox-overlay {
             position: relative;
@@ -275,7 +241,7 @@
             text-align: center;
             pointer-events: none;
             padding-top: 1rem;
-            color: #888;
+            color: var(--lightbox-meta);
             flex-shrink: 0;
             left: auto;
             bottom: auto;
@@ -286,12 +252,12 @@
         .lightbox-title {
             font-size: 1rem;
             font-weight: 500;
-            color: #fff;
+            color: var(--lightbox-text);
         }
 
         .lightbox-meta {
             font-size: 0.8rem;
-            color: #aaa;
+            color: var(--lightbox-meta);
             margin-top: 0.3rem;
         }
 
@@ -308,8 +274,8 @@
         .spinner {
             width: 30px;
             height: 30px;
-            border: 2px solid #333;
-            border-top: 2px solid #fff;
+            border: 2px solid var(--spinner-border);
+            border-top: 2px solid var(--spinner-active);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -323,6 +289,12 @@
             --nav-text-hover: #fff;
             --nav-separator: rgba(255, 255, 255, 0.4);
             --lightbox-bg: rgba(10, 10, 10, 0.98);
+            --lightbox-text: #fff;
+            --lightbox-arrow: rgba(255, 255, 255, 0.5);
+            --lightbox-arrow-hover: #fff;
+            --lightbox-meta: #aaa;
+            --spinner-border: #333;
+            --spinner-active: #fff;
         }
 
         body.light-mode {
@@ -334,6 +306,12 @@
             --nav-text-hover: #000;
             --nav-separator: rgba(0, 0, 0, 0.2);
             --lightbox-bg: rgba(242, 242, 242, 0.98);
+            --lightbox-text: #333;
+            --lightbox-arrow: rgba(0, 0, 0, 0.5);
+            --lightbox-arrow-hover: #000;
+            --lightbox-meta: #666;
+            --spinner-border: #ddd;
+            --spinner-active: #666;
         }
 
         * {
