@@ -400,6 +400,23 @@
             order: 2;
         }
 
+        /* Logo Theme Logic */
+        .logo-light {
+            display: none;
+        }
+
+        .logo-dark {
+            display: block;
+        }
+
+        body.light-mode .logo-light {
+            display: block;
+        }
+
+        body.light-mode .logo-dark {
+            display: none;
+        }
+
         .nav-wrapper {
             display: flex;
             align-items: center;
@@ -587,7 +604,8 @@
                 <nav id="main-nav"></nav>
                 <button class="nav-arrow nav-arrow-right" onclick="scrollNav(1)">›</button>
             </div>
-            <img src="Website assets/exposr_name.svg" alt="exposr" class="logo">
+            <img src="Website assets/exposr_name.svg" alt="exposr" class="logo logo-dark">
+            <img src="Website assets/exposr_name - forLightBG.svg" alt="exposr" class="logo logo-light">
         </div>
     </header>
 
