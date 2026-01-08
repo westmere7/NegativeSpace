@@ -536,15 +536,20 @@
                 padding: 0 1rem;
             }
 
-            .logo {
+            .logo-link {
                 order: 1;
-                height: 24px;
                 margin-bottom: 0.5rem;
+                display: block;
+                /* Ensure it behaves as block for centering if needed */
+            }
+
+            .logo {
+                height: 24px;
                 /* Removed overrides */
                 transition: all 0.4s ease;
             }
 
-            header.sticky .logo {
+            header.sticky .logo-link {
                 height: 0;
                 margin: 0;
                 opacity: 0;
