@@ -700,11 +700,11 @@
                 state.homePhotos = data.home || [];
                 state.collections = data.collections || {};
 
-                // Shuffle everything - REMOVED for Date Sorting
-                // shuffleArray(state.homePhotos);
-                // for (const key in state.collections) {
-                //     shuffleArray(state.collections[key]);
-                // }
+                // Shuffle everything
+                shuffleArray(state.homePhotos);
+                for (const key in state.collections) {
+                    shuffleArray(state.collections[key]);
+                }
 
                 // Default to Home
                 switchCollection('Home');
