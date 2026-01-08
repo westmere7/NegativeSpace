@@ -72,6 +72,23 @@
             transition: opacity 0.4s ease;
         }
 
+        /* Logo Theme Logic */
+        .logo-light {
+            display: none;
+        }
+
+        .logo-dark {
+            display: block;
+        }
+
+        body.light-mode .logo-light {
+            display: block;
+        }
+
+        body.light-mode .logo-dark {
+            display: none;
+        }
+
         .nav-wrapper {
             display: flex;
             align-items: center;
@@ -190,7 +207,8 @@
             <div class="nav-wrapper">
                 <a href="Index.html" class="nav-item back-home">← Home</a>
             </div>
-            <img src="Website assets/exposr_name.svg" alt="exposr" class="logo">
+            <img src="Website assets/exposr_name.svg" alt="exposr" class="logo logo-dark">
+            <img src="Website assets/exposr_name - forLightBG.svg" alt="exposr" class="logo logo-light">
         </div>
     </header>
 
