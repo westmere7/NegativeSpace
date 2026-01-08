@@ -309,6 +309,41 @@
             animation: spin 1s linear infinite;
         }
 
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #fff;
+            --header-bg: rgba(0, 0, 0, 0.8);
+            --header-bg-sticky: rgba(0, 0, 0, 0.95);
+            --nav-text: #888;
+            --nav-text-hover: #fff;
+            --nav-separator: rgba(255, 255, 255, 0.4);
+        }
+
+        body.light-mode {
+            --bg-color: #f2f2f2;
+            --text-color: #333;
+            --header-bg: rgba(242, 242, 242, 0.8);
+            --header-bg-sticky: rgba(242, 242, 242, 0.95);
+            --nav-text: #666;
+            --nav-text-hover: #000;
+            --nav-separator: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -326,7 +361,7 @@
             z-index: 1000;
             padding: 2rem 0;
             /* Remove horizontal padding from header */
-            background: rgba(0, 0, 0, 0.8);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
             transition: all 0.4s ease;
             width: 100%;
@@ -348,7 +383,7 @@
 
         header.sticky {
             padding: 0.8rem 0;
-            background: rgba(0, 0, 0, 0.95);
+            background: var(--header-bg-sticky);
         }
 
         header.sticky .logo {
@@ -395,7 +430,7 @@
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: #888;
+            color: var(--nav-text);
             cursor: pointer;
             transition: color 0.3s ease;
             white-space: nowrap;
@@ -408,18 +443,43 @@
             transform: none;
         }
 
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--nav-text-hover);
+        }
+
         .nav-separator {
             width: 1px;
             height: 14px;
-            background-color: rgba(255, 255, 255, 0.4);
+            background-color: var(--nav-separator);
             margin: 0 15px;
             display: inline-block;
             vertical-align: middle;
         }
 
-        .nav-item:hover,
-        .nav-item.active {
-            color: #fff;
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 0.5rem;
+            color: var(--nav-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        .theme-toggle:hover {
+            color: var(--nav-text-hover);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
         }
 
         .nav-arrow {
@@ -603,6 +663,9 @@
 
                 // Default to Home
                 switchCollection('Home');
+
+                // Init Theme
+                initTheme();
 
                 // Render Sidebar (renamed)
                 renderNav();
@@ -994,6 +1057,21 @@
 
         // Initialize
         init();
+        initTheme();
+
+        // Theme Logic
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            renderNav(); // Re-render to update icon
+        }
 
         /* New Logic */
 
@@ -1051,5 +1129,24 @@
                 window.location.href = 'About.html';
             };
             nav.appendChild(aboutItem);
+
+            // Theme Toggle
+            const isLight = document.body.classList.contains('light-mode');
+            const toggle = document.createElement('button');
+            toggle.className = 'theme-toggle';
+            toggle.onclick = toggleTheme;
+
+            // Icons
+            const sunIcon = `<svg viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.29 1.29c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.29 1.29c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.29-1.29zm1.41-6.19c.39-.39.39-1.02 0-1.41l-1.29-1.29a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.29 1.29c.39.39 1.02.39 1.41 0zM7.05 18.36c.39-.39.39-1.02 0-1.41a.996.996 0 00-1.41 0l-1.29 1.29a.996.996 0 000 1.41.996.996 0 001.41 0l1.29-1.29z"></path></svg>`;
+            const moonIcon = `<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"></path></svg>`;
+
+            // If currently Light Mode -> Show Moon (to switch to Dark?)
+            // Or usually: Light Mode shows Moon (sleep mode), Dark Mode shows Sun (wake up)
+            // User request: "icon should be a combo of moon and sun... and will switch to either accordingly"
+            // Let's toggle: If dark -> Show Sun (to go light). If Light -> Show Moon (to go dark).
+
+            toggle.innerHTML = isLight ? moonIcon : sunIcon;
+            toggle.title = isLight ? "Switch to Dark Mode" : "Switch to Light Mode";
+            nav.appendChild(toggle);
         }
     </script>

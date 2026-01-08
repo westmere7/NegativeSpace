@@ -10,6 +10,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #fff;
+            --header-bg: rgba(0, 0, 0, 0.8);
+            --nav-text: #888;
+            --nav-text-hover: #fff;
+        }
+
+        body.light-mode {
+            --bg-color: #f2f2f2;
+            --text-color: #333;
+            --header-bg: rgba(242, 242, 242, 0.8);
+            --nav-text: #666;
+            --nav-text-hover: #000;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -17,13 +33,14 @@
         }
 
         body {
-            background: #0a0a0a;
-            color: #fff;
+            background: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         /* Reusing Header Styles */
@@ -32,7 +49,7 @@
             top: 0;
             z-index: 1000;
             padding: 2rem 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
             transition: all 0.4s ease;
             width: 100%;
@@ -68,18 +85,19 @@
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: #888;
+            color: var(--nav-text);
             cursor: pointer;
             text-decoration: none;
             transition: color 0.3s ease;
             white-space: nowrap;
             padding: 0.5rem 0;
             margin-right: 30px;
+            user-select: none;
         }
 
         .nav-item:hover,
         .nav-item.active {
-            color: #fff;
+            color: var(--nav-text-hover);
         }
 
         .nav-item.back-home {
@@ -110,7 +128,8 @@
         .about-text {
             font-size: 1.1rem;
             line-height: 1.8;
-            color: #ccc;
+            color: var(--text-color);
+            opacity: 0.8;
             font-weight: 300;
             margin-bottom: 1.5rem;
         }
@@ -158,6 +177,14 @@
 </head>
 
 <body>
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        })();
+    </script>
     <header>
         <div class="header-container">
             <div class="nav-wrapper">
