@@ -390,8 +390,8 @@
 
         .nav-item {
             font-family: 'Outfit', sans-serif;
-            font-size: 0.95rem;
-            /* Slightly larger for the new font */
+            font-size: 0.85rem;
+            /* Tiny bit smaller */
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -409,14 +409,10 @@
         }
 
         .nav-separator {
-            width: 1px;
-            height: 16px;
-            background-color: rgba(255, 255, 255, 0.3);
-            /* Brighter */
-            margin: 0 15px;
-            /* More spacing */
+            color: rgba(255, 255, 255, 0.4);
+            margin: 0 10px;
             display: inline-block;
-            vertical-align: middle;
+            font-weight: 300;
         }
 
         .nav-item:hover,
@@ -1044,6 +1040,7 @@
             // Add Separator and About
             const separator = document.createElement('div');
             separator.className = 'nav-separator';
+            separator.innerHTML = '&middot;';
             nav.appendChild(separator);
 
             const aboutItem = document.createElement('div');
