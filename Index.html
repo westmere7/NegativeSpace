@@ -405,18 +405,25 @@
             background: var(--header-bg-sticky);
         }
 
-        header.sticky .logo {
+        header.sticky .logo-link {
             opacity: 0;
             pointer-events: none;
             width: 0;
             margin: 0;
         }
 
+        .logo-link {
+            order: 2;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
         .logo {
             height: 28px;
             width: auto;
             transition: all 0.4s ease;
-            order: 2;
         }
 
         /* Logo Theme Logic */
@@ -617,8 +624,10 @@
                 <nav id="main-nav"></nav>
                 <button class="nav-arrow nav-arrow-right" onclick="scrollNav(1)">›</button>
             </div>
-            <img src="Website assets/exposr_name.svg" alt="exposr" class="logo logo-dark">
-            <img src="Website assets/exposr_name - forLightBG.svg" alt="exposr" class="logo logo-light">
+            <a href="About.html" class="logo-link">
+                <img src="Website assets/exposr_name.svg" alt="exposr" class="logo logo-dark">
+                <img src="Website assets/exposr_name - forLightBG.svg" alt="exposr" class="logo logo-light">
+            </a>
         </div>
     </header>
 
@@ -1148,18 +1157,7 @@
                 nav.appendChild(createItem(name));
             });
 
-            // Add Separator and About
-            const separator = document.createElement('div');
-            separator.className = 'nav-separator';
-            nav.appendChild(separator);
 
-            const aboutItem = document.createElement('div');
-            aboutItem.className = 'nav-item';
-            aboutItem.innerText = 'About';
-            aboutItem.onclick = () => {
-                window.location.href = 'About.html';
-            };
-            nav.appendChild(aboutItem);
 
             // Theme Toggle
             const isLight = document.body.classList.contains('light-mode');
