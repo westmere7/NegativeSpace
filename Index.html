@@ -408,7 +408,7 @@
         header.sticky .logo-link {
             opacity: 0;
             pointer-events: none;
-            width: 0;
+            max-width: 0;
             margin: 0;
         }
 
@@ -418,6 +418,10 @@
             align-items: center;
             text-decoration: none;
             transition: all 0.4s ease;
+            max-width: 200px;
+            /* Allow transition from finite value */
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         .logo {
@@ -541,6 +545,10 @@
                 margin-bottom: 0.5rem;
                 display: block;
                 /* Ensure it behaves as block for centering if needed */
+                max-width: none;
+                /* Reset desktop constraint */
+                max-height: 100px;
+                /* For smooth mobile transition */
             }
 
             .logo {
@@ -550,7 +558,7 @@
             }
 
             header.sticky .logo-link {
-                height: 0;
+                max-height: 0;
                 margin: 0;
                 opacity: 0;
                 pointer-events: none;
