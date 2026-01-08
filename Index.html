@@ -1159,6 +1159,11 @@
 
 
 
+            // Add Separator
+            const separator = document.createElement('div');
+            separator.className = 'nav-separator';
+            nav.appendChild(separator);
+
             // Theme Toggle
             const isLight = document.body.classList.contains('light-mode');
             const toggle = document.createElement('button');
