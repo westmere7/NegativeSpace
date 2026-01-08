@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exposr</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
     <style>
         * {
@@ -386,7 +389,10 @@
         }
 
         .nav-item {
-            font-size: 0.9rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            /* Slightly larger for the new font */
+            font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: #888;
@@ -395,9 +401,19 @@
             white-space: nowrap;
             padding: 0.5rem 0;
             user-select: none;
+
+            /* Reset vertical/rotation properties */
             writing-mode: horizontal-tb;
             text-orientation: initial;
             transform: none;
+        }
+
+        .nav-separator {
+            width: 1px;
+            height: 16px;
+            background-color: #444;
+            margin: 0 5px;
+            display: inline-block;
         }
 
         .nav-item:hover,
@@ -1021,5 +1037,19 @@
             Object.keys(state.collections).forEach(name => {
                 nav.appendChild(createItem(name));
             });
+
+            // Add Separator and About
+            const separator = document.createElement('div');
+            separator.className = 'nav-separator';
+            nav.appendChild(separator);
+
+            const aboutItem = document.createElement('div');
+            aboutItem.className = 'nav-item';
+            aboutItem.innerText = 'About';
+            aboutItem.onclick = () => {
+                // Placeholder for now
+                alert('About page coming soon!');
+            };
+            nav.appendChild(aboutItem);
         }
     </script>
