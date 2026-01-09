@@ -1278,8 +1278,8 @@
                     shuffleArray(state.collections[key]);
                 }
 
-                // Default to Home
-                switchCollection('Home');
+                // Default to All
+                switchCollection('All');
 
                 // Init Theme
                 initTheme();
@@ -1304,7 +1304,17 @@
 
         function switchCollection(name) {
             // Update State
-            if (name === 'Home') {
+            if (name === 'All') {
+                // Aggregate ALL photos
+                let allPhotos = [...state.homePhotos];
+                Object.values(state.collections).forEach(collection => {
+                    allPhotos = allPhotos.concat(collection);
+                });
+                // Shuffle the combined result
+                shuffleArray(allPhotos);
+                state.currentPhotos = allPhotos;
+            } else if (name === 'Home') {
+                // Fallback if we ever want just root, but UI uses All now
                 state.currentPhotos = state.homePhotos;
             } else {
                 state.currentPhotos = state.collections[name];
@@ -1845,7 +1855,7 @@
                 document.body.classList.remove('is-admin');
             }
 
-            nav.appendChild(createItem('Home', true));
+            nav.appendChild(createItem('All', true));
 
             Object.keys(state.collections).forEach(name => {
                 nav.appendChild(createItem(name));
@@ -2276,7 +2286,7 @@
             };
 
             // -- Collections --
-            menuContent.appendChild(createItem('Home', () => switchCollection('Home'), false));
+            menuContent.appendChild(createItem('All', () => switchCollection('All'), false));
             if (state.collections) {
                 Object.keys(state.collections).forEach(c => {
                     menuContent.appendChild(createItem(c, () => switchCollection(c), false));
