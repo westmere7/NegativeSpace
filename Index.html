@@ -523,6 +523,11 @@
             color: var(--nav-text-hover);
         }
 
+        .mobile-upload-btn {
+            display: none;
+            /* Hidden on desktop */
+        }
+
         .nav-upload-btn {
             background: #fff;
             color: #000;
@@ -663,6 +668,7 @@
 <body>
     <header id="main-header">
         <div class="header-container">
+            <button class="nav-upload-btn mobile-upload-btn" onclick="triggerUpload()">Upload</button>
             <div class="nav-wrapper">
                 <button class="nav-arrow nav-arrow-left" onclick="scrollNav(-1)">‹</button>
                 <nav id="main-nav"></nav>
