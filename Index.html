@@ -523,6 +523,37 @@
             color: var(--nav-text-hover);
         }
 
+        .nav-upload-btn {
+            background: #fff;
+            color: #000;
+            border: 1px solid #fff;
+            padding: 0.5rem 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+        }
+
+        .nav-upload-btn:hover {
+            background: transparent;
+            color: #fff;
+        }
+
+        body.light-mode .nav-upload-btn {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        body.light-mode .nav-upload-btn:hover {
+            background: transparent;
+            color: #000;
+        }
+
         .nav-arrow {
             display: none;
         }
@@ -1191,5 +1222,76 @@
             toggle.innerText = "Light/Dark";
             toggle.title = isLight ? "Switch to Dark Mode" : "Switch to Light Mode";
             nav.appendChild(toggle);
+
+            // Upload Button
+            const uploadBtn = document.createElement('button');
+            uploadBtn.className = 'nav-upload-btn';
+            uploadBtn.innerText = 'Upload'; // Boxed and dominant
+            uploadBtn.onclick = triggerUpload;
+            nav.appendChild(uploadBtn);
+        }
+
+        // --- Upload Logic ---
+        function triggerUpload() {
+            // Create a hidden file input
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/jpeg, image/png'; // basic restriction
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Simple size check (e.g. 6MB limit for Netlify Functions body)
+                if (file.size > 6 * 1024 * 1024) {
+                    alert('File is too large! Please upload photos under 6MB.');
+                    return;
+                }
+
+                const btn = document.querySelector('.nav-upload-btn');
+                const originalText = btn.innerText;
+                btn.innerText = 'Uploading...';
+                btn.style.opacity = '0.7';
+                btn.disabled = true;
+
+                try {
+                    // Convert to Base64
+                    const reader = new FileReader();
+                    reader.onload = async function () {
+                        const base64Data = reader.result;
+
+                        try {
+                            const response = await fetch('/.netlify/functions/upload', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    image: base64Data,
+                                    filename: file.name
+                                })
+                            });
+
+                            if (response.ok) {
+                                alert('Upload Successful! Your photo will appear in a few minutes after the site rebuilds.');
+                            } else {
+                                const err = await response.json();
+                                alert('Upload Failed: ' + (err.error || 'Unknown error'));
+                            }
+                        } catch (netErr) {
+                            alert('Network Error during upload.');
+                            console.error(netErr);
+                        } finally {
+                            btn.innerText = originalText;
+                            btn.style.opacity = '1';
+                            btn.disabled = false;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+
+                } catch (err) {
+                    console.error(err);
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            };
+            input.click();
         }
     </script>
