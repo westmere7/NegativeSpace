@@ -1165,7 +1165,7 @@
                 <div style="margin-bottom: 1rem;">
                     <label for="file-upload"
                         style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">Choose Photo:</label>
-                    <input type="file" id="file-upload" accept="image/*" required
+                    <input type="file" id="file-upload" accept="image/*" multiple required
                         style="width: 100%; padding: 0.5rem; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444;">
                 </div>
 
@@ -1192,7 +1192,8 @@
 
                 <div id="upload-status" style="margin-bottom: 1rem; font-size: 0.9rem;"></div>
                 <button type="submit" id="upload-submit-btn"
-                    style="width:100%; padding: 0.8rem; background:white; color:black; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Upload</button>
+                    style="width:100%; padding: 0.8rem; background:white; color:black; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Upload
+                    Photos</button>
             </form>
         </div>
     </div>
@@ -2021,8 +2022,8 @@
             const statusDiv = document.getElementById('upload-status');
             const btn = document.getElementById('upload-submit-btn');
 
-            const file = fileInput.files[0];
-            if (!file) return;
+            const files = fileInput.files;
+            if (files.length === 0) return;
 
             // Determine Folder
             let folder = '';
@@ -2038,69 +2039,74 @@
                 folder = select.value;
             }
 
-            statusDiv.innerText = 'Uploading...';
+            statusDiv.innerText = `Preparing to upload ${files.length} photos...`;
             btn.disabled = true;
 
-            const reader = new FileReader();
-            reader.onload = async function (evt) {
-                // The result is "data:image/jpeg;base64,..."
-                // We split it here to send cleaner data, OR send full string and handle in backend.
-                // Backend now handles both, but let's stick to sending clean base64 if possible
-                // or just send the whole thing?
-                // Standardizing: Send the split part.
-                const base64Content = evt.target.result.split(',')[1];
-                const user = getUser();
+            const user = getUser();
+            let successCount = 0;
+            let failCount = 0;
 
-                try {
-                    const res = await fetch('/.netlify/functions/upload', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${user.token}`
-                        },
-                        body: JSON.stringify({
-                            image: base64Content,
-                            filename: file.name,
-                            folder: folder
-                        })
-                    });
+            const uploadFile = (file) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = async function (evt) {
+                        try {
+                            const base64Content = evt.target.result.split(',')[1];
+                            const res = await fetch('/.netlify/functions/upload', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${user.token}`
+                                },
+                                body: JSON.stringify({
+                                    image: base64Content,
+                                    filename: file.name,
+                                    folder: folder
+                                })
+                            });
 
-                    if (res.ok) {
-                        statusDiv.style.color = 'green';
-                        statusDiv.innerText = 'Upload Successful! Site rebuilding...';
-
-                        // Optimistic UI Update
-                        const blobUrl = URL.createObjectURL(file);
-                        const tempPhoto = {
-                            filename: folder ? `${folder}/${file.name}` : file.name,
-                            thumbnail: blobUrl,
-                            date: new Date().toISOString(),
-                            exif: { model: 'Uploading...' }
-                        };
-
-                        // Prepend to Gallery
-                        createPhotoElement(tempPhoto, 0);
-                        const newResult = gallery.lastChild;
-                        if (newResult) {
-                            gallery.prepend(newResult);
-                            setTimeout(() => newResult.classList.add('visible'), 50);
+                            if (res.ok) {
+                                resolve({ success: true });
+                            } else {
+                                const data = await res.json().catch(() => ({}));
+                                resolve({ success: false, error: data.error || 'Server Error' });
+                            }
+                        } catch (err) {
+                            resolve({ success: false, error: 'Network Error' });
                         }
-
-                        setTimeout(closeUploadModal, 1500);
-                    } else {
-                        const data = await res.json().catch(() => ({}));
-                        statusDiv.style.color = 'red';
-                        statusDiv.innerText = 'Failed: ' + (data.error || 'Unknown error');
-                    }
-                } catch (err) {
-                    console.error(err);
-                    statusDiv.style.color = 'red';
-                    statusDiv.innerText = 'Network Error';
-                } finally {
-                    btn.disabled = false;
-                }
+                    };
+                    reader.onerror = () => resolve({ success: false, error: 'Read Error' });
+                    reader.readAsDataURL(file);
+                });
             };
-            reader.readAsDataURL(file);
+
+            // Process uploads
+            // We can run them in parallel. Browser limits typically ~6 connections.
+            // Promise.all is fine for normal batch sizes (1-20).
+            const promises = Array.from(files).map((file, i) => {
+                return uploadFile(file).then(result => {
+                    if (result.success) successCount++;
+                    else failCount++;
+                    statusDiv.innerText = `Uploading... (${successCount + failCount}/${files.length})`;
+                });
+            });
+
+            await Promise.all(promises);
+
+            btn.disabled = false;
+
+            if (failCount === 0) {
+                statusDiv.style.color = 'green';
+                statusDiv.innerText = `Success! ${successCount} photos uploaded. Site is rebuilding, please reload in a few minutes.`;
+                setTimeout(() => {
+                    closeUploadModal();
+                    // Optional: clear status after closing
+                    setTimeout(() => statusDiv.innerText = '', 500);
+                }, 3000);
+            } else {
+                statusDiv.style.color = 'orange';
+                statusDiv.innerText = `Finished. ${successCount} success, ${failCount} failed. Check console for details. Rebuilding...`;
+            }
         }
 
         async function deletePhoto(filename, element) {
