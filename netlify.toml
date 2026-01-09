@@ -1,6 +1,6 @@
 [build]
   publish = "."
-  command = "npm install && python generate_photo_list.py"
+  command = "pip install -r requirements.txt && npm install && python generate_photo_list.py"
 
 [build.environment]
   PYTHON_VERSION = "3.8"
