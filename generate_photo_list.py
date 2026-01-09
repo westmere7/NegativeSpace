@@ -16,7 +16,7 @@ PHOTO_DIR = 'Photos'
 THUMBNAIL_DIR = os.path.join(PHOTO_DIR, 'thumbnails')
 OUTPUT_FILE = 'photos.json'
 ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.JPG', '.JPEG', '.PNG'}
-THUMBNAIL_SIZE = (800, 800)  # Max width/height 800px
+THUMBNAIL_SIZE = (1000, 1000)  # Max width/height 1000px
 
 def get_date_taken(path):
     """
@@ -150,7 +150,7 @@ def generate_thumbnail(original_path, thumbnail_path):
                 # Ensure parent dir exists
                 thumbnail_path.parent.mkdir(parents=True, exist_ok=True)
                 
-                img.save(thumbnail_path, quality=80, optimize=True)
+                img.save(thumbnail_path, quality=90, optimize=True)
                 print(f"Generated thumbnail: {thumbnail_path.name}")
             
             return metadata
