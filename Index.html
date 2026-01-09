@@ -165,13 +165,45 @@
             justify-content: center;
         }
 
+
+
         .delete-btn:hover {
             background: rgba(0, 0, 0, 0.6);
             color: #fff;
             border-color: rgba(255, 255, 255, 0.6);
         }
 
-        .photo-item:hover .delete-btn {
+        .move-btn {
+            position: absolute;
+            top: 10px;
+            right: 40px;
+            /* To the left of delete btn */
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(2px);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s ease;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .move-btn:hover {
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .photo-item:hover .delete-btn,
+        .photo-item:hover .move-btn {
             opacity: 1;
         }
 
@@ -967,6 +999,35 @@
         </div>
     </div>
 
+    <!-- Move Modal -->
+    <div class="lightbox" id="move-modal">
+        <div class="auth-box">
+            <button class="lightbox-close" style="position: absolute; top: 10px; right: 10px;"
+                onclick="closeMoveModal()">×</button>
+            <h2>Move Photo</h2>
+            <p id="move-filename" style="margin-bottom: 1rem; color: #ccc; font-size: 0.9rem;"></p>
+            <form id="move-form" onsubmit="handleMoveSubmit(event)">
+
+                <!-- Collection Selector -->
+                <div style="margin-bottom: 1rem;">
+                    <label for="move-collection-select"
+                        style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">Move to
+                        Collection:</label>
+                    <select id="move-collection-select"
+                        style="width: 100%; padding: 0.8rem; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
+                        <option value="home">Home (Root)</option>
+                        <!-- Collections injected via JS -->
+                    </select>
+                </div>
+
+                <div id="move-status" style="margin-bottom: 1rem; font-size: 0.9rem;"></div>
+                <button type="submit" id="move-submit-btn"
+                    style="width:100%; padding: 0.8rem; background:white; color:black; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Move
+                    Photo</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // State
         const state = {
@@ -1093,9 +1154,10 @@
             const item = document.createElement('div');
             item.className = 'photo-item';
 
-            // Check Admin for Delete Button
+            // Check Admin for Actions
             const user = getUser();
             if (user && user.role === 'admin') {
+                // Delete Button
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.innerText = '×';
@@ -1105,6 +1167,17 @@
                     deletePhoto(filename, item);
                 };
                 item.appendChild(deleteBtn);
+
+                // Move Button
+                const moveBtn = document.createElement('button');
+                moveBtn.className = 'move-btn';
+                moveBtn.innerText = '⇄'; // Arrow symbol
+                moveBtn.title = 'Move Photo';
+                moveBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    openMoveModal(filename);
+                };
+                item.appendChild(moveBtn);
             }
 
             const img = document.createElement('img');
@@ -1792,6 +1865,89 @@
                 console.error(e);
                 alert("Network error.");
                 element.style.opacity = '1';
+            }
+        }
+
+        // --- Move Logic ---
+
+        function openMoveModal(filename) {
+            const modal = document.getElementById('move-modal');
+            const select = document.getElementById('move-collection-select');
+            const filenameDisplay = document.getElementById('move-filename');
+
+            filenameDisplay.innerText = `Moving: ${filename}`;
+
+            // Populate Collections (exclude current logic optional, but simpler to show all)
+            let options = '<option value="home">Home (Root)</option>';
+            if (state.collections) {
+                Object.keys(state.collections).forEach(c => {
+                    options += `<option value="${c}">${c}</option>`;
+                });
+            }
+            select.innerHTML = options;
+
+            // Store filename on the form/modal for submit handler
+            modal.dataset.filename = filename;
+
+            document.getElementById('move-status').innerText = '';
+            modal.classList.add('active');
+        }
+
+        function closeMoveModal() {
+            document.getElementById('move-modal').classList.remove('active');
+        }
+
+        async function handleMoveSubmit(e) {
+            e.preventDefault();
+            const modal = document.getElementById('move-modal');
+            const filename = modal.dataset.filename;
+            const select = document.getElementById('move-collection-select');
+            const statusDiv = document.getElementById('move-status');
+            const btn = document.getElementById('move-submit-btn');
+
+            if (!filename) return;
+
+            const targetFolder = select.value === 'home' ? '' : select.value;
+            const user = getUser();
+
+            statusDiv.innerText = 'Moving...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/.netlify/functions/move_photo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+                    },
+                    body: JSON.stringify({
+                        filename: filename,
+                        targetFolder: targetFolder
+                    })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    statusDiv.style.color = 'green';
+                    statusDiv.innerText = 'Move Successful! Rebuilding site...';
+
+                    setTimeout(() => {
+                        closeMoveModal();
+                        alert('Photo moved. The site will update in ~1 minute.');
+                        location.reload();
+                    }, 1000);
+
+                } else {
+                    const data = await res.json().catch(() => ({}));
+                    statusDiv.style.color = 'red';
+                    statusDiv.innerText = 'Failed: ' + (data.error || 'Unknown error');
+                }
+            } catch (err) {
+                console.error(err);
+                statusDiv.style.color = 'red';
+                statusDiv.innerText = 'Network Error';
+            } finally {
+                btn.disabled = false;
             }
         }
     </script>
