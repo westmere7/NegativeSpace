@@ -811,8 +811,15 @@
             }
 
             .mobile-upload-btn {
+                display: none;
+                /* Default hidden */
                 order: 2;
                 margin-bottom: 0.5rem;
+            }
+
+            /* Only show if admin */
+            body.is-admin .mobile-upload-btn {
+                display: block;
             }
 
             .nav-wrapper {
@@ -1424,12 +1431,10 @@
                 nav.appendChild(uploadBtn);
 
                 // Show Mobile Upload Btn
-                const mobileUploadBtn = document.querySelector('.mobile-upload-btn');
-                if (mobileUploadBtn) mobileUploadBtn.style.display = 'block';
+                document.body.classList.add('is-admin');
             } else {
                 // Hide Mobile Upload Btn
-                const mobileUploadBtn = document.querySelector('.mobile-upload-btn');
-                if (mobileUploadBtn) mobileUploadBtn.style.display = 'none';
+                document.body.classList.remove('is-admin');
             }
 
             // User / Login
