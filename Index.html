@@ -1429,7 +1429,20 @@
             // 2. Calculate Row Span
             const width = element.offsetWidth;
             if (width > 0) {
-                const targetHeight = width / ratio;
+                let finalRatio = ratio;
+
+                // Randomize Aspect Ratio (Desktop Only)
+                // User Request: "randomize the aspect ratios... (don't crop too much over 25%)"
+                if (window.innerWidth > 600) {
+                    // Check if we already have a random factor assigned
+                    if (!element.dataset.heightVariance) {
+                        // Generate random factor between 0.75 and 1.25 (+/- 25%)
+                        element.dataset.heightVariance = (Math.random() * 0.5) + 0.75;
+                    }
+                    finalRatio = ratio / parseFloat(element.dataset.heightVariance);
+                }
+
+                const targetHeight = width / finalRatio;
                 const rowHeight = 20; // Matches CSS grid-auto-rows
                 const gap = 24;       // Matches CSS gap
 
