@@ -1,4 +1,5 @@
 const { Octokit } = require("@octokit/rest");
+const jwt = require('jsonwebtoken');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== "POST") {
@@ -11,6 +12,25 @@ exports.handler = async (event) => {
         // validation
         if (!image || !filename) {
             return { statusCode: 400, body: "Missing image or filename" };
+        }
+
+        // Verify Session
+        const authHeader = event.headers.authorization;
+        if (!authHeader) {
+            return { statusCode: 401, body: "Unauthorized: Missing token" };
+        }
+        const sessionToken = authHeader.replace('Bearer ', '');
+        const secret = process.env.JWT_SECRET || process.env.GITHUB_TOKEN;
+
+        let decoded;
+        try {
+            decoded = jwt.verify(sessionToken, secret);
+        } catch (e) {
+            return { statusCode: 401, body: "Unauthorized: Invalid token" };
+        }
+
+        if (decoded.role !== 'admin') {
+            return { statusCode: 403, body: "Forbidden: Admins only" };
         }
 
         const token = process.env.GITHUB_TOKEN;

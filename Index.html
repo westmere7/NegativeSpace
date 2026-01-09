@@ -346,6 +346,100 @@
             --lightbox-meta: #666;
             --spinner-border: #ddd;
             --spinner-active: #666;
+            --spinner-active: #666;
+            --auth-bg: #fff;
+            --auth-text: #333;
+        }
+
+        /* Auth Styles */
+        .auth-box {
+            background: var(--auth-bg);
+            color: var(--auth-text);
+            padding: 2rem;
+            width: 100%;
+            max-width: 320px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .auth-box h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            background: transparent;
+            color: inherit;
+            font-family: inherit;
+        }
+
+        .auth-box button[type="submit"] {
+            width: 100%;
+            padding: 0.8rem;
+            background: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        body.light-mode .auth-box button[type="submit"] {
+            background: #333;
+        }
+
+        .auth-switch {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        #auth-switch-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            text-decoration: underline;
+            cursor: pointer;
+            font-family: inherit;
+            margin-left: 0.3rem;
+        }
+
+        .auth-error {
+            color: red;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            min-height: 1.2em;
+        }
+
+        /* User Menu Item */
+        .nav-user {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            color: var(--nav-text);
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-login-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--nav-text);
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+        }
+
+        .nav-login-btn:hover {
+            color: var(--nav-text-hover);
         }
 
         * {
@@ -659,7 +753,80 @@
 
             .nav-arrow {
                 display: none;
+                /* Left align wrapper */
+                /* Fade only on right side */
+                -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 85%, transparent);
+                mask-image: linear-gradient(90deg, #000 0%, #000 85%, transparent);
+            }
+
+            .mobile-upload-btn {
+                display: block;
+                order: 2;
+                /* After logo (1), before nav (3) */
+                width: 100%;
+                /* Own line, full width */
+                margin: 0;
+                text-align: center;
+                transition: all 0.4s ease;
+                background: var(--text-color);
+                /* Inverse */
+                color: var(--bg-color);
+                /* Inverse */
+                border-color: var(--text-color);
+            }
+
+            .mobile-upload-btn:hover {
+                background: transparent;
+                color: var(--text-color);
+            }
+
+            /* Hide desktop button on mobile */
+            .nav-wrapper .nav-upload-btn {
+                display: none;
+            }
+
+            /* Sticky Hiding for Mobile Upload Btn */
+            header.sticky .mobile-upload-btn {
+                max-height: 0;
+                margin: 0;
+                padding: 0;
+                border: 0;
+                opacity: 0;
+                pointer-events: none;
+                overflow: hidden;
+            }
+
+            #main-nav {
+                width: 100%;
+                gap: 20px;
+                padding: 0 20px 0 0;
+                /* Padding only on right for fade */
+                justify-content: flex-start;
+                /* Prevent cropping on left */
+            }
+
+            /* Update orders for correct flow */
+            .logo-link {
+                order: 1;
+            }
+
+            .mobile-upload-btn {
+                order: 2;
+                margin-bottom: 0.5rem;
+            }
+
+            .nav-wrapper {
+                order: 3;
+            }
+
+            .nav-arrow {
+                display: none;
                 /* Hide arrows on mobile as requested */
+            }
+
+            /* Auth Box Mobile overrides */
+            .auth-box {
+                width: 90%;
             }
         }
     </style>
@@ -1229,16 +1396,148 @@
             toggle.title = isLight ? "Switch to Dark Mode" : "Switch to Light Mode";
             nav.appendChild(toggle);
 
-            // Upload Button
-            const uploadBtn = document.createElement('button');
-            uploadBtn.className = 'nav-upload-btn';
-            uploadBtn.innerText = 'Upload'; // Boxed and dominant
-            uploadBtn.onclick = triggerUpload;
-            nav.appendChild(uploadBtn);
+            // Upload Button (Only if Admin)
+            const user = getUser();
+            if (user && user.role === 'admin') {
+                const uploadBtn = document.createElement('button');
+                uploadBtn.className = 'nav-upload-btn';
+                uploadBtn.innerText = 'Upload'; // Boxed and dominant
+                uploadBtn.onclick = triggerUpload;
+                nav.appendChild(uploadBtn);
+
+                // Show Mobile Upload Btn
+                const mobileUploadBtn = document.querySelector('.mobile-upload-btn');
+                if (mobileUploadBtn) mobileUploadBtn.style.display = 'block';
+            } else {
+                // Hide Mobile Upload Btn
+                const mobileUploadBtn = document.querySelector('.mobile-upload-btn');
+                if (mobileUploadBtn) mobileUploadBtn.style.display = 'none';
+            }
+
+            // User / Login
+            const userDiv = document.createElement('div');
+            userDiv.className = 'nav-user';
+
+            if (user) {
+                userDiv.innerHTML = `
+                    <span>${user.username}</span>
+                    <button class="nav-login-btn" onclick="logout()">Logout</button>
+                `;
+            } else {
+                userDiv.innerHTML = `<button class="nav-login-btn" onclick="openAuthModal()">Login</button>`;
+            }
+            nav.appendChild(userDiv);
         }
+
+        // --- Auth Logic ---
+        let authMode = 'login'; // 'login' or 'signup'
+
+        function getUser() {
+            try {
+                const u = localStorage.getItem('user');
+                return u ? JSON.parse(u) : null;
+            } catch (e) { return null; }
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.add('active');
+            resetAuthForm();
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.remove('active');
+        }
+
+        function toggleAuthMode() {
+            authMode = authMode === 'login' ? 'signup' : 'login';
+            resetAuthForm();
+        }
+
+        function resetAuthForm() {
+            const title = document.getElementById('auth-title');
+            const submit = document.getElementById('auth-submit');
+            const switchText = document.getElementById('auth-switch-text');
+            const switchBtn = document.getElementById('auth-switch-btn');
+            const error = document.getElementById('auth-error');
+
+            error.innerText = '';
+            document.getElementById('auth-form').reset();
+
+            if (authMode === 'login') {
+                title.innerText = 'Login';
+                submit.innerText = 'Login';
+                switchText.innerText = 'New here?';
+                switchBtn.innerText = 'Sign Up';
+            } else {
+                title.innerText = 'Sign Up';
+                submit.innerText = 'Sign Up';
+                switchText.innerText = 'Already have an account?';
+                switchBtn.innerText = 'Login';
+            }
+        }
+
+        async function handleAuth(e) {
+            e.preventDefault();
+            const username = document.getElementById('auth-username').value;
+            const password = document.getElementById('auth-password').value;
+            const errorDiv = document.getElementById('auth-error');
+            const btn = document.getElementById('auth-submit');
+
+            errorDiv.innerText = '';
+            btn.disabled = true;
+
+            const endpoint = authMode === 'login' ? '/.netlify/functions/login' : '/.netlify/functions/signup';
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    if (authMode === 'signup') {
+                        // Switch to login
+                        authMode = 'login';
+                        resetAuthForm();
+                        errorDiv.style.color = 'green';
+                        errorDiv.innerText = "Signup success! Please login.";
+                    } else {
+                        // Login Success
+                        localStorage.setItem('user', JSON.stringify({
+                            username: data.username,
+                            role: data.role,
+                            token: data.token
+                        }));
+                        closeAuthModal();
+                        renderNav(); // Update UI
+                    }
+                } else {
+                    errorDiv.style.color = 'red';
+                    errorDiv.innerText = data.error || 'Request failed';
+                }
+            } catch (err) {
+                errorDiv.innerText = 'Network Error';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            renderNav();
+        }
+
 
         // --- Upload Logic ---
         function triggerUpload() {
+            // Check auth again
+            const user = getUser();
+            if (!user || user.role !== 'admin') {
+                alert("Unauthorized");
+                return;
+            }
+
             // Create a hidden file input
             const input = document.createElement('input');
             input.type = 'file';
@@ -1268,7 +1567,10 @@
                         try {
                             const response = await fetch('/.netlify/functions/upload', {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${user.token}`
+                                },
                                 body: JSON.stringify({
                                     image: base64Data,
                                     filename: file.name
