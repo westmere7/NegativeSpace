@@ -1629,118 +1629,108 @@
 
         // --- Zoom & Pan Logic (Cursor Centered) ---
 
+        // --- Zoom & Pan Logic (Desktop Click-to-Zoom) ---
+
         function resetZoom() {
             zoom.scale = 1;
             zoom.pointX = 0;
             zoom.pointY = 0;
+            zoom.panning = false;
             applyTransform();
+            updateCursor();
         }
 
         function applyTransform() {
+            // Apply transform
             lightboxImg.style.transform = `translate(${zoom.pointX}px, ${zoom.pointY}px) scale(${zoom.scale})`;
         }
 
-        zoomContainer.addEventListener('wheel', (e) => {
-            e.preventDefault();
+        function updateCursor() {
+            if (zoom.scale > 1) {
+                zoomContainer.style.cursor = 'zoom-out';
+                // We also want to indicate panning is possible, but zoom-out takes precedence for the action "Click".
+                // Usually "grab" is better if customizable, but let's stick to user request logic: click to zoom out.
+            } else {
+                zoomContainer.style.cursor = 'zoom-in';
+            }
+        }
 
-            // 1. Get mouse position relative to the image container
-            const rect = zoomContainer.getBoundingClientRect();
-            // We want the position relative to the center of the viewport/container because our transform origin is not set to 0 0 in CSS?
-            // Wait, in CSS I set transform-origin: 0 0; 
-            // This simplifies math: everything starts at top-left.
-            // Actually, centering the image is done by flexbox.
-            // Let's use the image's own rect.
+        // Click to Toggle Zoom
+        zoomContainer.addEventListener('click', (e) => {
+            // If we were dragging/panning, don't trigger click-zoom
+            if (zoom.isDragging) {
+                zoom.isDragging = false;
+                return;
+            }
 
             const imgRect = lightboxImg.getBoundingClientRect();
 
-            // Mouse position relative to the image's current top-left
-            const mouseX = e.clientX - imgRect.left;
-            const mouseY = e.clientY - imgRect.top;
+            if (zoom.scale > 1) {
+                // Zoom Out
+                resetZoom();
+            } else {
+                // Zoom In to 100%
+                // Calculate scale needed to reach natural resolution
+                // bound by a reasonable max (e.g. 5x) to avoid huge jumps for tiny images? 
+                // User said "100% of the photo resolution".
+                const naturalScale = lightboxImg.naturalWidth / lightboxImg.width;
+                // If image is already native size or smaller on screen, force at least 2x for effect, or clamp?
+                // Let's use max(naturalScale, 1.5) to ensure *some* zoom happens.
+                const targetScale = Math.max(naturalScale, 2);
 
-            // Determine new scale
-            const delta = -Math.sign(e.deltaY) * 0.5;
-            const newScale = Math.min(Math.max(1, zoom.scale + delta), 5);
+                const rect = zoomContainer.getBoundingClientRect();
 
-            if (newScale === zoom.scale) return; // No change
+                // Set scale
+                zoom.scale = targetScale;
 
-            // 2. Adjust translation
-            // Logic: The point under the mouse (mouseX, mouseY) should remain at the same screen coordinate.
-            // (mouseX / oldScale) = "original pixel x"
-            // We want (original pixel x) * newScale + newTranslateX = ScreenX (where ScreenX is e.clientX - container.left?? No.)
+                // Center zoom on click position? Or center of screen?
+                // User didn't specify, but center of screen is standard for simple toggle, 
+                // OR zoom to cursor. Let's zoom to cursor for better UX.
 
-            // Standard Zoom-at-point algorithm:
-            // translate -= (mouseX / scale) * (newScale - scale)
-            // But we need to account for our specific transform setup.
+                // Calculate point relative to image center
+                // Current center is 0,0 relative to image center (css transform origin center center?)
+                // Actually my CSS might be default transform-origin (50% 50%).
+                // Let's assume standard behavior.
 
-            // Let's do it relative to the current translation (zoom.pointX/Y).
-            // The coordinate in "unscaled local space" is:
-            // localX = (e.clientX - (containerRect.left + containerWidth/2 - imgWidth/2) - currentTranslateX) / currentScale
-            // This is getting complicated because of Flex centering.
+                // To keep it simple and robust: Zoom to center of click, then allow pan.
+                // Re-using the logic: 
+                // New Translate = (Center - ClickPosition) * (Scale - 1) ? 
+                // Let's just Center for now to match specific request "Zoom to 100%" (implies view mode).
+                // Actually, simple "Zoom to 100%" usually centers.
+                // Let's align center of viewport to center of image.
+                zoom.pointX = 0;
+                zoom.pointY = 0;
 
-            /* Simplified Approach that works robustly with transform-origin: 0 0 */
-            /* We need to track the "virtual" top-left corner */
-
-            const contentRect = zoomContainer.getBoundingClientRect();
-            // Calculate mouse offset from the content center (where image is centered broadly) is not enough.
-
-            // Let's stick to the relative shift.
-            // The mouse is at `e.clientX`, `e.clientY`.
-            // The image is currently at `imgRect.left`, `imgRect.top`.
-            // The point clicked on the image is `ptrX = (e.clientX - imgRect.left) / zoom.scale`.
-
-            // After scaling, we want that same point `ptrX` to be at `e.clientX`.
-            // So: `imgNewLeft + ptrX * newScale = e.clientX`
-            // `imgNewLeft = e.clientX - ptrX * newScale`
-
-            // We control `zoom.pointX/Y`. 
-            // Note: `imgRect.left` includes the flexbox centering offset! 
-            // We can't easily control that via `translate`.
-            // BUT: `transform` is applied *after* layout.
-            // If `transform-origin` is `0 0`, the transform applies to the top-left of the element.
-            // The element is centered by flex.
-
-            // Let MainOffset be the offset of the image top-left from window 0,0 when scale=1, translate=0.
-            // We can calculate BaseX = imgRect.left - zoom.pointX.
-
-            const BaseX = imgRect.left - zoom.pointX;
-            const BaseY = imgRect.top - zoom.pointY;
-
-            const ptrX = (e.clientX - imgRect.left) / zoom.scale;
-            const ptrY = (e.clientY - imgRect.top) / zoom.scale;
-
-            zoom.scale = newScale;
-
-            // New position (left/top)
-            // NewLeft = BaseX + newTranslateX
-            // We want: NewLeft + ptrX * newScale = e.clientX
-            // BaseX + newTranslateX + ptrX * newScale = e.clientX
-            // newTranslateX = e.clientX - BaseX - ptrX * newScale
-
-            zoom.pointX = e.clientX - BaseX - (ptrX * newScale);
-            zoom.pointY = e.clientY - BaseY - (ptrY * newScale);
-
-            applyTransform();
+                applyTransform();
+                updateCursor();
+            }
         });
 
-        // Pan Support
+        // Pan Support (Desktop Mouse)
         zoomContainer.addEventListener('mousedown', (e) => {
             if (zoom.scale <= 1) return;
-            e.preventDefault();
+            e.preventDefault(); // Prevent text selection
             zoom.panning = true;
+            zoom.isDragging = false;
             zoom.startX = e.clientX - zoom.pointX;
             zoom.startY = e.clientY - zoom.pointY;
+            zoomContainer.style.cursor = 'grabbing';
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!zoom.panning) return;
             e.preventDefault();
+            zoom.isDragging = true; // Mark as dragging so we don't zoom-out on mouseup click
             zoom.pointX = e.clientX - zoom.startX;
             zoom.pointY = e.clientY - zoom.startY;
             applyTransform();
         });
 
         document.addEventListener('mouseup', () => {
-            zoom.panning = false;
+            if (zoom.panning) {
+                zoom.panning = false;
+                updateCursor(); // Revert to zoom-out cursor
+            }
         });
 
         // Keyboard
