@@ -1369,7 +1369,19 @@
             }
 
             const detailsStr = details.join(' · ');
-            const dateStr = exif.date ? exif.date.replace(/:/g, '-').replace(' ', ' ').substring(0, 16) : ''; // Simple formatting
+            let dateStr = '';
+            if (exif.date) {
+                // Input format: "YYYY:MM:DD HH:MM:SS"
+                // Desired: "YYYY-MM-DD HH:MM"
+                const parts = exif.date.split(' ');
+                if (parts.length >= 2) {
+                    const datePart = parts[0].replace(/:/g, '-');
+                    const timePart = parts[1].substring(0, 5); // Take HH:MM
+                    dateStr = `${datePart} ${timePart}`;
+                } else {
+                    dateStr = exif.date;
+                }
+            }
 
             return {
                 title: title,
