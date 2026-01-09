@@ -681,7 +681,9 @@
             color: var(--nav-text-hover);
         }
 
-        .mobile-upload-btn {
+        .mobile-upload-btn,
+        .mobile-menu-btn,
+        .mobile-menu-overlay {
             display: none;
             /* Hidden on desktop */
         }
@@ -729,9 +731,164 @@
             }
 
             .header-container {
-                flex-direction: column;
+                flex-direction: row;
+                /* Keep row for 3 items */
+                justify-content: space-between;
+                align-items: center;
                 gap: 1rem;
-                padding: 0 1rem;
+                padding: 0 20px;
+                position: relative;
+            }
+
+            /* Mobile Buttons */
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--nav-text);
+                cursor: pointer;
+                z-index: 101;
+                /* Above menus */
+                padding: 0;
+            }
+
+            .mobile-menu-btn.left {
+                order: 1;
+            }
+
+            .logo-link {
+                order: 2;
+                margin: 0;
+                flex: 1;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+            }
+
+            .mobile-menu-btn.right {
+                order: 3;
+            }
+
+            /* Hide Desktop Nav Wrapper */
+            .header-container .nav-wrapper {
+                display: none !important;
+            }
+
+            /* Logo adjustments */
+            .logo {
+                height: 20px;
+            }
+
+            /* Mobile Menu Overlays */
+            .mobile-menu-overlay {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                width: 250px;
+                /* or 100%? Sidebar style is better */
+                background: var(--bg-color);
+                z-index: 100;
+                padding: 80px 20px 20px 20px;
+                /* Space for top close button */
+                transition: transform 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid var(--nav-separator);
+            }
+
+            .mobile-menu-overlay.left {
+                left: 0;
+                transform: translateX(-100%);
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .mobile-menu-overlay.right {
+                right: 0;
+                transform: translateX(100%);
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .mobile-menu-overlay.active {
+                transform: translateX(0);
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            }
+
+            /* Menu Content */
+            .menu-content {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .menu-content .nav-item {
+                font-size: 1.2rem;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .close-menu-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                /* Used for Left menu too? Usually Close is top right or top left opposite side */
+                /* Let's replicate header btn position or just top right of container */
+                background: none;
+                border: none;
+                color: var(--nav-text);
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+            .mobile-menu-overlay.left .close-menu-btn {
+                right: 20px;
+            }
+
+            .mobile-menu-overlay.right .close-menu-btn {
+                left: 20px;
+                right: auto;
+            }
+
+            /* Theme Toggle Mobile */
+            .theme-toggle-mobile {
+                background: none;
+                border: 1px solid var(--nav-text);
+                color: var(--nav-text);
+                padding: 10px;
+                width: 100%;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                margin-top: 10px;
+                cursor: pointer;
+            }
+
+            .mobile-upload-only {
+                display: block !important;
+                background: var(--text-color);
+                color: var(--bg-color);
+                border: 1px solid var(--text-color);
+                margin: 0;
+                text-align: center;
+            }
+
+            /* Auth overrides */
+            #mobile-auth-container .auth-user-display {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+                text-align: center;
+                display: block;
+            }
+
+            #mobile-auth-container .login-trigger-btn {
+                width: 100%;
+                padding: 10px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid var(--nav-text);
+                color: var(--nav-text);
+                text-align: center;
+                display: block;
             }
 
             .logo-link {
@@ -906,18 +1063,115 @@
 <body>
     <header id="main-header">
         <div class="header-container">
-            <button class="nav-upload-btn mobile-upload-btn" onclick="triggerUpload()">Upload</button>
+            <!-- Mobile Controls -->
+            <button class="mobile-menu-btn left" onclick="toggleMobileMenu('left')">☰</button>
+
+            <a href="About.html" class="logo-link">
+                <!-- Light Mode Logo -->
+                <svg class="logo logo-light" viewBox="0 0 167.31972 19.344445" style="display:none;"
+                    fill="currentColor">
+                    <g transform="translate(-18.665565 -121.24647)">
+                        <path d="m21.624996 123.00397v13.56812h9.729167v2.24896h-12.689584v-18.06604h12.557292v2.24896z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m34.722513 133.00491v-1.64042h10.999169v1.64042zm0-5.34459v-1.66687h10.999169v1.66687zm0-4.94771h13.962503v1.98438h-10.999169v3.01625h8.908332v1.95791h-8.908332v3.01625h11.237303v2.09021h-14.19965z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m66.075422 136.57209-1.402292 2.24896h-3.413125l1.640417-2.32834v-8.4852h-9.226043v10.81354h-2.960208v-18.06604h13.883126v2.24896h-10.922918v5.99229h7.321043v2.30187h-7.321043v5.25146h6.262709l-1.375833-2.30187z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m68.086255 138.82105 5.912918-18.06604h3.333748l6.098129 18.06604h-3.148539l-1.508127-4.69625h-6.124581l-1.455208 4.69625zm4.074581-6.83938h4.696248l-2.328333-7.29458z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m91.263959 123.00397h-5.410207v-2.24896h13.777288v2.24896h-5.410207v15.81708h-2.956874z"
+                            stroke-width=".264583" />
+                        <path d="m102.58812 120.75501h2.96334v18.06604h-2.96334z" stroke-width=".264583" />
+                        <path
+                            d="m109.28187 120.75501h3.33042l4.89501 13.91187 4.78915-13.91187h3.22459l-6.44209 18.06604h-3.2775z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m128.51708 138.82105h12.68958v-2.24896h-9.72916v-5.64833h8.37937v-2.19604h-8.37937v-5.72771h9.49104v-2.24896h-12.45146z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m147.16428 126.86689c-.68792-.37042-1.32292-.76729-1.32292-1.61396 0-.87313.68792-1.48167 1.82563-1.48167 1.1377 0 1.85208.71438 1.95791 1.66688h2.80459c-.21167-2.30188-1.95792-3.91584-4.70938-3.91584-2.83104 0-4.81521 1.64042-4.81521 4.02167 0 2.43417 1.77271 3.41312 3.65125 4.07458l.9525.34396c1.24354.42333 1.79917.92604 1.79917 1.905 0 1.05833-.89959 1.69333-2.11667 1.69333-1.42875 0-2.30187-.84666-2.46062-2.0902h-2.91042c.15875 2.69875 2.14313 4.31271 5.37104 4.31271 3.01625 0 5.10646-1.66688 5.10646-4.18042 0-2.43417-1.66688-3.51896-3.83646-4.28625z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m154.67845 120.75501h5.82062c3.4925 0 5.68854 2.16959 5.68854 5.3975 0 3.30729-2.2225 5.50334-5.63562 5.50334h-2.91042v7.1652h-2.96312zm2.96312 8.6175h2.46063c1.905 0 2.91041-1.11125 2.91041-3.175 0-2.01083-0.97896-3.14854-2.83104-3.14854h-2.54z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m169.30941 120.75501h3.19313l6.23437 18.06604-3.15 0.0573-4.665-14.73521-4.78917 14.67791h-3.00333z"
+                            stroke-width=".264583" />
+                    </g>
+                </svg>
+                <!-- Dark Mode Logo -->
+                <svg class="logo logo-dark" viewBox="0 0 167.31972 19.344445" style="display:block;"
+                    fill="currentColor">
+                    <g transform="translate(-18.665565 -121.24647)">
+                        <path d="m21.624996 123.00397v13.56812h9.729167v2.24896h-12.689584v-18.06604h12.557292v2.24896z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m34.722513 133.00491v-1.64042h10.999169v1.64042zm0-5.34459v-1.66687h10.999169v1.66687zm0-4.94771h13.962503v1.98438h-10.999169v3.01625h8.908332v1.95791h-8.908332v3.01625h11.237303v2.09021h-14.19965z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m66.075422 136.57209-1.402292 2.24896h-3.413125l1.640417-2.32834v-8.4852h-9.226043v10.81354h-2.960208v-18.06604h13.883126v2.24896h-10.922918v5.99229h7.321043v2.30187h-7.321043v5.25146h6.262709l-1.375833-2.30187z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m68.086255 138.82105 5.912918-18.06604h3.333748l6.098129 18.06604h-3.148539l-1.508127-4.69625h-6.124581l-1.455208 4.69625zm4.074581-6.83938h4.696248l-2.328333-7.29458z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m91.263959 123.00397h-5.410207v-2.24896h13.777288v2.24896h-5.410207v15.81708h-2.956874z"
+                            stroke-width=".264583" />
+                        <path d="m102.58812 120.75501h2.96334v18.06604h-2.96334z" stroke-width=".264583" />
+                        <path
+                            d="m109.28187 120.75501h3.33042l4.89501 13.91187 4.78915-13.91187h3.22459l-6.44209 18.06604h-3.2775z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m128.51708 138.82105h12.68958v-2.24896h-9.72916v-5.64833h8.37937v-2.19604h-8.37937v-5.72771h9.49104v-2.24896h-12.45146z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m147.16428 126.86689c-.68792-.37042-1.32292-.76729-1.32292-1.61396 0-.87313.68792-1.48167 1.82563-1.48167 1.1377 0 1.85208.71438 1.95791 1.66688h2.80459c-.21167-2.30188-1.95792-3.91584-4.70938-3.91584-2.83104 0-4.81521 1.64042-4.81521 4.02167 0 2.43417 1.77271 3.41312 3.65125 4.07458l.9525.34396c1.24354.42333 1.79917.92604 1.79917 1.905 0 1.05833-.89959 1.69333-2.11667 1.69333-1.42875 0-2.30187-.84666-2.46062-2.0902h-2.91042c.15875 2.69875 2.14313 4.31271 5.37104 4.31271 3.01625 0 5.10646-1.66688 5.10646-4.18042 0-2.43417-1.66688-3.51896-3.83646-4.28625z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m154.67845 120.75501h5.82062c3.4925 0 5.68854 2.16959 5.68854 5.3975 0 3.30729-2.2225 5.50334-5.63562 5.50334h-2.91042v7.1652h-2.96312zm2.96312 8.6175h2.46063c1.905 0 2.91041-1.11125 2.91041-3.175 0-2.01083-0.97896-3.14854-2.83104-3.14854h-2.54z"
+                            stroke-width=".264583" />
+                        <path
+                            d="m169.30941 120.75501h3.19313l6.23437 18.06604-3.15 0.0573-4.665-14.73521-4.78917 14.67791h-3.00333z"
+                            stroke-width=".264583" />
+                    </g>
+                </svg>
+            </a>
+
+            <!-- Right Mobile Control -->
+            <button class="mobile-menu-btn right" onclick="toggleMobileMenu('right')">☰</button>
+
+            <!-- Desktop Nav Wrapper -->
             <div class="nav-wrapper">
                 <button class="nav-arrow nav-arrow-left" onclick="scrollNav(-1)">‹</button>
                 <nav id="main-nav"></nav>
                 <button class="nav-arrow nav-arrow-right" onclick="scrollNav(1)">›</button>
             </div>
-            <a href="About.html" class="logo-link">
-                <img src="Website assets/exposr_name.svg" alt="exposr" class="logo logo-dark">
-                <img src="Website assets/exposr_name - forLightBG.svg" alt="exposr" class="logo logo-light">
-            </a>
         </div>
     </header>
+
+    <!-- Mobile Menus -->
+    <div id="mobile-menu-left" class="mobile-menu-overlay left">
+        <button class="close-menu-btn" onclick="toggleMobileMenu('left')">×</button>
+        <div class="menu-content" id="mobile-collections-list">
+            <!-- Collections injected here -->
+        </div>
+    </div>
+
+    <div id="mobile-menu-right" class="mobile-menu-overlay right">
+        <button class="close-menu-btn" onclick="toggleMobileMenu('right')">×</button>
+        <div class="menu-content" id="mobile-systtem-list">
+            <!-- Auth/Theme/Upload injected here -->
+            <div id="mobile-auth-container"></div>
+            <div class="menu-separator"></div>
+            <button class="theme-toggle-mobile" onclick="toggleTheme()">Light/Dark</button>
+            <button class="nav-upload-btn mobile-upload-only" onclick="triggerUpload()"
+                style="margin-top:20px; width:100%; display:none;">Upload</button>
+        </div>
+    </div>
 
     <div class="gallery" id="gallery"></div>
     <div class="loading-sentinel" id="sentinel">
@@ -1538,6 +1792,10 @@
 
         function renderNav() {
             const nav = document.getElementById('main-nav');
+
+            // Sync Mobile Menus
+            renderMobileMenus();
+
             if (!nav) return;
 
             nav.innerHTML = '';
@@ -1948,6 +2206,78 @@
                 statusDiv.innerText = 'Network Error';
             } finally {
                 btn.disabled = false;
+            }
+        }
+
+        /* Mobile Menu Logic */
+        function toggleMobileMenu(side) {
+            const leftMenu = document.getElementById('mobile-menu-left');
+            const rightMenu = document.getElementById('mobile-menu-right');
+
+            if (side === 'left') {
+                leftMenu.classList.toggle('active');
+                rightMenu.classList.remove('active'); // Close other
+            } else {
+                rightMenu.classList.toggle('active');
+                leftMenu.classList.remove('active'); // Close other
+            }
+        }
+
+        // Close when clicking outside (on overlay)
+        document.querySelectorAll('.mobile-menu-overlay').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if (e.target === el) {
+                    el.classList.remove('active');
+                }
+            });
+        });
+
+        function renderMobileMenus() {
+            // 1. Left Menu: Collections
+            const leftContent = document.getElementById('mobile-collections-list');
+            if (!leftContent) return;
+            leftContent.innerHTML = '';
+
+            const createItem = (label, isActive) => {
+                const item = document.createElement('div');
+                item.className = 'nav-item';
+                item.innerText = label;
+                if (isActive) item.classList.add('active'); // Use active class
+                item.onclick = () => {
+                    switchCollection(label);
+                    toggleMobileMenu('left'); // Close
+                };
+                return item;
+            };
+
+            leftContent.appendChild(createItem('Home', false));
+            if (state.collections) {
+                Object.keys(state.collections).forEach(c => {
+                    leftContent.appendChild(createItem(c, false));
+                });
+            }
+
+            // 2. Right Menu: System
+            const authContainer = document.getElementById('mobile-auth-container');
+            const user = getUser();
+
+            if (user) {
+                authContainer.innerHTML = `
+                     <span class="auth-user-display">Hi, ${user.username}</span>
+                     ${user.role === 'admin' ? '<div style="font-size:0.8rem; color:#888; margin-bottom:10px;">Admin Access</div>' : ''}
+                     <button class="login-trigger-btn" onclick="logout(); toggleMobileMenu('right');">Log Out</button>
+                 `;
+
+                // Show Upload Btn
+                const upBtns = document.querySelectorAll('.mobile-upload-only');
+                upBtns.forEach(b => b.style.display = (user.role === 'admin') ? 'block' : 'none');
+            } else {
+                authContainer.innerHTML = `
+                     <button class="login-trigger-btn" onclick="openAuthModal('login'); toggleMobileMenu('right');">Log In</button>
+                     <button class="login-trigger-btn" onclick="openAuthModal('signup'); toggleMobileMenu('right');" style="margin-top:10px;">Sign Up</button>
+                 `;
+                const upBtns = document.querySelectorAll('.mobile-upload-only');
+                upBtns.forEach(b => b.style.display = 'none');
             }
         }
     </script>
