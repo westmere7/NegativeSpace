@@ -7,7 +7,7 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { image, filename } = JSON.parse(event.body);
+        const { image, filename, folder } = JSON.parse(event.body);
 
         // validation
         if (!image || !filename) {
@@ -42,19 +42,30 @@ exports.handler = async (event) => {
         const octokit = new Octokit({ auth: token });
         const owner = "westmere7";
         const repo = "NegativeSpace";
+
         // Sanitize filename and add timestamp to prevent overwrites
         const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '');
-        const path = `Photos/${Date.now()}-${safeName}`;
 
-        // The image data comes as "data:image/jpeg;base64,....."
-        // We need to strip the prefix
-        const content = image.split(",")[1];
+        let path;
+        if (folder) {
+            // Sanitize folder name: Allow alphanumerics, spaces, dashes, dots
+            const safeFolder = folder.replace(/[^a-zA-Z0-9 _-]/g, '').trim();
+            path = `Photos/${safeFolder}/${Date.now()}-${safeName}`;
+        } else {
+            path = `Photos/${Date.now()}-${safeName}`;
+        }
+
+        // Handle Base64
+        let content = image;
+        if (image.includes(',')) {
+            content = image.split(",")[1];
+        }
 
         await octokit.repos.createOrUpdateFileContents({
             owner,
             repo,
             path,
-            message: `Web Upload: ${safeName}`,
+            message: `Web Upload: ${safeName} to ${folder || 'Home'}`,
             content: content,
             encoding: "base64",
         });

@@ -924,6 +924,49 @@
         </div>
     </div>
 
+    <!-- Upload Modal -->
+    <div class="lightbox" id="upload-modal">
+        <div class="auth-box">
+            <button class="lightbox-close" style="position: absolute; top: 10px; right: 10px;"
+                onclick="closeUploadModal()">×</button>
+            <h2>Upload Photo</h2>
+            <form id="upload-form" onsubmit="handleUploadSubmit(event)">
+                <!-- File Input -->
+                <div style="margin-bottom: 1rem;">
+                    <label for="file-upload"
+                        style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">Choose Photo:</label>
+                    <input type="file" id="file-upload" accept="image/*" required
+                        style="width: 100%; padding: 0.5rem; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444;">
+                </div>
+
+                <!-- Collection Selector -->
+                <div style="margin-bottom: 1rem;">
+                    <label for="collection-select"
+                        style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">Collection:</label>
+                    <select id="collection-select" onchange="toggleNewCollectionInput()"
+                        style="width: 100%; padding: 0.8rem; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
+                        <option value="home">Home (Root)</option>
+                        <!-- Collections injected via JS -->
+                        <option value="new">+ Create New Collection</option>
+                    </select>
+                </div>
+
+                <!-- New Collection Name (Hidden by default) -->
+                <div id="new-collection-div" style="margin-bottom: 1rem; display: none;">
+                    <label for="new-collection-name"
+                        style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">New Collection
+                        Name:</label>
+                    <input type="text" id="new-collection-name" placeholder="e.g. Summer 2024"
+                        style="width: 100%; padding: 0.8rem; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
+                </div>
+
+                <div id="upload-status" style="margin-bottom: 1rem; font-size: 0.9rem;"></div>
+                <button type="submit" id="upload-submit-btn"
+                    style="width:100%; padding: 0.8rem; background:white; color:black; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Upload</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // State
         const state = {
@@ -1607,69 +1650,112 @@
                 return;
             }
 
-            // Create a hidden file input
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/jpeg, image/png'; // basic restriction
-            input.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
+            openUploadModal();
+        }
 
-                // Simple size check (e.g. 6MB limit for Netlify Functions body)
-                if (file.size > 6 * 1024 * 1024) {
-                    alert('File is too large! Please upload photos under 6MB.');
+        function openUploadModal() {
+            const modal = document.getElementById('upload-modal');
+            const select = document.getElementById('collection-select');
+
+            // Populate select with existing collections + New
+            // Use state.collections which is already loaded
+            let options = '<option value="home">Home (Root)</option>';
+            if (state.collections) {
+                Object.keys(state.collections).forEach(c => {
+                    options += `<option value="${c}">${c}</option>`;
+                });
+            }
+            options += '<option value="new">+ Create New Collection</option>';
+            select.innerHTML = options;
+
+            document.getElementById('new-collection-div').style.display = 'none';
+            document.getElementById('upload-status').innerText = '';
+            document.getElementById('new-collection-name').value = '';
+            document.getElementById('file-upload').value = '';
+
+            modal.classList.add('active');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('upload-modal').classList.remove('active');
+        }
+
+        function toggleNewCollectionInput() {
+            const select = document.getElementById('collection-select');
+            const newDiv = document.getElementById('new-collection-div');
+            newDiv.style.display = select.value === 'new' ? 'block' : 'none';
+        }
+
+        async function handleUploadSubmit(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('file-upload');
+            const select = document.getElementById('collection-select');
+            const newNameInput = document.getElementById('new-collection-name');
+            const statusDiv = document.getElementById('upload-status');
+            const btn = document.getElementById('upload-submit-btn');
+
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            // Determine Folder
+            let folder = '';
+            if (select.value === 'new') {
+                const newName = newNameInput.value.trim();
+                // Validate folder name (simple)
+                if (!newName || !/^[a-zA-Z0-9 _-]+$/.test(newName)) {
+                    alert('Invalid collection name. Use letters, numbers, spaces, dashes, or underscores.');
                     return;
                 }
+                folder = newName;
+            } else if (select.value !== 'home') {
+                folder = select.value;
+            }
 
-                const btn = document.querySelector('.nav-upload-btn');
-                const originalText = btn.innerText;
-                btn.innerText = 'Uploading...';
-                btn.style.opacity = '0.7';
-                btn.disabled = true;
+            statusDiv.innerText = 'Uploading...';
+            btn.disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = async function (evt) {
+                // The result is "data:image/jpeg;base64,..."
+                // We split it here to send cleaner data, OR send full string and handle in backend.
+                // Backend now handles both, but let's stick to sending clean base64 if possible
+                // or just send the whole thing?
+                // Standardizing: Send the split part.
+                const base64Content = evt.target.result.split(',')[1];
+                const user = getUser();
 
                 try {
-                    // Convert to Base64
-                    const reader = new FileReader();
-                    reader.onload = async function () {
-                        const base64Data = reader.result;
+                    const res = await fetch('/.netlify/functions/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${user.token}`
+                        },
+                        body: JSON.stringify({
+                            image: base64Content,
+                            filename: file.name,
+                            folder: folder
+                        })
+                    });
 
-                        try {
-                            const response = await fetch('/.netlify/functions/upload', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${user.token}`
-                                },
-                                body: JSON.stringify({
-                                    image: base64Data,
-                                    filename: file.name
-                                })
-                            });
-
-                            if (response.ok) {
-                                alert('Upload Successful! Your photo will appear in a few minutes after the site rebuilds.');
-                            } else {
-                                const err = await response.json();
-                                alert('Upload Failed: ' + (err.error || 'Unknown error'));
-                            }
-                        } catch (netErr) {
-                            alert('Network Error during upload.');
-                            console.error(netErr);
-                        } finally {
-                            btn.innerText = originalText;
-                            btn.style.opacity = '1';
-                            btn.disabled = false;
-                        }
-                    };
-                    reader.readAsDataURL(file);
-
+                    if (res.ok) {
+                        statusDiv.style.color = 'green';
+                        statusDiv.innerText = 'Upload Successful! Site manages rebuild (~1 min).';
+                        setTimeout(closeUploadModal, 2000);
+                    } else {
+                        const data = await res.json().catch(() => ({}));
+                        statusDiv.style.color = 'red';
+                        statusDiv.innerText = 'Failed: ' + (data.error || 'Unknown error');
+                    }
                 } catch (err) {
                     console.error(err);
-                    btn.innerText = originalText;
+                    statusDiv.style.color = 'red';
+                    statusDiv.innerText = 'Network Error';
+                } finally {
                     btn.disabled = false;
                 }
             };
-            input.click();
+            reader.readAsDataURL(file);
         }
 
         async function deletePhoto(filename, element) {
