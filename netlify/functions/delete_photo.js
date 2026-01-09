@@ -3,19 +3,19 @@ const jwt = require('jsonwebtoken');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== "POST") {
-        return { statusCode: 405, body: JSON.stringify({ error: "Method Not Allowed" }) };
+        return { statusCode: 405, body: "Method Not Allowed" };
     }
 
     try {
         const { filename } = JSON.parse(event.body);
         if (!filename) {
-            return { statusCode: 400, body: JSON.stringify({ error: "Missing filename" }) };
+            return { statusCode: 400, body: "Missing filename" };
         }
 
         // 1. Verify Session (Admin Only)
         const authHeader = event.headers.authorization;
         if (!authHeader) {
-            return { statusCode: 401, body: JSON.stringify({ error: "Unauthorized: Missing token" }) };
+            return { statusCode: 401, body: "Unauthorized: Missing token" };
         }
         const sessionToken = authHeader.replace('Bearer ', '');
         const secret = process.env.JWT_SECRET || process.env.GITHUB_TOKEN;
@@ -24,16 +24,16 @@ exports.handler = async (event) => {
         try {
             decoded = jwt.verify(sessionToken, secret);
         } catch (e) {
-            return { statusCode: 401, body: JSON.stringify({ error: "Unauthorized: Invalid token" }) };
+            return { statusCode: 401, body: "Unauthorized: Invalid token" };
         }
 
         if (decoded.role !== 'admin') {
-            return { statusCode: 403, body: JSON.stringify({ error: "Forbidden: Admins only" }) };
+            return { statusCode: 403, body: "Forbidden: Admins only" };
         }
 
         // 2. Setup GitHub API
         const token = process.env.GITHUB_TOKEN;
-        if (!token) return { statusCode: 500, body: JSON.stringify({ error: "Server configuration error" }) };
+        if (!token) return { statusCode: 500, body: "Server configuration error" };
 
         const octokit = new Octokit({ auth: token });
         const owner = "westmere7";
@@ -46,7 +46,7 @@ exports.handler = async (event) => {
             const file = await octokit.repos.getContent({ owner, repo, path });
             sha = file.data.sha;
         } catch (e) {
-            return { statusCode: 404, body: JSON.stringify({ error: "File not found" }) };
+            return { statusCode: 404, body: "File not found" };
         }
 
         // 4. Delete File

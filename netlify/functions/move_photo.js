@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== "POST") {
-        return { statusCode: 405, body: JSON.stringify({ error: "Method Not Allowed" }) };
+        return { statusCode: 405, body: "Method Not Allowed" };
     }
 
     try {
@@ -11,13 +11,13 @@ exports.handler = async (event) => {
 
         // Validation
         if (!filename) {
-            return { statusCode: 400, body: JSON.stringify({ error: "Missing filename" }) };
+            return { statusCode: 400, body: "Missing filename" };
         }
 
         // Verify Session
         const authHeader = event.headers.authorization;
         if (!authHeader) {
-            return { statusCode: 401, body: JSON.stringify({ error: "Unauthorized: Missing token" }) };
+            return { statusCode: 401, body: "Unauthorized: Missing token" };
         }
         const sessionToken = authHeader.replace('Bearer ', '');
         const secret = process.env.JWT_SECRET || process.env.GITHUB_TOKEN;
@@ -26,11 +26,11 @@ exports.handler = async (event) => {
         try {
             decoded = jwt.verify(sessionToken, secret);
         } catch (e) {
-            return { statusCode: 401, body: JSON.stringify({ error: "Unauthorized: Invalid token" }) };
+            return { statusCode: 401, body: "Unauthorized: Invalid token" };
         }
 
         if (decoded.role !== 'admin') {
-            return { statusCode: 403, body: JSON.stringify({ error: "Forbidden: Admins only" }) };
+            return { statusCode: 403, body: "Forbidden: Admins only" };
         }
 
         const token = process.env.GITHUB_TOKEN;
@@ -57,7 +57,7 @@ exports.handler = async (event) => {
             });
             fileSha = data.sha;
         } catch (e) {
-            return { statusCode: 404, body: JSON.stringify({ error: `Source file not found: ${currentPath}` }) };
+            return { statusCode: 404, body: `Source file not found: ${currentPath}` };
         }
 
         // 2. Get the Blob Content (Base64)
@@ -81,7 +81,7 @@ exports.handler = async (event) => {
         }
 
         if (newPath === currentPath) {
-            return { statusCode: 400, body: JSON.stringify({ error: "Source and destination are the same." }) };
+            return { statusCode: 400, body: "Source and destination are the same." };
         }
 
         // 4. Create File at New Location
