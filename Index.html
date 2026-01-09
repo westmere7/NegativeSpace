@@ -1787,48 +1787,6 @@
             nav.appendChild(toggle);
 
             // User / Login
-            /* Desktop User Display Removed
-            const userDiv = document.createElement('div');
-            userDiv.className = 'nav-user';
-
-            if (user) {
-                userDiv.innerHTML = `
-                    <span>${user.username}</span>
-                    <button class="nav-login-btn" onclick="logout()">Logout</button>
-                `;
-            } else {
-                userDiv.innerHTML = `<button class="nav-login-btn" onclick="openAuthModal()">Login</button>`;
-            }
-            nav.appendChild(userDiv);
-            */
-
-            // Only Append Login/Logout Button for Desktop if needed, OR just remove entirely as per request
-            // "remove the username before the upload button in desktop view"
-            // The upload button is at the START. The user display (Logout/Login) was at the END.
-            // Wait. "before the upload button".
-
-            // Let's re-read the request: "remove the username before the upload button in desktop view"
-            // In my previous edit (Step 457), I moved the Upload button to the START.
-            // The username display (lines 1790-1801) is appended to the END.
-            // So "username before upload button" implies... wait.
-            // If Upload is at start, username is... nowhere near it?
-
-            // Maybe the user means highlighting the text "Westmere" in their screenshot (Step 563) which shows "Westmere LOGOUT" on the RIGHT.
-            // The Upload button is on the LEFT.
-            // The screenshot shows: [UPLOAD] | HOME ... | LIGHT/DARK Westmere LOGOUT.
-            // So "Westmere" is indeed visible on the right.
-
-            // "remove the username before the upload button"
-            // This phrasing is confusing. "before the upload button".
-            // If the upload button is on the left, "before" would be... nothing?
-            // OR maybe they mean "remove the username (Westmere) [which is] before the [Logout] button"?
-            // "Westmere LOGOUT". Yes. Westmere is before Logout.
-
-            // So I should remove the `<span>${user.username}</span>` but keep the Logout button?
-            // "remove the username ... in desktop view".
-
-            // Let's modify the code to remove the username span but keep the logout button.
-
             const userDiv = document.createElement('div');
             userDiv.className = 'nav-user';
 
