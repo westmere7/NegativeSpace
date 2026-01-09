@@ -1555,13 +1555,33 @@
                 return item;
             };
 
+            // Upload Button (Only if Admin)
+            const user = getUser();
+            if (user && user.role === 'admin') {
+                const uploadBtn = document.createElement('button');
+                uploadBtn.className = 'nav-upload-btn';
+                uploadBtn.innerText = 'Upload';
+                uploadBtn.onclick = triggerUpload;
+
+                // Add to start of nav
+                nav.appendChild(uploadBtn);
+
+                // Add Separator after upload button
+                const sep = document.createElement('div');
+                sep.className = 'nav-separator';
+                nav.appendChild(sep);
+
+                // Show Mobile Upload Btn
+                document.body.classList.add('is-admin');
+            } else {
+                document.body.classList.remove('is-admin');
+            }
+
             nav.appendChild(createItem('Home', true));
 
             Object.keys(state.collections).forEach(name => {
                 nav.appendChild(createItem(name));
             });
-
-
 
             // Add Separator
             const separator = document.createElement('div');
@@ -1574,30 +1594,10 @@
             toggle.className = 'theme-toggle';
             toggle.onclick = toggleTheme;
 
-            // Icons
-            // Icons
-            const icon = `<svg viewBox="0 0 8.46666 8.46667" fill="currentColor"><g transform="translate(-487.865 81.136)"><path d="m492.09881-80.34216c-1.89649 0-3.4401 1.543096-3.4401 3.439583 0 1.896488 1.54361 3.4401 3.4401 3.4401 1.8965 0 3.4401-1.543612 3.4401-3.4401 0-1.896487-1.5436-3.439583-3.4401-3.439583zm.2651.541569c1.48562.133364 2.6448 1.376901 2.6448 2.898014 0 1.521115-1.15918 2.764651-2.6448 2.898015z" stroke-width="0"/></g></svg>`;
-
             // Text instead of Icon
             toggle.innerText = "Light/Dark";
             toggle.title = isLight ? "Switch to Dark Mode" : "Switch to Light Mode";
             nav.appendChild(toggle);
-
-            // Upload Button (Only if Admin)
-            const user = getUser();
-            if (user && user.role === 'admin') {
-                const uploadBtn = document.createElement('button');
-                uploadBtn.className = 'nav-upload-btn';
-                uploadBtn.innerText = 'Upload'; // Boxed and dominant
-                uploadBtn.onclick = triggerUpload;
-                nav.appendChild(uploadBtn);
-
-                // Show Mobile Upload Btn
-                document.body.classList.add('is-admin');
-            } else {
-                // Hide Mobile Upload Btn
-                document.body.classList.remove('is-admin');
-            }
 
             // User / Login
             const userDiv = document.createElement('div');
