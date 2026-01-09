@@ -838,14 +838,40 @@
                 order: 1;
             }
 
-            .mobile-upload-btn {
-                display: none;
-                /* Default hidden */
+            .mobile-user-row {
+                display: flex;
+                /* Flex on mobile */
                 order: 2;
+                width: 100%;
+                justify-content: space-between;
+                /* Spread upload and user */
+                align-items: center;
                 margin-bottom: 0.5rem;
             }
 
-            /* Only show if admin */
+            .mobile-upload-btn {
+                display: block;
+                width: auto;
+                /* Not full width anymore */
+                margin: 0;
+                /* Reset desktop style overrides if needed */
+                background: var(--text-color);
+                color: var(--bg-color);
+                border: 1px solid var(--text-color);
+                padding: 0.5rem 1.2rem;
+            }
+
+            .mobile-user-info {
+                display: flex;
+                /* Visible on mobile */
+            }
+
+            /* Hide Desktop nav user items to prevent duplication */
+            .nav-user {
+                display: none;
+            }
+
+            /* Ensure admin class check works */
             body.is-admin .mobile-upload-btn {
                 display: block;
             }
@@ -870,7 +896,10 @@
 <body>
     <header id="main-header">
         <div class="header-container">
-            <button class="nav-upload-btn mobile-upload-btn" onclick="triggerUpload()">Upload</button>
+            <div class="mobile-user-row">
+                <button class="nav-upload-btn mobile-upload-btn" onclick="triggerUpload()">Upload</button>
+                <div id="mobile-user-info" class="mobile-user-info"></div>
+            </div>
             <div class="nav-wrapper">
                 <button class="nav-arrow nav-arrow-left" onclick="scrollNav(-1)">‹</button>
                 <nav id="main-nav"></nav>
