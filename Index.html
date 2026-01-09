@@ -848,92 +848,21 @@
             /* Only show if admin */
             body.is-admin .mobile-upload-btn {
                 display: block;
-                /* On mobile, this will be handled below to be inline with user */
             }
 
             .nav-wrapper {
                 order: 3;
             }
 
-            /* --- NEW MOBILE LAYOUT (Upload + User on same line) --- */
-            /* 
-               We will use a new logic:
-               Header Container Trigger: column
-               1. Logo
-               2. [Upload] [User/Logout] (New Row)
-               3. Nav Wrapper (Scrollable)
-            */
-
-            /* Hide the separate user div in nav-wrapper? No, we need to move it or clone it?
-               Easier: Hide .nav-user inside .nav-wrapper on mobile.
-               And create a secondary-user-bar for mobile? 
-               OR rely on JS to move elements?
-               
-               Let's try CSS Grid/Flex Ordering if possible.
-               Currently .nav-user is inside #main-nav (inside nav-wrapper). 
-               It's hard to pull it out just with CSS order if parents differ.
-               
-               Let's Use JS to move .nav-user out of #main-nav and into .header-container on mobile?
-               Or just duplicate it.
-               
-               Actually, simpler: 
-               The user wants "Upload button and account name on the same line".
-               The "Upload" button is .mobile-upload-btn.
-               The account name is inside .nav-user.
-               
-               On mobile, we have .header-container (flex-dir: col).
-               
-               Let's make a container `.mobile-actions-row` that holds both.
-               Since we can't easily reparent with CSS, let's use JS or 
-               just style `.nav-user` and `.mobile-upload-btn` to appear side-by-side using `order`?
-               But .nav-user is deep inside .nav-wrapper -> #main-nav.
-               
-               Solution:
-               We will create a specific `.mobile-user-actions` div in HTML structure 
-               that contains the Upload button and a User placeholder.
-               JS will fill it.
-            */
-        }
-
-        /* Desktop Changes for Upload Button */
-        @media (min-width: 601px) {
-            .mobile-upload-btn {
+            .nav-arrow {
                 display: none;
-                /* Default hidden */
-                margin-right: 20px;
-                background: transparent;
-                color: var(--text-color);
-                border: 1px solid var(--text-color);
-                padding: 0.4rem 1rem;
-                /* Smaller */
-                font-size: 0.75rem;
-                margin-bottom: 0;
-                width: auto;
+                /* Hide arrows on mobile as requested */
             }
 
-            body.is-admin .mobile-upload-btn {
-                display: block;
+            /* Auth Box Mobile overrides */
+            .auth-box {
+                width: 90%;
             }
-
-            /* Hide the one in the menu */
-            .nav-upload-btn {
-                display: none !important;
-            }
-        }
-
-        .nav-wrapper {
-            order: 3;
-        }
-
-        .nav-arrow {
-            display: none;
-            /* Hide arrows on mobile as requested */
-        }
-
-        /* Auth Box Mobile overrides */
-        .auth-box {
-            width: 90%;
-        }
         }
     </style>
 </head>
@@ -1534,96 +1463,35 @@
             toggle.title = isLight ? "Switch to Dark Mode" : "Switch to Light Mode";
             nav.appendChild(toggle);
 
-            // Mobile Actions Row Logic (Upload + User)
-            let mobileRow = document.querySelector('.mobile-actions-row');
-            if (!mobileRow) {
-                mobileRow = document.createElement('div');
-                mobileRow.className = 'mobile-actions-row';
-                // Insert after logo (helper function or just append to header?)
-                // header structure: logo-link, mobile-upload-btn, nav-wrapper
-                // We want: logo, mobile-row, nav-wrapper
-                const headerContainer = document.querySelector('.header-container');
-                const navWrapper = document.querySelector('.nav-wrapper');
-                if (headerContainer && navWrapper) {
-                    headerContainer.insertBefore(mobileRow, navWrapper);
-                }
-            }
-            mobileRow.innerHTML = ''; // Reset
-
-            // User Info for Mobile Row
+            // Upload Button (Only if Admin)
             const user = getUser();
-
-            // 1. Upload Button (Mobile)
-            // Existing .mobile-upload-btn is in DOM. We can move it or clone it? 
-            // It's cleaner to just render a new one inside the row if Admin.
-            // But we already have one. Let's move the existing one into the row? 
-            // Or just create a new button there and hide the old one.
-            // Let's create fresh elements for the row to be safe.
-
             if (user && user.role === 'admin') {
-                const mobUpload = document.createElement('button');
-                mobUpload.className = 'mobile-upload-btn'; // reuse class style? 
-                // Wait, existing CSS hides .mobile-upload-btn on desktop. 
-                // We want this row ONLY on mobile? 
-                // Actually, simply:
-                // Desktop: Separate Upload Btn (Left of Nav)
-                // Mobile: Upload Btn inside Row.
+                const uploadBtn = document.createElement('button');
+                uploadBtn.className = 'nav-upload-btn';
+                uploadBtn.innerText = 'Upload'; // Boxed and dominant
+                uploadBtn.onclick = triggerUpload;
+                nav.appendChild(uploadBtn);
 
-                mobUpload.innerText = "Upload";
-                mobUpload.onclick = triggerUpload;
-
-                // Add specific class to avoid desktop conflict if needed, or rely on wrapper media query
-                mobileRow.appendChild(mobUpload);
-            }
-
-            // 2. User Info (Mobile)
-            if (user) {
-                const mobUser = document.createElement('div');
-                mobUser.className = 'nav-user'; // reuse style
-                mobUser.innerHTML = `<span>${user.username}</span> <button class="nav-login-btn" onclick="logout()">Logout</button>`;
-                mobileRow.appendChild(mobUser);
+                // Show Mobile Upload Btn
+                document.body.classList.add('is-admin');
             } else {
-                const mobLogin = document.createElement('div');
-                mobLogin.className = 'nav-user';
-                mobLogin.innerHTML = `<button class="nav-login-btn" onclick="openAuthModal()">Login</button>`;
-                mobileRow.appendChild(mobLogin);
+                // Hide Mobile Upload Btn
+                document.body.classList.remove('is-admin');
             }
 
-            // Desktop Nav Logic (Existing)
-            // ...
+            // User / Login
+            const userDiv = document.createElement('div');
+            userDiv.className = 'nav-user';
 
-            // Upload Button (Desktop Only - separate element logic handled via CSS on .mobile-upload-btn which is essentially the one we want on Left, but wait..)
-            // The user wants "Keep upload button on left" on Desktop.
-            // This corresponds to the .mobile-upload-btn class element that sits in .header-container.
-            // So we should NOT move that element if we want it for desktop.
-            // We should CLONE or create a separate one for the Mobile Row? 
-
-            // Actually, if we move it into .mobile-actions-row, then on Desktop .mobile-actions-row needs to be hidden?
-            // Yes. 
-            // And for Desktop, we need an upload button. 
-            // Let's create a `.desktop-upload-btn` explicitly to avoid confusion? 
-            // Or just use the one in Nav? User said "Remove one on left, but keep upload button on left". 
-            // Let's assume they want the one OUTSIDE the nav.
-
-            // Refined Plan:
-            // 1. .mobile-actions-row -> Visible only on Mobile. Contains Upload + User.
-            // 2. .desktop-actions -> Visible only on Desktop. Contains Upload. (Placed before Nav).
-            // 3. User info in Nav -> Visible on Desktop. Hidden on Mobile? 
-            //    "account name should be on same line [as upload button on mobile], rest of menu on own line".
-            //    This implies User info is NOT in the menu line on mobile.
-
-            // So: 
-            // Desktop: Logo | Upload | Nav (Home... User)
-            // Mobile: Logo 
-            //         Upload | User 
-            //         Nav (Home...)
-
-            // Implementation:
-            // - Add .desktop-upload-btn to header (visible desktop only).
-            // - Add .mobile-actions-row to header (visible mobile only).
-            // - Hide .nav-user in main-nav on Mobile.
-
-            // Let's implement this logic.
+            if (user) {
+                userDiv.innerHTML = `
+                    <span>${user.username}</span>
+                    <button class="nav-login-btn" onclick="logout()">Logout</button>
+                `;
+            } else {
+                userDiv.innerHTML = `<button class="nav-login-btn" onclick="openAuthModal()">Login</button>`;
+            }
+            nav.appendChild(userDiv);
         }
 
         // --- Auth Logic ---
