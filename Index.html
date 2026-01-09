@@ -728,6 +728,13 @@
             header {
                 padding: 1rem 0;
                 position: sticky;
+                top: 0;
+                z-index: 1000;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            header.header-hidden {
+                transform: translateY(-100%);
             }
 
             .header-container {
@@ -1703,9 +1710,10 @@
 
         /* New Logic */
 
-        // Sticky Header Logic
+        // Sticky Header Logic (Desktop/General)
         const header = document.getElementById('main-header');
         window.addEventListener('scroll', () => {
+            // Sticky background effect
             if (window.scrollY > 50) {
                 header.classList.add('sticky');
             } else {
@@ -2210,4 +2218,27 @@
                 upBtns.forEach(b => b.style.display = 'none');
             }
         }
+        /* Scroll Hide/Show Logic for Mobile */
+        let lastScrollTop = 0;
+
+
+        window.addEventListener('scroll', () => {
+            // Only active on mobile
+            if (window.innerWidth > 600) return;
+
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling Down
+                header.classList.add('header-hidden');
+                // Close menus if open
+                document.getElementById('mobile-menu-left').classList.remove('active');
+                document.getElementById('mobile-menu-right').classList.remove('active');
+            } else {
+                // Scrolling Up or at top
+                header.classList.remove('header-hidden');
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+        }, { passive: true });
     </script>
