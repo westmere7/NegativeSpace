@@ -1,5 +1,4 @@
 const { Octokit } = require("@octokit/rest");
-const bcrypt = require('bcryptjs');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== "POST") {
@@ -16,6 +15,10 @@ exports.handler = async (event) => {
         // Basic Username Validation (No commas allowed to protect CSV)
         if (username.includes(',') || username.length < 3) {
             return { statusCode: 400, body: JSON.stringify({ error: "Invalid username" }) };
+        }
+        // Basic Password Validation (No commas)
+        if (password.includes(',')) {
+            return { statusCode: 400, body: JSON.stringify({ error: "Password cannot contain commas" }) };
         }
 
         const token = process.env.GITHUB_TOKEN;
@@ -37,21 +40,18 @@ exports.handler = async (event) => {
         const content = Buffer.from(file.data.content, "base64").toString("utf-8");
 
         // 2. Check overlap
-        // Simple check: does ",username," or "^username," exist?
-        // Safer: parse.
         const lines = content.trim().split('\n');
         const existingUser = lines.slice(1).find(line => line.startsWith(username + ','));
         if (existingUser) {
             return { statusCode: 400, body: JSON.stringify({ error: "User already exists" }) };
         }
 
-        // 3. Hash Password
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password, salt);
+        // 3. NO Hash - Plain Text
+        const storedPassword = password;
 
         // 4. Append
         // Default role is "user"
-        const newLine = `\n${username},${hash},user`;
+        const newLine = `\n${username},${storedPassword},user`;
         const newContent = content.trim() + newLine;
 
         // 5. Commit

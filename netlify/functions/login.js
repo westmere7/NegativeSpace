@@ -1,18 +1,21 @@
 const { Octokit } = require("@octokit/rest");
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// Helper to parse CSV line using regex to handle commas inside quotes if needed, 
-// but for simple username,hash,role, splitting by comma is fine as long as username doesn't have commas.
-// We'll enforce no commas in username.
+// Helper to parse CSV line
 function parseCSV(content) {
     const lines = content.trim().split('\n');
     const users = [];
     // Skip header
     for (let i = 1; i < lines.length; i++) {
-        const [username, hash, role] = lines[i].split(',');
-        if (username && hash) {
-            users.push({ username, hash, role: role ? role.trim() : 'user' });
+        const parts = lines[i].split(',');
+        // Handle potential glitches if user manually edited with spaces
+        if (parts.length >= 3) {
+            const username = parts[0].trim();
+            const password = parts[1].trim(); // Plain text now
+            const role = parts[2].trim();
+            if (username && password) {
+                users.push({ username, password, role });
+            }
         }
     }
     return users;
@@ -36,7 +39,6 @@ exports.handler = async (event) => {
         const octokit = new Octokit({ auth: token });
 
         // Read users.csv from GitHub "data/users.csv"
-        // We strictly read from the repo to ensure single source of truth
         const file = await octokit.repos.getContent({
             owner: "westmere7",
             repo: "NegativeSpace",
@@ -52,15 +54,12 @@ exports.handler = async (event) => {
             return { statusCode: 401, body: JSON.stringify({ error: "Invalid credentials" }) };
         }
 
-        // Verify Password
-        const isValid = bcrypt.compareSync(password, user.hash);
-        if (!isValid) {
+        // Verify Password (PLAIN TEXT comparison)
+        if (user.password !== password) {
             return { statusCode: 401, body: JSON.stringify({ error: "Invalid credentials" }) };
         }
 
         // Generate JWT
-        // Secret should be in env var, fallback to a hardcoded one for this specific instruction context if not set,
-        // but ideally we ask user to set JWT_SECRET. for now we'll use a derived secret from GITHUB_TOKEN to avoid extra setup.
         const secret = process.env.JWT_SECRET || process.env.GITHUB_TOKEN;
         const sessionToken = jwt.sign({ username: user.username, role: user.role }, secret, { expiresIn: '7d' });
 
