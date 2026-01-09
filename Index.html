@@ -1402,9 +1402,13 @@
 
             const img = document.createElement('img');
             // Use Thumbnail for grid
-            img.src = `Photos/${photo.thumbnail}`;
-            // Store full source for lightbox
-            img.dataset.fullSrc = `Photos/${photo.filename}`;
+            if (photo.thumbnail && (photo.thumbnail.startsWith('blob:') || photo.thumbnail.startsWith('http'))) {
+                img.src = photo.thumbnail;
+                img.dataset.fullSrc = photo.thumbnail; // Use same blob for lightbox
+            } else {
+                img.src = `Photos/${photo.thumbnail}`;
+                img.dataset.fullSrc = `Photos/${photo.filename}`;
+            }
             img.loading = 'lazy';
 
             // Pre-calculate metadata from JSON
@@ -2049,8 +2053,26 @@
 
                     if (res.ok) {
                         statusDiv.style.color = 'green';
-                        statusDiv.innerText = 'Upload Successful! Site manages rebuild (~1 min).';
-                        setTimeout(closeUploadModal, 2000);
+                        statusDiv.innerText = 'Upload Successful! Site rebuilding...';
+
+                        // Optimistic UI Update
+                        const blobUrl = URL.createObjectURL(file);
+                        const tempPhoto = {
+                            filename: folder ? `${folder}/${file.name}` : file.name,
+                            thumbnail: blobUrl,
+                            date: new Date().toISOString(),
+                            exif: { model: 'Uploading...' }
+                        };
+
+                        // Prepend to Gallery
+                        createPhotoElement(tempPhoto, 0);
+                        const newResult = gallery.lastChild;
+                        if (newResult) {
+                            gallery.prepend(newResult);
+                            setTimeout(() => newResult.classList.add('visible'), 50);
+                        }
+
+                        setTimeout(closeUploadModal, 1500);
                     } else {
                         const data = await res.json().catch(() => ({}));
                         statusDiv.style.color = 'red';
