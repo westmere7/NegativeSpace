@@ -14,26 +14,26 @@ const octokit = new Octokit({
 exports.handler = async (event, context) => {
     // 1. Verify Method
     if (event.httpMethod !== "POST") {
-        return { statusCode: 405, body: "Method Not Allowed" };
+        return { statusCode: 405, body: JSON.stringify({ error: "Method Not Allowed" }) };
     }
 
     // 2. Auth Check (Admin Only)
     const token = event.headers.authorization ? event.headers.authorization.split(" ")[1] : null;
-    if (!token) return { statusCode: 401, body: "Unauthorized" };
+    if (!token) return { statusCode: 401, body: JSON.stringify({ error: "Unauthorized" }) };
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         if (decoded.role !== 'admin') {
-            return { statusCode: 403, body: "Forbidden: Admin access required" };
+            return { statusCode: 403, body: JSON.stringify({ error: "Forbidden: Admin access required" }) };
         }
     } catch (err) {
-        return { statusCode: 401, body: "Invalid Token" };
+        return { statusCode: 401, body: JSON.stringify({ error: "Invalid Token" }) };
     }
 
     const { filename, exifData } = JSON.parse(event.body);
 
     if (!filename || !exifData) {
-        return { statusCode: 400, body: "Missing filename or exifData" };
+        return { statusCode: 400, body: JSON.stringify({ error: "Missing filename or exifData" }) };
     }
 
     try {
