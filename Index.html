@@ -1327,16 +1327,50 @@
             state.isLoading = true;
             const batch = state.currentPhotos.slice(state.loadedCount, state.loadedCount + state.batchSize);
 
-            batch.forEach((filename, i) => {
+            batch.forEach((photo, i) => {
                 const globalIndex = state.loadedCount + i;
-                createPhotoElement(filename, globalIndex);
+                createPhotoElement(photo, globalIndex);
             });
 
             state.loadedCount += batch.length;
             state.isLoading = false;
         }
 
-        function createPhotoElement(filename, index) {
+        // Helper to format metadata from JSON
+        function formatMetadata(exif) {
+            if (!exif) return { title: '', details: '', date: '', html: '' };
+
+            const model = exif.model || exif.make || '';
+            const lens = exif.lens || '';
+            const title = model ? model + (lens ? ` + ${lens}` : '') : '';
+
+            const details = [];
+            if (exif.focal_length) details.push(`${exif.focal_length}mm`);
+            if (exif.f_number) details.push(`f/${exif.f_number}`);
+            if (exif.exposure_time) details.push(`${exif.exposure_time}s`);
+            if (exif.iso) details.push(`ISO ${exif.iso}`);
+            if (exif.ev && exif.ev != '0' && exif.ev != 0) {
+                const val = parseFloat(exif.ev);
+                const sign = val > 0 ? '+' : '';
+                details.push(`${sign}${val} EV`);
+            }
+
+            const detailsStr = details.join(' · ');
+            const dateStr = exif.date ? exif.date.replace(/:/g, '-').replace(' ', ' ').substring(0, 16) : ''; // Simple formatting
+
+            return {
+                title: title,
+                details: detailsStr,
+                date: dateStr,
+                html: `
+                    ${title ? `<div class="photo-title">${title}</div>` : ''}
+                    ${dateStr ? `<div class="photo-date">${dateStr}</div>` : ''}
+                    <div class="info-line">${detailsStr}</div>
+                `
+            };
+        }
+
+        function createPhotoElement(photo, index) {
             const item = document.createElement('div');
             item.className = 'photo-item';
 
@@ -1350,7 +1384,7 @@
                 deleteBtn.title = 'Delete Photo';
                 deleteBtn.onclick = (e) => {
                     e.stopPropagation();
-                    deletePhoto(filename, item);
+                    deletePhoto(photo.filename, item);
                 };
                 item.appendChild(deleteBtn);
 
@@ -1361,17 +1395,29 @@
                 moveBtn.title = 'Move Photo';
                 moveBtn.onclick = (e) => {
                     e.stopPropagation();
-                    openMoveModal(filename);
+                    openMoveModal(photo.filename);
                 };
                 item.appendChild(moveBtn);
             }
 
             const img = document.createElement('img');
-            img.src = `Photos/${filename}`;
+            // Use Thumbnail for grid
+            img.src = `Photos/${photo.thumbnail}`;
+            // Store full source for lightbox
+            img.dataset.fullSrc = `Photos/${photo.filename}`;
             img.loading = 'lazy';
+
+            // Pre-calculate metadata from JSON
+            const meta = formatMetadata(photo.exif);
+
+            // Store metadata for lightbox
+            img.dataset.metaTitle = meta.title;
+            img.dataset.metaDetails = meta.details;
+            img.dataset.metaDate = meta.date;
 
             const info = document.createElement('div');
             info.className = 'photo-info';
+            info.innerHTML = meta.html;
 
             // Wait for image dimensions to determine grid span
             img.onload = function () {
@@ -1380,19 +1426,6 @@
 
                 const ratio = this.naturalWidth / this.naturalHeight;
                 assignGridSpan(item, ratio);
-
-                // Load EXIF
-                EXIF.getData(img, function () {
-                    const exifData = EXIF.getAllTags(this);
-                    const meta = extractExifInfo(exifData);
-                    info.innerHTML = meta.html;
-
-                    // Store metadata for lightbox
-                    // (We use dataset on the image element instead)
-                    img.dataset.metaTitle = meta.title;
-                    img.dataset.metaDetails = meta.details;
-                    img.dataset.metaDate = meta.date;
-                });
             };
 
             item.appendChild(img);
@@ -1555,7 +1588,7 @@
 
             if (!targetImg) return;
 
-            lightboxImg.src = targetImg.src;
+            lightboxImg.src = targetImg.dataset.fullSrc || targetImg.src;
 
             const infoBox = document.getElementById('lightbox-info');
             const title = targetImg.dataset.metaTitle || '';

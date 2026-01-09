@@ -1,116 +1,1708 @@
 {
   "home": [
-    "DSC04183.jpg",
-    "DSC04148.jpg",
-    "DSC04143.jpg",
-    "DSC04126.jpg",
-    "DSC04068.jpg",
-    "DSC04045.jpg",
-    "DSC03988.jpg",
-    "DSC03932.jpg",
-    "DSC03891.jpg",
-    "DSC03771.jpg",
-    "DSC03761.jpg",
-    "DSC03731-Pano-Edit.jpg",
-    "DSC03721.jpg",
-    "DSC03697.jpg",
-    "DSC03651.jpg",
-    "DSC03546.jpg",
-    "DSC03524.jpg",
-    "DSC03233.jpg",
-    "DSC03152.jpg",
-    "DSC02899.jpg",
-    "DSC02882.jpg",
-    "DSC02618.jpg",
-    "DSC02523.jpg",
-    "DSC02333.jpg",
-    "DSC02325.jpg",
-    "DSC02145.jpg",
-    "DSC01459.jpg",
-    "DSC01414.jpg",
-    "DSC01359.jpg",
-    "DSC01348.jpg",
-    "DSC09428.jpg",
-    "DSC09392.jpg",
-    "DSC09312.jpg",
-    "_A7X0505.jpg",
-    "A7X08262.jpg",
-    "A7X05589.jpg",
-    "A7X05509.jpg",
-    "A7X02922.jpg",
-    "A7X02908.jpg",
-    "A7X02875.jpg",
-    "A7X02768.jpg",
-    "A7X02719.jpg",
-    "A7X02624.jpg",
-    "A7X02615.jpg",
-    "A7X02247.jpg",
-    "A7X02241.jpg",
-    "A7X01509.jpg",
-    "A7X01012.jpg",
-    "A7X00780.jpg",
-    "A7X09872.jpg",
-    "A7X08903-Edit.jpg",
-    "A7X08615.jpg",
-    "A7X08608.jpg",
-    "A7X08596.jpg",
-    "A7X08009.jpg",
-    "A7X07847.jpg",
-    "A7X07594.jpg",
-    "A7X07090.jpg",
-    "A7X06117-Edit.jpg",
-    "A7X05898-Edit.jpg",
-    "A7X05228.jpg",
-    "A7X05085-Edit.jpg",
-    "A7X04429-Edit.jpg",
-    "A7X04419.jpg",
-    "A7X04324-Edit.jpg",
-    "A7X03798-Edit.jpg",
-    "A7X02510.jpg",
-    "A7X01741.jpg",
-    "A7X00093.jpg",
-    "A7201489.jpg",
-    "A7200678-Edit.jpg",
-    "Kids_D2.jpg",
-    "IMG_3928.jpg"
+    {
+      "filename": "DSC04499.jpg",
+      "thumbnail": "thumbnails/DSC04499.jpg",
+      "date": "2026:01:09 19:32:34",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 500,
+        "exposure_time": "1/100",
+        "focal_length": 35,
+        "ev": -2.0,
+        "date": "2026:01:09 19:32:34"
+      }
+    },
+    {
+      "filename": "DSC04497.jpg",
+      "thumbnail": "thumbnails/DSC04497.jpg",
+      "date": "2026:01:09 19:32:05",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 800,
+        "exposure_time": "1/100",
+        "focal_length": 35,
+        "ev": -2.0,
+        "date": "2026:01:09 19:32:05"
+      }
+    },
+    {
+      "filename": "DSC04484.jpg",
+      "thumbnail": "thumbnails/DSC04484.jpg",
+      "date": "2026:01:09 13:15:29",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 8.0,
+        "iso": 100,
+        "exposure_time": "1/125",
+        "focal_length": 35,
+        "ev": -0.3,
+        "date": "2026:01:09 13:15:29"
+      }
+    },
+    {
+      "filename": "DSC04183.jpg",
+      "thumbnail": "thumbnails/DSC04183.jpg",
+      "date": "2026:01:04 13:39:34",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/2000",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2026:01:04 13:39:34"
+      }
+    },
+    {
+      "filename": "DSC04143.jpg",
+      "thumbnail": "thumbnails/DSC04143.jpg",
+      "date": "2026:01:03 16:29:48",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/1000",
+        "focal_length": 35,
+        "ev": -1.7,
+        "date": "2026:01:03 16:29:48"
+      }
+    },
+    {
+      "filename": "DSC04068.jpg",
+      "thumbnail": "thumbnails/DSC04068.jpg",
+      "date": "2026:01:03 15:31:39",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/1250",
+        "focal_length": 35,
+        "ev": -1.3,
+        "date": "2026:01:03 15:31:39"
+      }
+    },
+    {
+      "filename": "DSC04045.jpg",
+      "thumbnail": "thumbnails/DSC04045.jpg",
+      "date": "2026:01:02 20:39:33",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 2000,
+        "exposure_time": "1/50",
+        "focal_length": 35,
+        "ev": -1.7,
+        "date": "2026:01:02 20:39:33"
+      }
+    },
+    {
+      "filename": "DSC03988.jpg",
+      "thumbnail": "thumbnails/DSC03988.jpg",
+      "date": "2026:01:01 18:35:16",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 2000,
+        "exposure_time": "1/50",
+        "focal_length": 35,
+        "ev": -1.3,
+        "date": "2026:01:01 18:35:16"
+      }
+    },
+    {
+      "filename": "DSC03932.jpg",
+      "thumbnail": "thumbnails/DSC03932.jpg",
+      "date": "2025:12:30 22:51:00",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 3200,
+        "exposure_time": "1/50",
+        "focal_length": 35,
+        "ev": -2.3,
+        "date": "2025:12:30 22:51:00"
+      }
+    },
+    {
+      "filename": "DSC03891.jpg",
+      "thumbnail": "thumbnails/DSC03891.jpg",
+      "date": "2025:12:30 19:31:27",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 1600,
+        "exposure_time": "1/50",
+        "focal_length": 35,
+        "ev": -1.7,
+        "date": "2025:12:30 19:31:27"
+      }
+    },
+    {
+      "filename": "DSC03771.jpg",
+      "thumbnail": "thumbnails/DSC03771.jpg",
+      "date": "2025:12:28 17:28:16",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/100",
+        "focal_length": 35,
+        "ev": -1.3,
+        "date": "2025:12:28 17:28:16"
+      }
+    },
+    {
+      "filename": "DSC03761.jpg",
+      "thumbnail": "thumbnails/DSC03761.jpg",
+      "date": "2025:12:28 17:11:56",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 8.0,
+        "iso": 400,
+        "exposure_time": "1/100",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:28 17:11:56"
+      }
+    },
+    {
+      "filename": "DSC03731-Pano-Edit.jpg",
+      "thumbnail": "thumbnails/DSC03731-Pano-Edit.jpg",
+      "date": "2025:12:28 16:41:36",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 8.0,
+        "iso": 100,
+        "exposure_time": "1/125",
+        "focal_length": 35,
+        "ev": -0.7,
+        "date": "2025:12:28 16:41:36"
+      }
+    },
+    {
+      "filename": "DSC03697.jpg",
+      "thumbnail": "thumbnails/DSC03697.jpg",
+      "date": "2025:12:28 15:04:44",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 4.0,
+        "iso": 50,
+        "exposure_time": "1/320",
+        "focal_length": 35,
+        "ev": -0.3,
+        "date": "2025:12:28 15:04:44"
+      }
+    },
+    {
+      "filename": "DSC03651.jpg",
+      "thumbnail": "thumbnails/DSC03651.jpg",
+      "date": "2025:12:28 14:23:52",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2 w.Wide converter",
+        "lens": "35mm F2.0",
+        "f_number": 8.0,
+        "iso": 100,
+        "exposure_time": "1/60",
+        "focal_length": 35,
+        "ev": -0.3,
+        "date": "2025:12:28 14:23:52"
+      }
+    },
+    {
+      "filename": "DSC03524.jpg",
+      "thumbnail": "thumbnails/DSC03524.jpg",
+      "date": "2025:12:27 19:24:31",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 4.0,
+        "iso": 1000,
+        "exposure_time": "1/50",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:27 19:24:31"
+      }
+    },
+    {
+      "filename": "DSC03233.jpg",
+      "thumbnail": "thumbnails/DSC03233.jpg",
+      "date": "2025:12:26 13:03:45",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 320,
+        "exposure_time": "1/160",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:26 13:03:45"
+      }
+    },
+    {
+      "filename": "DSC03152.jpg",
+      "thumbnail": "thumbnails/DSC03152.jpg",
+      "date": "2025:12:25 19:25:26",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 1600,
+        "exposure_time": "1/100",
+        "focal_length": 35,
+        "ev": -0.7,
+        "date": "2025:12:25 19:25:26"
+      }
+    },
+    {
+      "filename": "DSC02899.jpg",
+      "thumbnail": "thumbnails/DSC02899.jpg",
+      "date": "2025:12:25 13:24:48",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/100",
+        "focal_length": 35,
+        "ev": -0.7,
+        "date": "2025:12:25 13:24:48"
+      }
+    },
+    {
+      "filename": "DSC02882.jpg",
+      "thumbnail": "thumbnails/DSC02882.jpg",
+      "date": "2025:12:25 13:12:49",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1RM2",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 250,
+        "exposure_time": "1/100",
+        "focal_length": 35,
+        "ev": -0.3,
+        "date": "2025:12:25 13:12:49"
+      }
+    },
+    {
+      "filename": "DSC02618.jpg",
+      "thumbnail": "thumbnails/DSC02618.jpg",
+      "date": "2025:12:24 14:29:15",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/500",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:24 14:29:15"
+      }
+    },
+    {
+      "filename": "DSC02523.jpg",
+      "thumbnail": "thumbnails/DSC02523.jpg",
+      "date": "2025:12:23 17:18:32",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/1600",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:23 17:18:32"
+      }
+    },
+    {
+      "filename": "DSC02333.jpg",
+      "thumbnail": "thumbnails/DSC02333.jpg",
+      "date": "2025:12:21 16:15:45",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 5.6,
+        "iso": 250,
+        "exposure_time": "1/80",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:21 16:15:45"
+      }
+    },
+    {
+      "filename": "DSC02325.jpg",
+      "thumbnail": "thumbnails/DSC02325.jpg",
+      "date": "2025:12:21 16:07:53",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/800",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:21 16:07:53"
+      }
+    },
+    {
+      "filename": "DSC02145.jpg",
+      "thumbnail": "thumbnails/DSC02145.jpg",
+      "date": "2025:12:20 13:44:05",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/2000",
+        "focal_length": 35,
+        "ev": -1.0,
+        "date": "2025:12:20 13:44:05"
+      }
+    },
+    {
+      "filename": "DSC01459.jpg",
+      "thumbnail": "thumbnails/DSC01459.jpg",
+      "date": "2025:12:13 11:51:32",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/500",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:13 11:51:32"
+      }
+    },
+    {
+      "filename": "DSC01414.jpg",
+      "thumbnail": "thumbnails/DSC01414.jpg",
+      "date": "2025:12:12 09:47:14",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 100,
+        "exposure_time": "1/1600",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:12 09:47:14"
+      }
+    },
+    {
+      "filename": "DSC01359.jpg",
+      "thumbnail": "thumbnails/DSC01359.jpg",
+      "date": "2025:12:11 19:48:32",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 1000,
+        "exposure_time": "1/80",
+        "focal_length": 35,
+        "ev": 0.0,
+        "date": "2025:12:11 19:48:32"
+      }
+    },
+    {
+      "filename": "DSC01348.jpg",
+      "thumbnail": "thumbnails/DSC01348.jpg",
+      "date": "2025:12:11 19:32:31",
+      "exif": {
+        "make": "SONY",
+        "model": "DSC-RX1R",
+        "lens": "35mm F2.0",
+        "f_number": 2.0,
+        "iso": 6400,
+        "exposure_time": "1/60",
+        "focal_length": 35,
+        "ev": -0.7,
+        "date": "2025:12:11 19:32:31"
+      }
+    },
+    {
+      "filename": "DSC09428.jpg",
+      "thumbnail": "thumbnails/DSC09428.jpg",
+      "date": "2025:11:29 11:03:17",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 100,
+        "exposure_time": "1/1600",
+        "focal_length": 50,
+        "ev": -2.7,
+        "date": "2025:11:29 11:03:17"
+      }
+    },
+    {
+      "filename": "DSC09392.jpg",
+      "thumbnail": "thumbnails/DSC09392.jpg",
+      "date": "2025:11:29 10:12:11",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 100,
+        "exposure_time": "1/8000",
+        "focal_length": 50,
+        "ev": -2.0,
+        "date": "2025:11:29 10:12:11"
+      }
+    },
+    {
+      "filename": "DSC09312.jpg",
+      "thumbnail": "thumbnails/DSC09312.jpg",
+      "date": "2025:11:29 08:28:58",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 100,
+        "exposure_time": "1/8000",
+        "focal_length": 50,
+        "ev": -0.7,
+        "date": "2025:11:29 08:28:58"
+      }
+    },
+    {
+      "filename": "_A7X0505.jpg",
+      "thumbnail": "thumbnails/_A7X0505.jpg",
+      "date": "2021:01:31 17:41:26",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 2.8,
+        "iso": 100,
+        "exposure_time": "1/200",
+        "focal_length": 20,
+        "ev": -0.3,
+        "date": "2021:01:31 17:41:26"
+      }
+    },
+    {
+      "filename": "_A7X9716.jpg",
+      "thumbnail": "thumbnails/_A7X9716.jpg",
+      "date": "2020:12:27 18:44:41",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "SAMYANG AF 85mm F1.4",
+        "f_number": 1.4,
+        "iso": 5000,
+        "exposure_time": "1/200",
+        "focal_length": 85,
+        "ev": 0.0,
+        "date": "2020:12:27 18:44:41"
+      }
+    },
+    {
+      "filename": "A7X08262.jpg",
+      "thumbnail": "thumbnails/A7X08262.jpg",
+      "date": "2020:08:09 18:00:09",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 3.5,
+        "iso": 100,
+        "exposure_time": "1/160",
+        "focal_length": 20,
+        "ev": 0.0,
+        "date": "2020:08:09 18:00:09"
+      }
+    },
+    {
+      "filename": "A7X05589.jpg",
+      "thumbnail": "thumbnails/A7X05589.jpg",
+      "date": "2020:05:15 14:17:27",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 5.6,
+        "iso": 100,
+        "exposure_time": "1/100",
+        "focal_length": 20,
+        "ev": 0.0,
+        "date": "2020:05:15 14:17:27"
+      }
+    },
+    {
+      "filename": "A7X05509.jpg",
+      "thumbnail": "thumbnails/A7X05509.jpg",
+      "date": "2020:05:14 17:15:00",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 2.8,
+        "iso": 100,
+        "exposure_time": "1/320",
+        "focal_length": 20,
+        "ev": 0.0,
+        "date": "2020:05:14 17:15:00"
+      }
+    },
+    {
+      "filename": "A7X02922.jpg",
+      "thumbnail": "thumbnails/A7X02922.jpg",
+      "date": "2020:01:28 18:01:03",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 2.8,
+        "iso": 2500,
+        "exposure_time": "1/60",
+        "focal_length": 20,
+        "ev": -0.3,
+        "date": "2020:01:28 18:01:03"
+      }
+    },
+    {
+      "filename": "A7X02908.jpg",
+      "thumbnail": "thumbnails/A7X02908.jpg",
+      "date": "2020:01:27 18:06:16",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 13.0,
+        "iso": 100,
+        "exposure_time": "1/13",
+        "focal_length": 20,
+        "ev": -1.3,
+        "date": "2020:01:27 18:06:16"
+      }
+    },
+    {
+      "filename": "A7X02875.jpg",
+      "thumbnail": "thumbnails/A7X02875.jpg",
+      "date": "2020:01:26 18:04:12",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 5.6,
+        "iso": 250,
+        "exposure_time": "1/60",
+        "focal_length": 20,
+        "ev": -0.3,
+        "date": "2020:01:26 18:04:12"
+      }
+    },
+    {
+      "filename": "A7X02768.jpg",
+      "thumbnail": "thumbnails/A7X02768.jpg",
+      "date": "2020:01:24 23:08:59",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 55mm F1.8 ZA",
+        "f_number": 1.8,
+        "iso": 20000,
+        "exposure_time": "1/125",
+        "focal_length": 55,
+        "ev": 0.0,
+        "date": "2020:01:24 23:08:59"
+      }
+    },
+    {
+      "filename": "A7X02719.jpg",
+      "thumbnail": "thumbnails/A7X02719.jpg",
+      "date": "2020:01:23 20:01:25",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 2.8,
+        "iso": 65535,
+        "exposure_time": "1/60",
+        "focal_length": 20,
+        "ev": 0.0,
+        "date": "2020:01:23 20:01:25"
+      }
+    },
+    {
+      "filename": "A7X02624.jpg",
+      "thumbnail": "thumbnails/A7X02624.jpg",
+      "date": "2020:01:22 16:38:22",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 10.0,
+        "iso": 160,
+        "exposure_time": "1/60",
+        "focal_length": 20,
+        "ev": 0.0,
+        "date": "2020:01:22 16:38:22"
+      }
+    },
+    {
+      "filename": "A7X02615.jpg",
+      "thumbnail": "thumbnails/A7X02615.jpg",
+      "date": "2020:01:22 16:31:37",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "E 20mm F2.8 F050",
+        "f_number": 2.8,
+        "iso": 100,
+        "exposure_time": "1/800",
+        "focal_length": 20,
+        "ev": -1.3,
+        "date": "2020:01:22 16:31:37"
+      }
+    },
+    {
+      "filename": "A7X02247.jpg",
+      "thumbnail": "thumbnails/A7X02247.jpg",
+      "date": "2020:01:11 16:20:37",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 55mm F1.8 ZA",
+        "f_number": 5.6,
+        "iso": 320,
+        "exposure_time": "1/125",
+        "focal_length": 55,
+        "ev": -1.0,
+        "date": "2020:01:11 16:20:37"
+      }
+    },
+    {
+      "filename": "A7X02241.jpg",
+      "thumbnail": "thumbnails/A7X02241.jpg",
+      "date": "2020:01:11 16:12:41",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 55mm F1.8 ZA",
+        "f_number": 1.8,
+        "iso": 640,
+        "exposure_time": "1/125",
+        "focal_length": 55,
+        "ev": -0.3,
+        "date": "2020:01:11 16:12:41"
+      }
+    },
+    {
+      "filename": "A7X01992.jpg",
+      "thumbnail": "thumbnails/A7X01992.jpg",
+      "date": "2020:01:07 23:33:00",
+      "exif": {
+        "make": "",
+        "model": "",
+        "lens": "",
+        "f_number": "",
+        "iso": "",
+        "exposure_time": "",
+        "focal_length": "",
+        "ev": "",
+        "date": ""
+      }
+    },
+    {
+      "filename": "A7X01750.jpg",
+      "thumbnail": "thumbnails/A7X01750.jpg",
+      "date": "2019:12:24 16:25:56",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 55mm F1.8 ZA",
+        "f_number": 1.8,
+        "iso": 100,
+        "exposure_time": "1/800",
+        "focal_length": 55,
+        "ev": 0.0,
+        "date": "2019:12:24 16:25:56"
+      }
+    },
+    {
+      "filename": "A7X01509.jpg",
+      "thumbnail": "thumbnails/A7X01509.jpg",
+      "date": "2019:12:14 20:02:56",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 55mm F1.8 ZA",
+        "f_number": 1.8,
+        "iso": 6400,
+        "exposure_time": "1/125",
+        "focal_length": 55,
+        "ev": 0.0,
+        "date": "2019:12:14 20:02:56"
+      }
+    },
+    {
+      "filename": "A7X01012.jpg",
+      "thumbnail": "thumbnails/A7X01012.jpg",
+      "date": "2019:11:30 15:22:38",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 55mm F1.8 ZA",
+        "f_number": 5.6,
+        "iso": 100,
+        "exposure_time": "1/200",
+        "focal_length": 55,
+        "ev": 0.0,
+        "date": "2019:11:30 15:22:38"
+      }
+    },
+    {
+      "filename": "A7X00780.jpg",
+      "thumbnail": "thumbnails/A7X00780.jpg",
+      "date": "2019:11:23 18:09:06",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 55mm F1.8 ZA",
+        "f_number": 1.8,
+        "iso": 16000,
+        "exposure_time": "1/125",
+        "focal_length": 55,
+        "ev": -3.0,
+        "date": "2019:11:23 18:09:06"
+      }
+    },
+    {
+      "filename": "A7X09872.jpg",
+      "thumbnail": "thumbnails/A7X09872.jpg",
+      "date": "2019:10:23 20:10:24",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 1.4,
+        "iso": 1250,
+        "exposure_time": "1/60",
+        "focal_length": 24,
+        "ev": 0.0,
+        "date": "2019:10:23 20:10:24"
+      }
+    },
+    {
+      "filename": "A7X08903-Edit.jpg",
+      "thumbnail": "thumbnails/A7X08903-Edit.jpg",
+      "date": "2019:08:17 07:05:10",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 400,
+        "exposure_time": "1/100",
+        "focal_length": 50,
+        "ev": 0.0,
+        "date": "2019:08:17 07:05:10"
+      }
+    },
+    {
+      "filename": "A7X08615.jpg",
+      "thumbnail": "thumbnails/A7X08615.jpg",
+      "date": "2019:08:04 18:20:33",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 1.4,
+        "iso": 100,
+        "exposure_time": "1/500",
+        "focal_length": 24,
+        "ev": -0.7,
+        "date": "2019:08:04 18:20:33"
+      }
+    },
+    {
+      "filename": "A7X08608.jpg",
+      "thumbnail": "thumbnails/A7X08608.jpg",
+      "date": "2019:08:04 18:13:02",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 5.6,
+        "iso": 800,
+        "exposure_time": "1/60",
+        "focal_length": 24,
+        "ev": -0.7,
+        "date": "2019:08:04 18:13:02"
+      }
+    },
+    {
+      "filename": "A7X08596.jpg",
+      "thumbnail": "thumbnails/A7X08596.jpg",
+      "date": "2019:08:04 18:08:09",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 1.4,
+        "iso": 100,
+        "exposure_time": "1/1250",
+        "focal_length": 24,
+        "ev": -0.7,
+        "date": "2019:08:04 18:08:09"
+      }
+    },
+    {
+      "filename": "A7X08009.jpg",
+      "thumbnail": "thumbnails/A7X08009.jpg",
+      "date": "2019:06:30 17:02:56",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 1.4,
+        "iso": 100,
+        "exposure_time": "1/125",
+        "focal_length": 24,
+        "ev": -0.7,
+        "date": "2019:06:30 17:02:56"
+      }
+    },
+    {
+      "filename": "A7X07847.jpg",
+      "thumbnail": "thumbnails/A7X07847.jpg",
+      "date": "2019:06:22 17:56:57",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 320,
+        "exposure_time": "1/200",
+        "focal_length": 50,
+        "ev": 0.0,
+        "date": "2019:06:22 17:56:57"
+      }
+    },
+    {
+      "filename": "A7X07594.jpg",
+      "thumbnail": "thumbnails/A7X07594.jpg",
+      "date": "2019:05:21 17:32:12",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 2.2,
+        "iso": 800,
+        "exposure_time": "1/80",
+        "focal_length": 50,
+        "ev": -0.3,
+        "date": "2019:05:21 17:32:12"
+      }
+    },
+    {
+      "filename": "A7X06117-Edit.jpg",
+      "thumbnail": "thumbnails/A7X06117-Edit.jpg",
+      "date": "2019:03:11 17:34:21",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 5.6,
+        "iso": 100,
+        "exposure_time": "1/100",
+        "focal_length": 24,
+        "ev": 0.0,
+        "date": "2019:03:11 17:34:21"
+      }
+    },
+    {
+      "filename": "A7X05898-Edit.jpg",
+      "thumbnail": "thumbnails/A7X05898-Edit.jpg",
+      "date": "2019:03:01 17:41:12",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 1.4,
+        "iso": 100,
+        "exposure_time": "1/8000",
+        "focal_length": 24,
+        "ev": -0.3,
+        "date": "2019:03:01 17:41:12"
+      }
+    },
+    {
+      "filename": "A7X05228.jpg",
+      "thumbnail": "thumbnails/A7X05228.jpg",
+      "date": "2019:01:30 15:53:16",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 5.6,
+        "iso": 100,
+        "exposure_time": "1/250",
+        "focal_length": 24,
+        "ev": 0.0,
+        "date": "2019:01:30 15:53:16"
+      }
+    },
+    {
+      "filename": "A7X05085-Edit.jpg",
+      "thumbnail": "thumbnails/A7X05085-Edit.jpg",
+      "date": "2019:01:27 04:13:15",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 1.4,
+        "iso": 1600,
+        "exposure_time": "1/30",
+        "focal_length": 24,
+        "ev": 0.0,
+        "date": "2019:01:27 04:13:15"
+      }
+    },
+    {
+      "filename": "A7X04429-Edit.jpg",
+      "thumbnail": "thumbnails/A7X04429-Edit.jpg",
+      "date": "2019:01:07 18:11:39",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 14.0,
+        "iso": 100,
+        "exposure_time": "4.0",
+        "focal_length": 24,
+        "ev": 0.0,
+        "date": "2019:01:07 18:11:39"
+      }
+    },
+    {
+      "filename": "A7X04419.jpg",
+      "thumbnail": "thumbnails/A7X04419.jpg",
+      "date": "2019:01:07 17:59:35",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 1.4,
+        "iso": 200,
+        "exposure_time": "1/60",
+        "focal_length": 24,
+        "ev": 0.0,
+        "date": "2019:01:07 17:59:35"
+      }
+    },
+    {
+      "filename": "A7X04324-Edit.jpg",
+      "thumbnail": "thumbnails/A7X04324-Edit.jpg",
+      "date": "2019:01:07 15:39:04",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "24mm F1.4 DG HSM | Art 018",
+        "f_number": 1.4,
+        "iso": 100,
+        "exposure_time": "1/6400",
+        "focal_length": 24,
+        "ev": 0.3,
+        "date": "2019:01:07 15:39:04"
+      }
+    },
+    {
+      "filename": "A7X03798-Edit.jpg",
+      "thumbnail": "thumbnails/A7X03798-Edit.jpg",
+      "date": "2018:12:28 16:10:30",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 5.6,
+        "iso": 400,
+        "exposure_time": "1/80",
+        "focal_length": 50,
+        "ev": -0.7,
+        "date": "2018:12:28 16:10:30"
+      }
+    },
+    {
+      "filename": "A7X02772.jpg",
+      "thumbnail": "thumbnails/A7X02772.jpg",
+      "date": "2018:12:03 16:54:30",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 2.8,
+        "iso": 3200,
+        "exposure_time": "1/100",
+        "focal_length": 50,
+        "ev": 0.3,
+        "date": "2018:12:03 16:54:30"
+      }
+    },
+    {
+      "filename": "A7X02510.jpg",
+      "thumbnail": "thumbnails/A7X02510.jpg",
+      "date": "2018:12:02 22:30:08",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 12800,
+        "exposure_time": "1/100",
+        "focal_length": 50,
+        "ev": 0.0,
+        "date": "2018:12:02 22:30:08"
+      }
+    },
+    {
+      "filename": "A7X01741.jpg",
+      "thumbnail": "thumbnails/A7X01741.jpg",
+      "date": "2018:11:19 12:55:21",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 100,
+        "exposure_time": "1/1000",
+        "focal_length": 50,
+        "ev": -0.3,
+        "date": "2018:11:19 12:55:21"
+      }
+    },
+    {
+      "filename": "A7X00093.jpg",
+      "thumbnail": "thumbnails/A7X00093.jpg",
+      "date": "2018:11:14 14:00:27",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M3",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 100,
+        "exposure_time": "1/640",
+        "focal_length": 50,
+        "ev": -0.3,
+        "date": "2018:11:14 14:00:27"
+      }
+    },
+    {
+      "filename": "A7201489.jpg",
+      "thumbnail": "thumbnails/A7201489.jpg",
+      "date": "2018:11:05 12:11:47",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M2",
+        "lens": "FE 50mm F1.8",
+        "f_number": 5.6,
+        "iso": 100,
+        "exposure_time": "1/500",
+        "focal_length": 50,
+        "ev": 0.3,
+        "date": "2018:11:05 12:11:47"
+      }
+    },
+    {
+      "filename": "A7200678-Edit.jpg",
+      "thumbnail": "thumbnails/A7200678-Edit.jpg",
+      "date": "2018:10:06 00:25:36",
+      "exif": {
+        "make": "SONY",
+        "model": "ILCE-7M2",
+        "lens": "FE 50mm F1.8",
+        "f_number": 1.8,
+        "iso": 2000,
+        "exposure_time": "1/60",
+        "focal_length": 50,
+        "ev": 0.0,
+        "date": "2018:10:06 00:25:36"
+      }
+    },
+    {
+      "filename": "DJI_0074-Edit.jpg",
+      "thumbnail": "thumbnails/DJI_0074-Edit.jpg",
+      "date": "2018:03:12 08:34:06",
+      "exif": {
+        "make": "DJI",
+        "model": "FC220",
+        "lens": "26.3 mm f/2.2",
+        "f_number": 2.2,
+        "iso": 100,
+        "exposure_time": "1/1800",
+        "focal_length": 4,
+        "ev": -0.3,
+        "date": "2018:03:12 08:34:06"
+      }
+    },
+    {
+      "filename": "Kids_D2.jpg",
+      "thumbnail": "thumbnails/Kids_D2.jpg",
+      "date": "2017:07:07 20:38:59",
+      "exif": {
+        "make": "",
+        "model": "",
+        "lens": "",
+        "f_number": "",
+        "iso": "",
+        "exposure_time": "",
+        "focal_length": "",
+        "ev": "",
+        "date": ""
+      }
+    },
+    {
+      "filename": "IMG_3928.jpg",
+      "thumbnail": "thumbnails/IMG_3928.jpg",
+      "date": "2012:10:27 09:26:44",
+      "exif": {
+        "make": "Canon",
+        "model": "Canon EOS 60D",
+        "lens": "EF28-135mm f/3.5-5.6 IS USM",
+        "f_number": 5.6,
+        "iso": 200,
+        "exposure_time": "1/20",
+        "focal_length": 135,
+        "ev": -0.3,
+        "date": "2012:10:27 09:26:44"
+      }
+    }
   ],
   "collections": {
     "Furry Friends": [
-      "Furry Friends/DSC02230.jpg",
-      "Furry Friends/DSC02185.jpg",
-      "Furry Friends/DSC02089.jpg",
-      "Furry Friends/A7X02492.jpg",
-      "Furry Friends/A7X02071.jpg",
-      "Furry Friends/A7X02063.jpg",
-      "Furry Friends/A7X01524.jpg"
+      {
+        "filename": "Furry Friends/DSC02230.jpg",
+        "thumbnail": "thumbnails/Furry Friends/DSC02230.jpg",
+        "date": "2025:12:20 14:43:25",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1R",
+          "lens": "35mm F2.0",
+          "f_number": 2.0,
+          "iso": 100,
+          "exposure_time": "1/640",
+          "focal_length": 35,
+          "ev": 0.0,
+          "date": "2025:12:20 14:43:25"
+        }
+      },
+      {
+        "filename": "Furry Friends/DSC02185.jpg",
+        "thumbnail": "thumbnails/Furry Friends/DSC02185.jpg",
+        "date": "2025:12:20 14:05:19",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1R",
+          "lens": "35mm F2.0",
+          "f_number": 2.0,
+          "iso": 100,
+          "exposure_time": "1/100",
+          "focal_length": 35,
+          "ev": -1.0,
+          "date": "2025:12:20 14:05:19"
+        }
+      },
+      {
+        "filename": "Furry Friends/DSC02089.jpg",
+        "thumbnail": "thumbnails/Furry Friends/DSC02089.jpg",
+        "date": "2025:12:19 09:31:50",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1R",
+          "lens": "35mm F2.0",
+          "f_number": 2.0,
+          "iso": 100,
+          "exposure_time": "1/100",
+          "focal_length": 35,
+          "ev": 0.3,
+          "date": "2025:12:19 09:31:50"
+        }
+      },
+      {
+        "filename": "Furry Friends/A7X02492.jpg",
+        "thumbnail": "thumbnails/Furry Friends/A7X02492.jpg",
+        "date": "2021:09:27 15:45:54",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "SAMYANG AF 85mm F1.4",
+          "f_number": 1.4,
+          "iso": 2500,
+          "exposure_time": "1/400",
+          "focal_length": 85,
+          "ev": 0.0,
+          "date": "2021:09:27 15:45:54"
+        }
+      },
+      {
+        "filename": "Furry Friends/A7X02071.jpg",
+        "thumbnail": "thumbnails/Furry Friends/A7X02071.jpg",
+        "date": "2020:01:07 23:34:09",
+        "exif": {
+          "make": "",
+          "model": "",
+          "lens": "",
+          "f_number": "",
+          "iso": "",
+          "exposure_time": "",
+          "focal_length": "",
+          "ev": "",
+          "date": ""
+        }
+      },
+      {
+        "filename": "Furry Friends/A7X02063.jpg",
+        "thumbnail": "thumbnails/Furry Friends/A7X02063.jpg",
+        "date": "2020:01:05 14:03:43",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "FE 55mm F1.8 ZA",
+          "f_number": 1.8,
+          "iso": 100,
+          "exposure_time": "1/250",
+          "focal_length": 55,
+          "ev": 0.0,
+          "date": "2020:01:05 14:03:43"
+        }
+      }
     ],
     "BW": [
-      "BW/DSC04179.jpg",
-      "BW/DSC04051.jpg",
-      "BW/DSC03997.jpg",
-      "BW/DSC03920-Edit.jpg",
-      "BW/DSC03766.jpg",
-      "BW/DSC02593.jpg",
-      "BW/DSC02581.jpg",
-      "BW/DSC09303.jpg",
-      "BW/DSC09274.jpg",
-      "BW/A7X05474.jpg",
-      "BW/A7X03062.jpg",
-      "BW/A7X02990-Edit.jpg",
-      "BW/A7X02946.jpg",
-      "BW/A7X02723.jpg",
-      "BW/A7X02384.jpg",
-      "BW/A7X07442.jpg",
-      "BW/A7200894-Edit.jpg",
-      "BW/IMG_0534.jpg",
-      "BW/Pipes.jpg"
+      {
+        "filename": "BW/DSC04179.jpg",
+        "thumbnail": "thumbnails/BW/DSC04179.jpg",
+        "date": "2026:01:04 13:37:09",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1RM2",
+          "lens": "35mm F2.0",
+          "f_number": 8.0,
+          "iso": 100,
+          "exposure_time": "1/200",
+          "focal_length": 35,
+          "ev": -0.7,
+          "date": "2026:01:04 13:37:09"
+        }
+      },
+      {
+        "filename": "BW/DSC04051.jpg",
+        "thumbnail": "thumbnails/BW/DSC04051.jpg",
+        "date": "2026:01:02 20:55:54",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1RM2",
+          "lens": "35mm F2.0",
+          "f_number": 2.0,
+          "iso": 6400,
+          "exposure_time": "1/30",
+          "focal_length": 35,
+          "ev": -3.0,
+          "date": "2026:01:02 20:55:54"
+        }
+      },
+      {
+        "filename": "BW/DSC03997.jpg",
+        "thumbnail": "thumbnails/BW/DSC03997.jpg",
+        "date": "2026:01:01 18:41:19",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1RM2",
+          "lens": "35mm F2.0",
+          "f_number": 4.0,
+          "iso": 4000,
+          "exposure_time": "1/50",
+          "focal_length": 35,
+          "ev": -1.7,
+          "date": "2026:01:01 18:41:19"
+        }
+      },
+      {
+        "filename": "BW/DSC03920-Edit.jpg",
+        "thumbnail": "thumbnails/BW/DSC03920-Edit.jpg",
+        "date": "2025:12:30 20:08:32",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1RM2",
+          "lens": "35mm F2.0",
+          "f_number": 2.0,
+          "iso": 6400,
+          "exposure_time": "1/8",
+          "focal_length": 35,
+          "ev": 0.7,
+          "date": "2025:12:30 20:08:32"
+        }
+      },
+      {
+        "filename": "BW/DSC03766.jpg",
+        "thumbnail": "thumbnails/BW/DSC03766.jpg",
+        "date": "2025:12:28 17:17:26",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1RM2",
+          "lens": "35mm F2.0",
+          "f_number": 5.6,
+          "iso": 160,
+          "exposure_time": "1/100",
+          "focal_length": 35,
+          "ev": 0.0,
+          "date": "2025:12:28 17:17:26"
+        }
+      },
+      {
+        "filename": "BW/DSC02593.jpg",
+        "thumbnail": "thumbnails/BW/DSC02593.jpg",
+        "date": "2025:12:24 14:11:12",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1R",
+          "lens": "35mm F2.0",
+          "f_number": 5.6,
+          "iso": 100,
+          "exposure_time": "1/200",
+          "focal_length": 35,
+          "ev": 0.0,
+          "date": "2025:12:24 14:11:12"
+        }
+      },
+      {
+        "filename": "BW/DSC02581.jpg",
+        "thumbnail": "thumbnails/BW/DSC02581.jpg",
+        "date": "2025:12:24 14:03:36",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1R",
+          "lens": "35mm F2.0",
+          "f_number": 5.6,
+          "iso": 100,
+          "exposure_time": "1/250",
+          "focal_length": 35,
+          "ev": 0.0,
+          "date": "2025:12:24 14:03:36"
+        }
+      },
+      {
+        "filename": "BW/DSC09303.jpg",
+        "thumbnail": "thumbnails/BW/DSC09303.jpg",
+        "date": "2025:11:28 20:43:17",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "FE 50mm F1.8",
+          "f_number": 1.8,
+          "iso": 160,
+          "exposure_time": "1/15",
+          "focal_length": 50,
+          "ev": -1.0,
+          "date": "2025:11:28 20:43:17"
+        }
+      },
+      {
+        "filename": "BW/DSC09274.jpg",
+        "thumbnail": "thumbnails/BW/DSC09274.jpg",
+        "date": "2025:11:28 20:12:02",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "FE 50mm F1.8",
+          "f_number": 1.8,
+          "iso": 3200,
+          "exposure_time": "1/80",
+          "focal_length": 50,
+          "ev": -0.3,
+          "date": "2025:11:28 20:12:02"
+        }
+      },
+      {
+        "filename": "BW/A7X05474.jpg",
+        "thumbnail": "thumbnails/BW/A7X05474.jpg",
+        "date": "2020:05:14 16:15:27",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "E 20mm F2.8 F050",
+          "f_number": 5.6,
+          "iso": 100,
+          "exposure_time": "1/500",
+          "focal_length": 20,
+          "ev": 0.0,
+          "date": "2020:05:14 16:15:27"
+        }
+      },
+      {
+        "filename": "BW/A7X03062.jpg",
+        "thumbnail": "thumbnails/BW/A7X03062.jpg",
+        "date": "2020:02:01 15:17:54",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "E 20mm F2.8 F050",
+          "f_number": 2.8,
+          "iso": 160,
+          "exposure_time": "1/60",
+          "focal_length": 20,
+          "ev": 0.0,
+          "date": "2020:02:01 15:17:54"
+        }
+      },
+      {
+        "filename": "BW/A7X02990-Edit.jpg",
+        "thumbnail": "thumbnails/BW/A7X02990-Edit.jpg",
+        "date": "2020:01:29 18:43:36",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "E 20mm F2.8 F050",
+          "f_number": 2.8,
+          "iso": 100,
+          "exposure_time": "30.0",
+          "focal_length": 20,
+          "ev": 0.3,
+          "date": "2020:01:29 18:43:36"
+        }
+      },
+      {
+        "filename": "BW/A7X02946.jpg",
+        "thumbnail": "thumbnails/BW/A7X02946.jpg",
+        "date": "2020:01:28 18:57:32",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "E 20mm F2.8 F050",
+          "f_number": 2.8,
+          "iso": 100,
+          "exposure_time": "15.0",
+          "focal_length": 20,
+          "ev": -1.7,
+          "date": "2020:01:28 18:57:32"
+        }
+      },
+      {
+        "filename": "BW/A7X02723.jpg",
+        "thumbnail": "thumbnails/BW/A7X02723.jpg",
+        "date": "2020:01:23 20:07:48",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "FE 55mm F1.8 ZA",
+          "f_number": 1.8,
+          "iso": 64000,
+          "exposure_time": "1/125",
+          "focal_length": 55,
+          "ev": 0.0,
+          "date": "2020:01:23 20:07:48"
+        }
+      },
+      {
+        "filename": "BW/A7X02384.jpg",
+        "thumbnail": "thumbnails/BW/A7X02384.jpg",
+        "date": "2020:01:20 22:06:02",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "E 20mm F2.8 F050",
+          "f_number": 2.8,
+          "iso": 16000,
+          "exposure_time": "1/30",
+          "focal_length": 20,
+          "ev": 0.0,
+          "date": "2020:01:20 22:06:02"
+        }
+      },
+      {
+        "filename": "BW/A7X01524.jpg",
+        "thumbnail": "thumbnails/BW/A7X01524.jpg",
+        "date": "2019:12:14 20:19:36",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "FE 55mm F1.8 ZA",
+          "f_number": 1.8,
+          "iso": 32000,
+          "exposure_time": "1/125",
+          "focal_length": 55,
+          "ev": 0.0,
+          "date": "2019:12:14 20:19:36"
+        }
+      },
+      {
+        "filename": "BW/A7X07442.jpg",
+        "thumbnail": "thumbnails/BW/A7X07442.jpg",
+        "date": "2019:05:05 21:56:37",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "24mm F1.4 DG HSM | Art 018",
+          "f_number": 1.4,
+          "iso": 1600,
+          "exposure_time": "1/50",
+          "focal_length": 24,
+          "ev": 0.0,
+          "date": "2019:05:05 21:56:37"
+        }
+      },
+      {
+        "filename": "BW/A7X02118.jpg",
+        "thumbnail": "thumbnails/BW/A7X02118.jpg",
+        "date": "2018:11:26 14:02:23",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M3",
+          "lens": "FE 50mm F1.8",
+          "f_number": 1.8,
+          "iso": 100,
+          "exposure_time": "1/2500",
+          "focal_length": 50,
+          "ev": 0.7,
+          "date": "2018:11:26 14:02:23"
+        }
+      },
+      {
+        "filename": "BW/A7200894-Edit.jpg",
+        "thumbnail": "thumbnails/BW/A7200894-Edit.jpg",
+        "date": "2018:10:13 17:20:55",
+        "exif": {
+          "make": "SONY",
+          "model": "ILCE-7M2",
+          "lens": "FE 50mm F1.8",
+          "f_number": 1.8,
+          "iso": 100,
+          "exposure_time": "1/80",
+          "focal_length": 50,
+          "ev": -0.7,
+          "date": "2018:10:13 17:20:55"
+        }
+      },
+      {
+        "filename": "BW/IMG_0534.jpg",
+        "thumbnail": "thumbnails/BW/IMG_0534.jpg",
+        "date": "2014:04:13 15:37:32",
+        "exif": {
+          "make": "Canon",
+          "model": "Canon EOS 5D Mark II",
+          "lens": "EF85mm f/1.8 USM",
+          "f_number": 1.8,
+          "iso": 320,
+          "exposure_time": "1/200",
+          "focal_length": 85,
+          "ev": 0.0,
+          "date": "2014:04:13 15:37:32"
+        }
+      },
+      {
+        "filename": "BW/Pipes.jpg",
+        "thumbnail": "thumbnails/BW/Pipes.jpg",
+        "date": "2012:10:27 10:21:06",
+        "exif": {
+          "make": "Canon",
+          "model": "Canon EOS 60D",
+          "lens": "EF28-135mm f/3.5-5.6 IS USM",
+          "f_number": 5.6,
+          "iso": 1000,
+          "exposure_time": "1/800",
+          "focal_length": 135,
+          "ev": -0.7,
+          "date": "2012:10:27 10:21:06"
+        }
+      }
     ],
-    "Bong & Mia": [
-      "Bong & Mia/DSC02461.jpg",
-      "Bong & Mia/DSC02458.jpg"
-    ],
-    "RMIT": [
-      "RMIT/A7X01750.jpg"
+    "Bong and Mia": [
+      {
+        "filename": "Bong and Mia/DSC02461.jpg",
+        "thumbnail": "thumbnails/Bong and Mia/DSC02461.jpg",
+        "date": "2025:12:23 10:12:49",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1R",
+          "lens": "35mm F2.0",
+          "f_number": 2.0,
+          "iso": 100,
+          "exposure_time": "1/125",
+          "focal_length": 35,
+          "ev": 0.0,
+          "date": "2025:12:23 10:12:49"
+        }
+      },
+      {
+        "filename": "Bong and Mia/DSC02458.jpg",
+        "thumbnail": "thumbnails/Bong and Mia/DSC02458.jpg",
+        "date": "2025:12:23 10:12:34",
+        "exif": {
+          "make": "SONY",
+          "model": "DSC-RX1R",
+          "lens": "35mm F2.0",
+          "f_number": 2.0,
+          "iso": 100,
+          "exposure_time": "1/125",
+          "focal_length": 35,
+          "ev": 0.0,
+          "date": "2025:12:23 10:12:34"
+        }
+      },
+      {
+        "filename": "Bong and Mia/IMG_8756.JPG",
+        "thumbnail": "thumbnails/Bong and Mia/IMG_8756.JPG",
+        "date": "2025:12:08 15:16:01",
+        "exif": {
+          "make": "",
+          "model": "",
+          "lens": "",
+          "f_number": "",
+          "iso": "",
+          "exposure_time": "",
+          "focal_length": "",
+          "ev": "",
+          "date": ""
+        }
+      }
     ]
   }
 }
