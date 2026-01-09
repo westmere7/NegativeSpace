@@ -209,36 +209,38 @@
             opacity: 1;
         }
 
-        .photo-meta-header {
+        .photo-meta-row {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
             width: 100%;
-            margin-bottom: 0.2rem;
         }
 
         .photo-title {
             font-size: 0.9rem;
             font-weight: 600;
             color: #fff;
+            margin-bottom: 0.2rem;
             letter-spacing: 0.02em;
-            margin: 0;
-            padding-right: 1rem;
+            width: 100%;
         }
 
         .photo-date {
             font-size: 0.85rem;
             color: #ccc;
             font-weight: 500;
+            margin-left: 1rem;
             white-space: nowrap;
-            margin: 0;
-            flex-shrink: 0;
         }
 
         .info-line {
             line-height: 1.4;
             color: #aaa;
             font-weight: 400;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Lightbox */
@@ -1374,11 +1376,11 @@
                 details: detailsStr,
                 date: dateStr,
                 html: `
-                    <div class="photo-meta-header">
-                        <div class="photo-title">${title || ''}</div>
+                    ${title ? `<div class="photo-title">${title}</div>` : ''}
+                    <div class="photo-meta-row">
+                        <div class="info-line">${detailsStr}</div>
                         <div class="photo-date">${dateStr || ''}</div>
                     </div>
-                    <div class="info-line">${detailsStr}</div>
                 `
             };
         }
