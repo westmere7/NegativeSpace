@@ -1120,6 +1120,12 @@
             <div class="lightbox-img-wrapper" id="zoom-container">
                 <img id="lightbox-img" src="" alt="">
             </div>
+
+            <div id="lightbox-controls"
+                style="position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 1001; display:flex; gap:10px;">
+                <!-- Buttons inject here -->
+            </div>
+
             <div class="lightbox-overlay" id="lightbox-info"></div>
         </div>
     </div>
@@ -1143,46 +1149,97 @@
     </div>
 
     <!-- Upload Modal -->
-    <div class="lightbox" id="upload-modal">
-        <div class="auth-box">
+    <div class="lightbox" id="exif-modal">
+        <div class="auth-box" style="max-width: 500px;">
             <button class="lightbox-close" style="position: absolute; top: 10px; right: 10px;"
-                onclick="closeUploadModal()">×</button>
-            <h2>Upload Photo</h2>
-            <form id="upload-form" onsubmit="handleUploadSubmit(event)">
-                <!-- File Input -->
-                <div style="margin-bottom: 1rem;">
-                    <label for="file-upload"
-                        style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">Choose Photo:</label>
-                    <input type="file" id="file-upload" accept="image/*" required
-                        style="width: 100%; padding: 0.5rem; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444;">
+                onclick="closeExifModal()">×</button>
+            <h2>Edit EXIF Data</h2>
+            <form id="exif-form" onsubmit="handleExifSubmit(event)">
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <!-- Title -->
+                    <div style="grid-column: span 2;">
+                        <label class="input-label">Title (ImageDescription)</label>
+                        <input type="text" id="exif-title" class="dark-input">
+                    </div>
+
+                    <!-- Camera -->
+                    <div>
+                        <label class="input-label">Camera Make</label>
+                        <input type="text" id="exif-make" class="dark-input">
+                    </div>
+                    <div>
+                        <label class="input-label">Camera Model</label>
+                        <input type="text" id="exif-model" class="dark-input">
+                    </div>
+
+                    <!-- Lens -->
+                    <div style="grid-column: span 2;">
+                        <label class="input-label">Lens Model</label>
+                        <input type="text" id="exif-lens" class="dark-input">
+                    </div>
+
+                    <!-- Settings -->
+                    <div>
+                        <label class="input-label">Focal Length (mm)</label>
+                        <input type="number" id="exif-focal" class="dark-input" step="any">
+                    </div>
+                    <div>
+                        <label class="input-label">Aperture (f/)</label>
+                        <input type="number" id="exif-aperture" class="dark-input" step="any">
+                    </div>
+                    <div>
+                        <label class="input-label">Shutter Speed (e.g. 1/50)</label>
+                        <input type="text" id="exif-shutter" class="dark-input">
+                    </div>
+                    <div>
+                        <label class="input-label">ISO</label>
+                        <input type="number" id="exif-iso" class="dark-input">
+                    </div>
                 </div>
 
-                <!-- Collection Selector -->
-                <div style="margin-bottom: 1rem;">
-                    <label for="collection-select"
-                        style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">Collection:</label>
-                    <select id="collection-select" onchange="toggleNewCollectionInput()"
-                        style="width: 100%; padding: 0.8rem; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
-                        <option value="home">Home (Root)</option>
-                        <!-- Collections injected via JS -->
-                        <option value="new">+ Create New Collection</option>
-                    </select>
-                </div>
-
-                <!-- New Collection Name (Hidden by default) -->
-                <div id="new-collection-div" style="margin-bottom: 1rem; display: none;">
-                    <label for="new-collection-name"
-                        style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">New Collection
-                        Name:</label>
-                    <input type="text" id="new-collection-name" placeholder="e.g. Summer 2024"
-                        style="width: 100%; padding: 0.8rem; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
-                </div>
-
-                <div id="upload-status" style="margin-bottom: 1rem; font-size: 0.9rem;"></div>
-                <button type="submit" id="upload-submit-btn"
-                    style="width:100%; padding: 0.8rem; background:white; color:black; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Upload</button>
+                <div id="exif-status" style="margin: 1rem 0; font-size: 0.9rem;"></div>
+                <button type="submit" class="submit-btn">Save Changes</button>
             </form>
         </div>
+    </div>
+
+    <div class="lightbox" id="upload-modal">
+        <form id="upload-form" onsubmit="handleUploadSubmit(event)">
+            <!-- File Input -->
+            <div style="margin-bottom: 1rem;">
+                <label for="file-upload"
+                    style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">Choose Photo:</label>
+                <input type="file" id="file-upload" accept="image/*" required
+                    style="width: 100%; padding: 0.5rem; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444;">
+            </div>
+
+            <!-- Collection Selector -->
+            <div style="margin-bottom: 1rem;">
+                <label for="collection-select"
+                    style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">Collection:</label>
+                <select id="collection-select" onchange="toggleNewCollectionInput()"
+                    style="width: 100%; padding: 0.8rem; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
+                    <option value="home">Home (Root)</option>
+                    <!-- Collections injected via JS -->
+                    <option value="new">+ Create New Collection</option>
+                </select>
+            </div>
+
+            <!-- New Collection Name (Hidden by default) -->
+            <div id="new-collection-div" style="margin-bottom: 1rem; display: none;">
+                <label for="new-collection-name"
+                    style="display:block; margin-bottom:0.5rem; text-align:left; color:#ccc;">New Collection
+                    Name:</label>
+                <input type="text" id="new-collection-name" placeholder="e.g. Summer 2024"
+                    style="width: 100%; padding: 0.8rem; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
+            </div>
+
+            <div id="upload-status" style="margin-bottom: 1rem; font-size: 0.9rem;"></div>
+            <button type="submit" id="upload-submit-btn"
+                style="width:100%; padding: 0.8rem; background:white; color:black; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Upload</button>
+        </form>
+    </div>
     </div>
 
     <!-- Move Modal -->
@@ -1528,9 +1585,33 @@
 
         // --- Lightbox Logic ---
 
+        function renderLightboxControls(index) {
+            const controls = document.getElementById('lightbox-controls');
+            controls.innerHTML = '';
+
+            const user = getUser();
+            if (user && user.role === 'admin') {
+
+                // Change EXIF Button
+                const exifBtn = document.createElement('button');
+                exifBtn.innerText = 'Edit EXIF';
+                exifBtn.className = 'nav-upload-btn'; // Reuse style
+                exifBtn.style.padding = '0.5rem 1rem';
+                exifBtn.style.fontSize = '0.8rem';
+                exifBtn.style.background = 'rgba(255,255,255,0.1)';
+                exifBtn.style.border = '1px solid rgba(255,255,255,0.3)';
+                exifBtn.style.color = 'white';
+                exifBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    openExifModal(index);
+                };
+                controls.appendChild(exifBtn);
+            }
+        }
+
         function openLightbox(index) {
             state.currentIndex = index;
-            updateLightboxContent();
+            updateLightbox(index);
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -1542,36 +1623,43 @@
         }
 
         function navigate(dir) {
-            // Find actual number of loaded items to avoid bounds error if we clicked a not-yet-loaded index?
-            // Actually relying on DOM elements for source is safer.
             const items = document.querySelectorAll('.photo-item img');
             state.currentIndex = (state.currentIndex + dir + items.length) % items.length;
-            updateLightboxContent();
+            updateLightbox(state.currentIndex);
         }
 
-        function updateLightboxContent() {
+        function updateLightbox(index) {
             const items = document.querySelectorAll('.photo-item img');
-            const targetImg = items[state.currentIndex];
+            const targetImg = items[index];
 
             if (!targetImg) return;
 
             lightboxImg.src = targetImg.src;
 
-            const infoBox = document.getElementById('lightbox-info');
-            const title = targetImg.dataset.metaTitle || '';
-            const details = targetImg.dataset.metaDetails || '';
-            const date = targetImg.dataset.metaDate || '';
+            lightboxImg.onload = () => {
+                resetZoom();
+                // Re-trigger EXIF parse
+                EXIF.getData(lightboxImg, function () {
+                    const exifData = EXIF.getAllTags(this);
+                    const meta = extractExifInfo(exifData);
 
-            infoBox.innerHTML = `
-                ${title ? `<div class="lightbox-title">${title}</div>` : ''}
-                <div class="lightbox-meta">
-                    ${date ? `<span>${date}</span>` : ''}
-                    ${date && details ? ' · ' : ''}
-                    ${details}
-                </div>
-            `;
+                    // Also store raw EXIF for the Editor form population
+                    lightboxImg.exifRaw = exifData; // Custom prop
 
-            resetZoom();
+                    const infoBox = document.getElementById('lightbox-info');
+                    infoBox.innerHTML = `
+                        ${meta.title ? `<div class="lightbox-title">${meta.title}</div>` : ''}
+                        <div class="lightbox-meta">
+                            ${meta.date ? `<span>${meta.date}</span>` : ''}
+                            ${meta.date && meta.details ? ' · ' : ''}
+                            ${meta.details}
+                        </div>
+                    `;
+                });
+            };
+
+            // Render Admin Controls
+            renderLightboxControls(index);
         }
 
         // --- Zoom & Pan Logic (Cursor Centered) ---
@@ -1593,7 +1681,7 @@
             // 1. Get mouse position relative to the image container
             const rect = zoomContainer.getBoundingClientRect();
             // We want the position relative to the center of the viewport/container because our transform origin is not set to 0 0 in CSS?
-            // Wait, in CSS I set transform-origin: 0 0; 
+            // Wait, in CSS I set transform-origin: 0 0;
             // This simplifies math: everything starts at top-left.
             // Actually, centering the image is done by flexbox.
             // Let's use the image's own rect.
@@ -1639,8 +1727,8 @@
             // So: `imgNewLeft + ptrX * newScale = e.clientX`
             // `imgNewLeft = e.clientX - ptrX * newScale`
 
-            // We control `zoom.pointX/Y`. 
-            // Note: `imgRect.left` includes the flexbox centering offset! 
+            // We control `zoom.pointX/Y`.
+            // Note: `imgRect.left` includes the flexbox centering offset!
             // We can't easily control that via `translate`.
             // BUT: `transform` is applied *after* layout.
             // If `transform-origin` is `0 0`, the transform applies to the top-left of the element.
@@ -1816,6 +1904,114 @@
             }
             nav.appendChild(userDiv);
         }
+
+        // --- EXIF Editor Logic ---
+        function openExifModal(index) {
+            const filename = state.currentPhotos[index]; // Use index or find existing
+
+            // Find grid item to get dataset (Metadata) or use lightboxImg.exifRaw
+            // Using lightboxImg.exifRaw is safer as it's the actual loaded file.
+
+            const raw = lightboxImg.exifRaw || {};
+
+            document.getElementById('exif-title').value = raw.ImageDescription || '';
+            document.getElementById('exif-make').value = raw.Make || '';
+            document.getElementById('exif-model').value = raw.Model || '';
+            document.getElementById('exif-lens').value = raw.LensModel || raw.Lens || '';
+            document.getElementById('exif-iso').value = raw.ISOSpeedRatings || '';
+
+            // Rationals
+            document.getElementById('exif-aperture').value = raw.FNumber ? Number(raw.FNumber) : '';
+            document.getElementById('exif-focal').value = raw.FocalLength ? Number(raw.FocalLength) : (raw.FocalLengthIn35mmFilm || '');
+
+            // Shutter: Convert decimal to fraction string if possible, or just raw
+            let shut = raw.ExposureTime;
+            if (shut) {
+                if (shut < 1) {
+                    shut = `1/${Math.round(1 / shut)}`;
+                }
+            }
+            document.getElementById('exif-shutter').value = shut || '';
+
+            // Store filename for submit
+            document.getElementById('exif-form').dataset.filename = filename;
+
+            document.getElementById('exif-modal').classList.add('active');
+        }
+
+        function closeExifModal() {
+            document.getElementById('exif-modal').classList.remove('active');
+            document.getElementById('exif-status').innerText = '';
+        }
+
+        async function handleExifSubmit(e) {
+            e.preventDefault();
+            const status = document.getElementById('exif-status');
+            const filename = e.target.dataset.filename;
+            const user = getUser(); // Get user to retrieve token
+
+            if (!user || !user.token) {
+                status.innerText = 'Unauthorized. Please log in.';
+                status.style.color = 'red';
+                return;
+            }
+            const token = user.token;
+
+            status.innerText = 'Saving...';
+            status.style.color = '#ccc';
+
+            const data = {
+                title: document.getElementById('exif-title').value,
+                make: document.getElementById('exif-make').value,
+                model: document.getElementById('exif-model').value,
+                lens: document.getElementById('exif-lens').value,
+                iso: document.getElementById('exif-iso').value,
+                focalLength: document.getElementById('exif-focal').value,
+                fNumber: document.getElementById('exif-aperture').value,
+                exposureTime: document.getElementById('exif-shutter').value
+            };
+
+            try {
+                const res = await fetch('/.netlify/functions/update_exif', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ filename, exifData: data })
+                });
+
+                const json = await res.json();
+
+                if (res.ok) {
+                    status.innerText = 'Saved! Refreshing...';
+                    status.style.color = 'green';
+
+                    // Optional: Reload page or re-render
+                    setTimeout(() => {
+                        closeExifModal();
+                        location.reload(); // Hard reload to fetch new image/exif
+                    }, 1500);
+                } else {
+                    throw new Error(json.error || 'Failed');
+                }
+            } catch (err) {
+                status.innerText = 'Error: ' + err.message;
+                status.style.color = 'red';
+            }
+        }
+
+
+        // CSS Helper for Dark Inputs
+        // Inject styles
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .input-label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 5px; }
+            .dark-input { width: 100%; padding: 8px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; }
+            .submit-btn { width: 100%; padding: 10px; background: white; color: black; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        `;
+        document.head.appendChild(style);
+
 
         // --- Auth Logic ---
         let authMode = 'login'; // 'login' or 'signup'
