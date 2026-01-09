@@ -777,8 +777,14 @@
                 justify-content: center;
             }
 
-            .mobile-menu-btn.right {
+            .mobile-user-display {
                 order: 3;
+                font-family: 'Outfit', sans-serif;
+                font-size: 0.9rem;
+                color: var(--nav-text);
+                min-width: 40px;
+                /* Balance left btn */
+                text-align: right;
             }
 
             /* Hide Desktop Nav Wrapper */
@@ -797,18 +803,13 @@
                 top: 0;
                 bottom: 0;
                 width: 250px;
-                /* or 100%? Sidebar style is better */
                 background: var(--bg-color);
                 z-index: 100;
                 padding: 80px 20px 20px 20px;
-                /* Space for top close button */
                 transition: transform 0.3s ease;
                 display: flex;
                 flex-direction: column;
                 border: 1px solid var(--nav-separator);
-            }
-
-            .mobile-menu-overlay.left {
                 left: 0;
                 transform: translateX(-100%);
                 border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -1080,8 +1081,8 @@
                 <img src="Website assets/exposr_name - forLightBG.svg" alt="exposr" class="logo logo-light">
             </a>
 
-            <!-- Right Mobile Control -->
-            <button class="mobile-menu-btn right" onclick="toggleMobileMenu('right')">☰</button>
+            <!-- Mobile User Display (Right Side) -->
+            <div class="mobile-user-display" id="mobile-user-display"></div>
 
             <!-- Desktop Nav Wrapper -->
             <div class="nav-wrapper">
@@ -1095,20 +1096,8 @@
     <!-- Mobile Menus -->
     <div id="mobile-menu-left" class="mobile-menu-overlay left">
         <button class="close-menu-btn" onclick="toggleMobileMenu('left')">×</button>
-        <div class="menu-content" id="mobile-collections-list">
-            <!-- Collections injected here -->
-        </div>
-    </div>
-
-    <div id="mobile-menu-right" class="mobile-menu-overlay right">
-        <button class="close-menu-btn" onclick="toggleMobileMenu('right')">×</button>
-        <div class="menu-content" id="mobile-systtem-list">
-            <!-- Auth/Theme/Upload injected here -->
-            <div id="mobile-auth-container"></div>
-            <div class="menu-separator"></div>
-            <button class="theme-toggle-mobile" onclick="toggleTheme()">Light/Dark</button>
-            <button class="nav-upload-btn mobile-upload-only" onclick="triggerUpload()"
-                style="margin-top:20px; width:100%; display:none;">Upload</button>
+        <div class="menu-content" id="mobile-menu-content">
+            <!-- All Content injected here -->
         </div>
     </div>
 
@@ -2152,15 +2141,8 @@
         /* Mobile Menu Logic */
         function toggleMobileMenu(side) {
             const leftMenu = document.getElementById('mobile-menu-left');
-            const rightMenu = document.getElementById('mobile-menu-right');
-
-            if (side === 'left') {
-                leftMenu.classList.toggle('active');
-                rightMenu.classList.remove('active'); // Close other
-            } else {
-                rightMenu.classList.toggle('active');
-                leftMenu.classList.remove('active'); // Close other
-            }
+            // Single menu now (left)
+            if (leftMenu) leftMenu.classList.toggle('active');
         }
 
         // Close when clicking outside (on overlay)
@@ -2173,51 +2155,67 @@
         });
 
         function renderMobileMenus() {
-            // 1. Left Menu: Collections
-            const leftContent = document.getElementById('mobile-collections-list');
-            if (!leftContent) return;
-            leftContent.innerHTML = '';
+            // 1. Unified Left Menu
+            const menuContent = document.getElementById('mobile-menu-content');
+            if (!menuContent) return;
+            menuContent.innerHTML = '';
 
-            const createItem = (label, isActive) => {
+            const createItem = (label, action, isBold = false) => {
                 const item = document.createElement('div');
                 item.className = 'nav-item';
                 item.innerText = label;
-                if (isActive) item.classList.add('active'); // Use active class
+                if (isBold) item.style.fontWeight = 'bold';
                 item.onclick = () => {
-                    switchCollection(label);
+                    action();
                     toggleMobileMenu('left'); // Close
                 };
                 return item;
             };
 
-            leftContent.appendChild(createItem('Home', false));
+            // -- Collections --
+            menuContent.appendChild(createItem('Home', () => switchCollection('Home'), false));
             if (state.collections) {
                 Object.keys(state.collections).forEach(c => {
-                    leftContent.appendChild(createItem(c, false));
+                    menuContent.appendChild(createItem(c, () => switchCollection(c), false));
                 });
             }
 
-            // 2. Right Menu: System
-            const authContainer = document.getElementById('mobile-auth-container');
+            // -- Separator --
+            const sep = document.createElement('div');
+            sep.style.height = '1px';
+            sep.style.background = 'var(--nav-separator)';
+            sep.style.margin = '10px 0';
+            menuContent.appendChild(sep);
+
+            // -- System / Auth --
             const user = getUser();
 
-            if (user) {
-                authContainer.innerHTML = `
-                     <span class="auth-user-display">Hi, ${user.username}</span>
-                     ${user.role === 'admin' ? '<div style="font-size:0.8rem; color:#888; margin-bottom:10px;">Admin Access</div>' : ''}
-                     <button class="login-trigger-btn" onclick="logout(); toggleMobileMenu('right');">Log Out</button>
-                 `;
+            // Theme Toggle
+            menuContent.appendChild(createItem('Light/Dark', toggleTheme, false));
 
-                // Show Upload Btn
-                const upBtns = document.querySelectorAll('.mobile-upload-only');
-                upBtns.forEach(b => b.style.display = (user.role === 'admin') ? 'block' : 'none');
+            if (user) {
+                // Upload (Admin only)
+                if (user.role === 'admin') {
+                    const upBtn = createItem('Upload Photo', triggerUpload, true);
+                    upBtn.style.color = 'var(--accent-color)';
+                    menuContent.appendChild(upBtn);
+                }
+
+                // Log Out
+                menuContent.appendChild(createItem('Log Out', logout, true));
+
+                // Display Username on Right Header
+                const userDisplay = document.getElementById('mobile-user-display');
+                if (userDisplay) userDisplay.innerText = user.username;
+
             } else {
-                authContainer.innerHTML = `
-                     <button class="login-trigger-btn" onclick="openAuthModal('login'); toggleMobileMenu('right');">Log In</button>
-                     <button class="login-trigger-btn" onclick="openAuthModal('signup'); toggleMobileMenu('right');" style="margin-top:10px;">Sign Up</button>
-                 `;
-                const upBtns = document.querySelectorAll('.mobile-upload-only');
-                upBtns.forEach(b => b.style.display = 'none');
+                // Log In / Sign Up
+                menuContent.appendChild(createItem('Log In', () => openAuthModal('login'), true));
+                menuContent.appendChild(createItem('Sign Up', () => openAuthModal('signup'), true));
+
+                // Clear Username on Right Header
+                const userDisplay = document.getElementById('mobile-user-display');
+                if (userDisplay) userDisplay.innerText = '';
             }
         }
         /* Scroll Hide/Show Logic for Mobile */
@@ -2235,7 +2233,6 @@
                 header.classList.add('header-hidden');
                 // Close menus if open
                 document.getElementById('mobile-menu-left').classList.remove('active');
-                document.getElementById('mobile-menu-right').classList.remove('active');
             } else {
                 // Scrolling Up or at top
                 header.classList.remove('header-hidden');
